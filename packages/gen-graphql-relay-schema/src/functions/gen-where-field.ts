@@ -18,7 +18,10 @@ export const genWhereField = (documentNode: DocumentNode): DocumentNode => {
     }
 
     const fieldNameAndType = getFieldNameAndType(definition).filter(
-      x => basicTypeNames.includes(x.type) || isEnumType(documentNode, x.type),
+      x =>
+        basicTypeNames.includes(x.type) ||
+        x.type === 'Date' ||
+        isEnumType(documentNode, x.type),
     );
 
     Reflect.set(documentNode, 'definitions', [

@@ -22,7 +22,9 @@ export const genOrderField = (documentNode: DocumentNode): DocumentNode => {
       .filter(x => !x.isList)
       .filter(
         x =>
-          basicTypeNames.includes(x.type) || isEnumType(documentNode, x.type),
+          basicTypeNames.includes(x.type) ||
+          x.type === 'Date' ||
+          isEnumType(documentNode, x.type),
       );
     Reflect.set(documentNode, 'definitions', [
       ...documentNode.definitions,
