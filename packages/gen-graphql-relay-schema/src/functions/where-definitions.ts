@@ -1,6 +1,6 @@
 import {
-  FieldDefinitionNode,
-  ObjectTypeDefinitionNode,
+  InputObjectTypeDefinitionNode,
+  InputValueDefinitionNode,
   TypeNode,
 } from 'graphql';
 import { BasicTypeName } from '../utils';
@@ -17,45 +17,27 @@ import { BasicTypeName } from '../utils';
 export const getwhereDefinitions = (
   connectionName: string,
   fieldNameAndTypes: Array<{ name: string; type: string }>,
-): ObjectTypeDefinitionNode => {
-  const fields: FieldDefinitionNode[] = [];
+): InputObjectTypeDefinitionNode => {
+  const fields: InputValueDefinitionNode[] = [];
 
   for (const fieldNameAndType of fieldNameAndTypes) {
     fields.push(...genFields(fieldNameAndType.name, fieldNameAndType.type));
   }
 
   return {
-    kind: 'ObjectTypeDefinition',
+    kind: 'InputObjectTypeDefinition',
     name: {
       kind: 'Name',
       value: `${connectionName}NodeWhere`,
     },
     fields,
-    // [
-    //   {
-    //     kind: 'FieldDefinition',
-    //     name: {
-    //       kind: 'Name',
-    //       value: 'node',
-    //     },
-    //     arguments: [],
-    //     type: {
-    //       kind: 'NamedType',
-    //       name: {
-    //         kind: 'Name',
-    //         value: 'aa',
-    //       },
-    //     },
-    //     directives: [],
-    //   },
-    // ],
-  } as ObjectTypeDefinitionNode;
+  } as InputObjectTypeDefinitionNode;
 };
 
 const genFields = (
   name: string,
   type: BasicTypeName,
-): FieldDefinitionNode[] => {
+): InputValueDefinitionNode[] => {
   let fieldNameAndTypes: Array<{
     name: string;
     type: string;
@@ -63,7 +45,6 @@ const genFields = (
   }> = [];
 
   const operators = [
-    // starts_with
     { operator: 'starts_with', isArray: false },
     { operator: 'ends_with', isArray: false },
     { operator: 'eq', isArray: false },
@@ -92,12 +73,6 @@ const genFields = (
         isArray: x.isArray,
       }));
   };
-  // 'String',
-  // 'Int',
-  // 'Float',
-  // 'Boolean',
-  // 'ID',
-  // 'Date'
   switch (type) {
     case 'String':
       fieldNameAndTypes = getOperators(
@@ -184,7 +159,7 @@ const genFields = (
     }
 
     return {
-      kind: 'FieldDefinition',
+      kind: 'InputValueDefinition',
       name: {
         kind: 'Name',
         value: fieldNameAndType.name,

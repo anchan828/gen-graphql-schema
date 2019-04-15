@@ -757,7 +757,7 @@ describe('where', () => {
               edges: [ProjectEdge]
               pageInfo: PageInfo!
             }
-            type ProjectNodeWhere {
+            input ProjectNodeWhere {
               id_eq: ID
               id_not_eq: ID
               id_in: [ID]
