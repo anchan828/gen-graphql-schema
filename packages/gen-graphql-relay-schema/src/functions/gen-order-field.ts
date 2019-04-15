@@ -3,6 +3,7 @@ import {
   basicTypeNames,
   getDefinition,
   getFieldNameAndType,
+  isEnumType,
   isRelayAndHasRelayArgmentDirective,
 } from '../utils';
 import { getOrderDefinitions } from './order-definitions';
@@ -17,9 +18,12 @@ export const genOrderField = (documentNode: DocumentNode): DocumentNode => {
       continue;
     }
 
-    const fieldNames = getFieldNameAndType(definition).filter(x =>
-      basicTypeNames.includes(x.type),
-    );
+    const fieldNames = getFieldNameAndType(definition)
+      .filter(x => !x.isList)
+      .filter(
+        x =>
+          basicTypeNames.includes(x.type) || isEnumType(documentNode, x.type),
+      );
     Reflect.set(documentNode, 'definitions', [
       ...documentNode.definitions,
       getOrderDefinitions(connectionName, fieldNames.map(x => x.name)),

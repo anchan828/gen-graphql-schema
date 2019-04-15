@@ -3,9 +3,10 @@ import {
   basicTypeNames,
   getDefinition,
   getFieldNameAndType,
+  isEnumType,
   isRelayAndHasRelayArgmentDirective,
 } from '../utils';
-import { getwhereDefinitions as getWhereDefinitions } from './where-definitions';
+import { getWhereDefinitions } from './where-definitions';
 
 export const genWhereField = (documentNode: DocumentNode): DocumentNode => {
   const connectionNames = getConnectionNamesHasWhere(documentNode);
@@ -19,6 +20,7 @@ export const genWhereField = (documentNode: DocumentNode): DocumentNode => {
     const fieldNameAndType = getFieldNameAndType(definition).filter(
       x => basicTypeNames.includes(x.type) || isEnumType(documentNode, x.type),
     );
+
     Reflect.set(documentNode, 'definitions', [
       ...documentNode.definitions,
       getWhereDefinitions(connectionName, fieldNameAndType),
@@ -26,13 +28,7 @@ export const genWhereField = (documentNode: DocumentNode): DocumentNode => {
   }
   return documentNode;
 };
-const isEnumType = (documentNode: DocumentNode, typeName: string): boolean => {
-  const enumDefinition = getDefinition(documentNode, typeName);
-  if (!enumDefinition) {
-    return false;
-  }
-  return enumDefinition.kind === 'EnumTypeDefinition';
-};
+
 const getConnectionNamesHasWhere = (documentNode: DocumentNode): string[] => {
   const connectionNames: string[] = [];
   for (const definition of documentNode.definitions) {

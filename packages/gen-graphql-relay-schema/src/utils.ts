@@ -48,7 +48,7 @@ export const getDefinition = (
 
 export const getFieldNameAndType = (
   definition: DefinitionNode,
-): Array<{ name: string; type: string }> => {
+): Array<{ name: string; type: string; isList: boolean }> => {
   if (
     !definition ||
     definition.kind !== 'ObjectTypeDefinition' ||
@@ -56,12 +56,14 @@ export const getFieldNameAndType = (
   ) {
     return [];
   }
-  return definition.fields
-    .filter((field: FieldDefinitionNode) => field.type.kind !== 'ListType')
-    .map((field: FieldDefinitionNode) => ({
+  return definition.fields.map((field: FieldDefinitionNode) => {
+    const { name, isList } = getTypeName(field);
+    return {
       name: field.name.value,
-      type: getTypeName(field),
-    }));
+      type: name,
+      isList,
+    };
+  });
 };
 export const basicTypeNames = [
   'String',
@@ -76,39 +78,58 @@ export type BasicTypeName = typeof basicTypeNames[number];
 
 export const isBasicType = (field: FieldDefinitionNode): boolean => {
   const typeName = getTypeName(field);
-  return basicTypeNames.includes(typeName);
+  return basicTypeNames.includes(typeName.name);
 };
-export const getTypeName = (field: FieldDefinitionNode): string => {
+export const getTypeName = (
+  field: FieldDefinitionNode,
+): { name: string; isList: boolean } => {
   if (field.type.kind === 'ListType') {
-    return getListTypeName(field.type.type);
+    return getListTypeName(field.type.type, true);
   }
 
   if (field.type.kind === 'NonNullType') {
-    return getNonNullTypeName(field.type.type);
+    return getNonNullTypeName(field.type.type, false);
   }
 
-  return field.type.name.value;
+  return { name: field.type.name.value, isList: false };
 };
 
-const getListTypeName = (listType: TypeNode): string => {
+const getListTypeName = (
+  listType: TypeNode,
+  isList: boolean,
+): { name: string; isList: boolean } => {
   if (listType.kind === 'ListType') {
-    return getListTypeName(listType.type);
+    return getListTypeName(listType.type, isList);
   }
 
   if (listType.kind === 'NonNullType') {
-    return getNonNullTypeName(listType.type);
+    return getNonNullTypeName(listType.type, isList);
   }
 
-  return listType.name.value;
+  return { name: listType.name.value, isList };
 };
 
-const getNonNullTypeName = (nonNullType: TypeNode): string => {
+const getNonNullTypeName = (
+  nonNullType: TypeNode,
+  isList: boolean,
+): { name: string; isList: boolean } => {
   if (nonNullType.kind === 'ListType') {
-    return getListTypeName(nonNullType.type);
+    return getListTypeName(nonNullType.type, true);
   }
   if (nonNullType.kind === 'NonNullType') {
-    return getNonNullTypeName(nonNullType.type);
+    return getNonNullTypeName(nonNullType.type, isList);
   }
 
-  return nonNullType.name.value;
+  return { name: nonNullType.name.value, isList };
+};
+
+export const isEnumType = (
+  documentNode: DocumentNode,
+  typeName: string,
+): boolean => {
+  const enumDefinition = getDefinition(documentNode, typeName);
+  if (!enumDefinition) {
+    return false;
+  }
+  return enumDefinition.kind === 'EnumTypeDefinition';
 };

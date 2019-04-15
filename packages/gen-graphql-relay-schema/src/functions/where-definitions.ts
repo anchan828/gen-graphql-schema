@@ -14,14 +14,20 @@ import { BasicTypeName } from '../utils';
 // gt
 // gte
 
-export const getwhereDefinitions = (
+export const getWhereDefinitions = (
   connectionName: string,
-  fieldNameAndTypes: Array<{ name: string; type: string }>,
+  fieldNameAndTypes: Array<{ name: string; type: string; isList: boolean }>,
 ): InputObjectTypeDefinitionNode => {
   const fields: InputValueDefinitionNode[] = [];
 
   for (const fieldNameAndType of fieldNameAndTypes) {
-    fields.push(...genFields(fieldNameAndType.name, fieldNameAndType.type));
+    fields.push(
+      ...genFields(
+        fieldNameAndType.name,
+        fieldNameAndType.type,
+        fieldNameAndType.isList,
+      ),
+    );
   }
 
   return {
@@ -37,24 +43,25 @@ export const getwhereDefinitions = (
 const genFields = (
   name: string,
   type: BasicTypeName,
+  isList: boolean,
 ): InputValueDefinitionNode[] => {
   let fieldNameAndTypes: Array<{
     name: string;
     type: string;
-    isArray: boolean;
+    isList: boolean;
   }> = [];
 
   const operators = [
-    { operator: 'starts_with', isArray: false },
-    { operator: 'ends_with', isArray: false },
-    { operator: 'eq', isArray: false },
-    { operator: 'not_eq', isArray: false },
-    { operator: 'in', isArray: true },
-    { operator: 'not_in', isArray: true },
-    { operator: 'lt', isArray: false },
-    { operator: 'lte', isArray: false },
-    { operator: 'gt', isArray: false },
-    { operator: 'gte', isArray: false },
+    { operator: 'starts_with', isList: false },
+    { operator: 'ends_with', isList: false },
+    { operator: 'eq', isList: false },
+    { operator: 'not_eq', isList: false },
+    { operator: 'in', isList: true },
+    { operator: 'not_in', isList: true },
+    { operator: 'lt', isList: false },
+    { operator: 'lte', isList: false },
+    { operator: 'gt', isList: false },
+    { operator: 'gte', isList: false },
   ];
 
   const getOperators = (
@@ -63,33 +70,30 @@ const genFields = (
   ): Array<{
     name: string;
     type: string;
-    isArray: boolean;
+    isList: boolean;
   }> => {
     return operators
       .filter(o => names.includes(o.operator))
-      .map((x: { operator: string; isArray: boolean }) => ({
+      .map((x: { operator: string; isList: boolean }) => ({
         name: `${name}_${x.operator}`,
         type: basicTypeName,
-        isArray: x.isArray,
+        isList: x.isList,
       }));
   };
+
   switch (type) {
     case 'String':
       fieldNameAndTypes = getOperators(
         type,
-        'eq',
-        'not_eq',
+        ...(isList ? [] : ['eq', 'not_eq', 'starts_with', 'ends_with']),
         'in',
         'not_in',
-        'starts_with',
-        'ends_with',
       );
       break;
     case 'Int':
       fieldNameAndTypes = getOperators(
         type,
-        'eq',
-        'not_eq',
+        ...(isList ? [] : ['eq', 'not_eq']),
         'in',
         'not_in',
         'lt',
@@ -101,8 +105,7 @@ const genFields = (
     case 'Float':
       fieldNameAndTypes = getOperators(
         type,
-        'eq',
-        'not_eq',
+        ...(isList ? [] : ['eq', 'not_eq']),
         'in',
         'not_in',
         'lt',
@@ -112,13 +115,12 @@ const genFields = (
       );
       break;
     case 'Boolean':
-      fieldNameAndTypes.push({ name, type, isArray: false });
+      fieldNameAndTypes.push({ name, type, isList: false });
       break;
     case 'ID':
       fieldNameAndTypes = getOperators(
         type,
-        'eq',
-        'not_eq',
+        ...(isList ? [] : ['eq', 'not_eq']),
         'in',
         'not_in',
         'lt',
@@ -130,8 +132,7 @@ const genFields = (
     case 'Date':
       fieldNameAndTypes = getOperators(
         type,
-        'eq',
-        'not_eq',
+        ...(isList ? [] : ['eq', 'not_eq']),
         'in',
         'not_in',
         'lt',
@@ -142,7 +143,12 @@ const genFields = (
       break;
     default:
       // is Enum
-      fieldNameAndTypes = getOperators(type, 'eq', 'not_eq', 'in', 'not_in');
+      fieldNameAndTypes = getOperators(
+        type,
+        ...(isList ? [] : ['eq', 'not_eq']),
+        'in',
+        'not_in',
+      );
       break;
   }
 
@@ -155,7 +161,7 @@ const genFields = (
       },
     };
 
-    if (fieldNameAndType.isArray) {
+    if (fieldNameAndType.isList) {
       fieldType = {
         kind: 'ListType',
         type: fieldType,

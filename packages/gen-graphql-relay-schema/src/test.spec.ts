@@ -551,12 +551,18 @@ describe('order', () => {
         `   type Test {
               name: String
             }
+            enum TestEnum {
+              A
+              B
+            }
             type Project {
                 id: String
                 test1: Int!
                 test2: Int
                 test3: Test!
                 test4: Date
+                test: TestEnum
+                test2: [TestEnum]
             }
             type Query {
                 projects: [Project] @is_relay(order: true)
@@ -572,15 +578,24 @@ describe('order', () => {
             type Query {
               projects(before: String,after: String,first: Int,last: Int, orderBy: [ProjectNodeOrder]): ProjectConnection
             }
+
             type Test {
               name: String
             }
+            
+            enum TestEnum {
+              A
+              B
+            }
+
             type Project implements Node {
               id: String
               test1: Int!
               test2: Int
               test3: Test!
               test4: Date
+              test: TestEnum
+              test2: [TestEnum]
             }
   
             interface Connection {
@@ -624,6 +639,8 @@ describe('order', () => {
                 test2_DESC
                 test4_ASC
                 test4_DESC
+                test_ASC
+                test_DESC
             }
             `),
     );
@@ -700,11 +717,13 @@ describe('where', () => {
             type Project {
                 id: ID!
                 name: String!
+                texts: [String]
                 age: Int
                 created_At: Date
                 range: Float
                 published: Boolean
                 test: TestEnum
+                test2: [TestEnum]
             }
             type Query {
                 projects: [Project] @is_relay(where: true)
@@ -727,11 +746,13 @@ describe('where', () => {
             type Project implements Node {
               id: ID!
               name: String!
+              texts: [String]
               age: Int
               created_At: Date
               range: Float
               published: Boolean
               test: TestEnum
+              test2: [TestEnum]
             }
   
             interface Connection {
@@ -780,6 +801,8 @@ describe('where', () => {
               name_not_eq: String
               name_in: [String]
               name_not_in: [String]
+              texts_in: [String]
+              texts_not_in: [String]
               age_eq: Int
               age_not_eq: Int
               age_in: [Int]
@@ -809,6 +832,8 @@ describe('where', () => {
               test_not_eq: TestEnum
               test_in: [TestEnum]
               test_not_in: [TestEnum]
+              test2_in: [TestEnum]
+              test2_not_in: [TestEnum]
           }
             `),
     );
