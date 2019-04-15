@@ -35,7 +35,10 @@ export const getDefinition = (
   connectionName: string,
 ): DefinitionNode | undefined => {
   for (const definition of documentNode.definitions) {
-    if (definition.kind === 'ObjectTypeDefinition') {
+    if (
+      definition.kind === 'ObjectTypeDefinition' ||
+      definition.kind === 'EnumTypeDefinition'
+    ) {
       if (definition.name.value === connectionName) {
         return definition;
       }
@@ -58,8 +61,7 @@ export const getFieldNameAndType = (
     .map((field: FieldDefinitionNode) => ({
       name: field.name.value,
       type: getTypeName(field),
-    }))
-    .filter(x => basicTypeNames.includes(x.type));
+    }));
 };
 export const basicTypeNames = [
   'String',

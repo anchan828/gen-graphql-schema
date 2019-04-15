@@ -140,6 +140,10 @@ const genFields = (
         'gte',
       );
       break;
+    default:
+      // is Enum
+      fieldNameAndTypes = getOperators(type, 'eq', 'not_eq', 'in', 'not_in');
+      break;
   }
 
   return fieldNameAndTypes.map(fieldNameAndType => {

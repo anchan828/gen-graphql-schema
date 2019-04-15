@@ -158,7 +158,7 @@ mergeTypes([schemaA, schemaB]);
 
 ## Supoprted Types
 
-For now, supported types are **Basic Types** (String, Int, Float, Boolean, ID) and Date (but undefined scalar. please define yourself)
+For now, supported types are **Basic Types** (String, Int, Float, Boolean, ID), Enum and Date (but undefined scalar. please define yourself)
 
 ## License
 

@@ -1,10 +1,11 @@
 import { DirectiveNode, DocumentNode, FieldDefinitionNode } from 'graphql';
 import {
+  basicTypeNames,
   getDefinition,
   getFieldNameAndType,
   isRelayAndHasRelayArgmentDirective,
 } from '../utils';
-import { getwhereDefinitions } from './where-definitions';
+import { getwhereDefinitions as getWhereDefinitions } from './where-definitions';
 
 export const genWhereField = (documentNode: DocumentNode): DocumentNode => {
   const connectionNames = getConnectionNamesHasWhere(documentNode);
@@ -15,15 +16,23 @@ export const genWhereField = (documentNode: DocumentNode): DocumentNode => {
       continue;
     }
 
-    const fieldNameAndType = getFieldNameAndType(definition);
+    const fieldNameAndType = getFieldNameAndType(definition).filter(
+      x => basicTypeNames.includes(x.type) || isEnumType(documentNode, x.type),
+    );
     Reflect.set(documentNode, 'definitions', [
       ...documentNode.definitions,
-      getwhereDefinitions(connectionName, fieldNameAndType),
+      getWhereDefinitions(connectionName, fieldNameAndType),
     ]);
   }
   return documentNode;
 };
-
+const isEnumType = (documentNode: DocumentNode, typeName: string): boolean => {
+  const enumDefinition = getDefinition(documentNode, typeName);
+  if (!enumDefinition) {
+    return false;
+  }
+  return enumDefinition.kind === 'EnumTypeDefinition';
+};
 const getConnectionNamesHasWhere = (documentNode: DocumentNode): string[] => {
   const connectionNames: string[] = [];
   for (const definition of documentNode.definitions) {

@@ -693,7 +693,10 @@ describe('where', () => {
   it('is true', () => {
     expect(
       mergeTypes([
-        `
+        `   enum TestEnum {
+              A
+              B
+            }
             type Project {
                 id: ID!
                 name: String!
@@ -701,6 +704,7 @@ describe('where', () => {
                 created_At: Date
                 range: Float
                 published: Boolean
+                test: TestEnum
             }
             type Query {
                 projects: [Project] @is_relay(where: true)
@@ -716,7 +720,10 @@ describe('where', () => {
             type Query {
               projects(before: String,after: String,first: Int,last: Int, where: ProjectNodeWhere): ProjectConnection
             }
-  
+            enum TestEnum {
+              A
+              B
+            }
             type Project implements Node {
               id: ID!
               name: String!
@@ -724,6 +731,7 @@ describe('where', () => {
               created_At: Date
               range: Float
               published: Boolean
+              test: TestEnum
             }
   
             interface Connection {
@@ -797,6 +805,10 @@ describe('where', () => {
               range_gt: Float
               range_gte: Float
               published: Boolean
+              test_eq: TestEnum
+              test_not_eq: TestEnum
+              test_in: [TestEnum]
+              test_not_in: [TestEnum]
           }
             `),
     );

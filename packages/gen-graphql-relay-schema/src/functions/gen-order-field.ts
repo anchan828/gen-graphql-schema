@@ -1,5 +1,6 @@
 import { DirectiveNode, DocumentNode, FieldDefinitionNode } from 'graphql';
 import {
+  basicTypeNames,
   getDefinition,
   getFieldNameAndType,
   isRelayAndHasRelayArgmentDirective,
@@ -16,7 +17,9 @@ export const genOrderField = (documentNode: DocumentNode): DocumentNode => {
       continue;
     }
 
-    const fieldNames = getFieldNameAndType(definition);
+    const fieldNames = getFieldNameAndType(definition).filter(x =>
+      basicTypeNames.includes(x.type),
+    );
     Reflect.set(documentNode, 'definitions', [
       ...documentNode.definitions,
       getOrderDefinitions(connectionName, fieldNames.map(x => x.name)),
