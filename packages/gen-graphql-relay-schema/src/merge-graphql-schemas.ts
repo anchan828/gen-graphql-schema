@@ -34,7 +34,7 @@ export const mergeTypes = (
   mergedType = genOrderField(mergedType);
   mergedType = genWhereField(mergedType);
   mergedType = removeRelayDirective(mergedType);
-  return MergeTypes([mergedType]);
+  return MergeTypes([mergedType], Object.assign({ all: true }, options || {}));
 };
 
 export const genRelaySchema = (type: string | DocumentNode) => {
