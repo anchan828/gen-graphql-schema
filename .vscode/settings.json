@@ -1,0 +1,17 @@
+{
+    "[typescript]": {
+        "editor.formatOnSave": true
+    },
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    "window.zoomLevel": 0,
+    "linter_codeclimate.enabled": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.fixAll.tslint": true,
+    },
+    "breadcrumbs.enabled": true,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.preferences.importModuleSpecifier": "relative"
+}
