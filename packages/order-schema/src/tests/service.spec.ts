@@ -1,5 +1,5 @@
 import { buildASTSchema, parse, printSchema } from 'graphql';
-import { GenOrderTypesService } from './service';
+import { GenOrderTypesService } from '../service';
 
 describe('GenOrderTypesService', () => {
   it('should return same schema when no orderBy directive', () => {

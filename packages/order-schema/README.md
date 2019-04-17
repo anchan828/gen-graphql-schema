@@ -1,4 +1,4 @@
-# @anchan828/gen-order-schema
+# @anchan828/gen-graphql-order-schema
 
 ## Description
 
@@ -7,7 +7,7 @@ Generate order enum schema by directive
 ## Quick Start
 
 ```ts
-import { genOrderTypes } from "@anchan828/gen-order-schema"
+import { genOrderTypes } from "@anchan828/gen-graphql-order-schema"
 
 const schema = `
 

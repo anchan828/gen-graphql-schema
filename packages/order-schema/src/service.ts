@@ -1,3 +1,11 @@
+import {
+  getDirectives,
+  getFieldDefinitions,
+  getFieldTypeName,
+  getObjectTypeDefinitions,
+  isBasicType,
+  isEnumType,
+} from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
 import {
   buildASTSchema,
@@ -15,14 +23,6 @@ import {
 } from 'graphql';
 import { DEFAULT_OPTIONS } from './constants';
 import { GenOrderTypesOptions } from './options';
-import {
-  getDirectives,
-  getFieldDefinitions,
-  getFieldTypeName,
-  getObjectTypeDefinitions,
-  isBasicType,
-  isEnumType,
-} from './utils';
 export class GenOrderTypesService {
   genOrderTypes(): string {
     if (!this.hasOrderByDirective()) {

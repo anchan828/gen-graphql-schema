@@ -1,14 +1,3 @@
-// export interface GenOrderTypesOptions {
-//   orderByDirectiveName?: string;
-//   orderByIgnoreDirectiveName?: string;
-//   orderDirectionTypeName?: string;
-//   orderByArgumentName?: string;
-//   orderByArgumentTypeIsList?: boolean;
-//   orderEnumTypeSuffix?: string;
-//   sortEnumTypeSuffix?: string;
-//   supportOrderableTypes?: string[];
-// }
-
 export interface GenOrderTypesOptions {
   orderByDirective?: { name?: string };
   orderByIgnoreDirective?: { name?: string };
