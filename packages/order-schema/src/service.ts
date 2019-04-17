@@ -50,11 +50,6 @@ export class GenOrderTypesService {
         continue;
       }
 
-      appendDefinitionToDocumentNode(
-        this.documentNode,
-        sortEnumType,
-        orderEnumType,
-      );
       this.appendOrderByArgumentToFieldNode(field, orderEnumType);
 
       this.removeOrderByDirective(field);
@@ -141,14 +136,14 @@ export class GenOrderTypesService {
     const orderTypeName = `${orderTypeOptions.prefix}${name}${
       orderTypeOptions.suffix
     }`;
-    const orderType = getDefinitionByName(
+    let orderType = getDefinitionByName(
       this.documentNode,
       orderTypeName,
     ) as ObjectTypeDefinitionNode;
     if (orderType) {
       return orderType;
     }
-    return {
+    orderType = {
       kind: 'ObjectTypeDefinition',
       name: {
         kind: 'Name',
@@ -188,6 +183,8 @@ export class GenOrderTypesService {
         },
       ],
     } as ObjectTypeDefinitionNode;
+    appendDefinitionToDocumentNode(this.documentNode, orderType);
+    return orderType;
   }
   private genSortEnumTypeDefinition(
     field: FieldDefinitionNode,
@@ -203,14 +200,14 @@ export class GenOrderTypesService {
     const sortEnumName = `${sortEnumOptions.prefix}${name}${
       sortEnumOptions.suffix
     }`;
-    const sortEnum = getDefinitionByName(
+    let sortEnum = getDefinitionByName(
       this.documentNode,
       sortEnumName,
     ) as EnumTypeDefinitionNode;
     if (sortEnum) {
       return sortEnum;
     }
-    return {
+    sortEnum = {
       kind: 'EnumTypeDefinition',
       name: {
         kind: 'Name',
@@ -226,6 +223,8 @@ export class GenOrderTypesService {
         directives: [],
       })) as EnumValueDefinitionNode[],
     };
+    appendDefinitionToDocumentNode(this.documentNode, sortEnum);
+    return sortEnum;
   }
 
   private appendOrderByArgumentToFieldNode(

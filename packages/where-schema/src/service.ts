@@ -1,5 +1,6 @@
 import {
   appendDefinitionToDocumentNode,
+  getDefinitionByName,
   getDirectives,
   getFieldDefinitions,
   getFieldDefinitionsByDirective,
@@ -42,7 +43,7 @@ export class GenWhereTypesService {
       if (!whereType) {
         continue;
       }
-      appendDefinitionToDocumentNode(this.documentNode, whereType);
+
       this.appendWhereArgumentToFieldNode(field, whereType);
       this.removeWhereDirective(field);
       this.removeWhereIgnoreDirective(field);
@@ -223,18 +224,27 @@ export class GenWhereTypesService {
     }
 
     const whereTypeOptions = this.options.whereType!;
-
-    return {
+    const whereTypeName = `${whereTypeOptions.prefix}${
+      getFieldTypeName(field).name
+    }${whereTypeOptions.suffix}`;
+    let whereType = getDefinitionByName(
+      this.documentNode,
+      whereTypeName,
+    ) as ObjectTypeDefinitionNode;
+    if (whereType) {
+      return whereType;
+    }
+    whereType = {
       kind: 'ObjectTypeDefinition',
       name: {
         kind: 'Name',
-        value: `${whereTypeOptions.prefix}${getFieldTypeName(field).name}${
-          whereTypeOptions.suffix
-        }`,
+        value: whereTypeName,
       },
       directives: [],
       fields,
     } as ObjectTypeDefinitionNode;
+    appendDefinitionToDocumentNode(this.documentNode, whereType);
+    return whereType;
   }
   private getWhereFieldNameAndTypes(
     definition: ObjectTypeDefinitionNode,
