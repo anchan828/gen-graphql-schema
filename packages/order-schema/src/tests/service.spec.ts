@@ -4,18 +4,25 @@ import { GenOrderTypesService } from '../service';
 describe('GenOrderTypesService', () => {
   it('should return same schema when no orderBy directive', () => {
     const types = `type Test { id: ID }`;
-    expect(new GenOrderTypesService(types).genOrderTypes()).toEqual(
-      printSchema(buildASTSchema(parse(types))),
-    );
+    expect(
+      printSchema(
+        buildASTSchema(new GenOrderTypesService(types).genOrderTypes()),
+      ),
+    ).toEqual(printSchema(buildASTSchema(parse(types))));
   });
 
   it('should return added Order enum when has orderBy directive', () => {
     expect(
-      new GenOrderTypesService(
-        [`type Test { id: ID }`, `type Query { tests: [Test] @orderBy}`].join(
-          `\n`,
+      printSchema(
+        buildASTSchema(
+          new GenOrderTypesService(
+            [
+              `type Test { id: ID }`,
+              `type Query { tests: [Test] @orderBy}`,
+            ].join(`\n`),
+          ).genOrderTypes(),
         ),
-      ).genOrderTypes(),
+      ),
     ).toEqual(
       printSchema(
         buildASTSchema(
@@ -35,13 +42,17 @@ describe('GenOrderTypesService', () => {
 
   it('should ignore object type in enum', () => {
     expect(
-      new GenOrderTypesService(
-        [
-          `type Test1 { id: ID }`,
-          `type Test2 { id: ID, test: Test1 }`,
-          `type Query { tests: [Test2] @orderBy}`,
-        ].join(`\n`),
-      ).genOrderTypes(),
+      printSchema(
+        buildASTSchema(
+          new GenOrderTypesService(
+            [
+              `type Test1 { id: ID }`,
+              `type Test2 { id: ID, test: Test1 }`,
+              `type Query { tests: [Test2] @orderBy}`,
+            ].join(`\n`),
+          ).genOrderTypes(),
+        ),
+      ),
     ).toEqual(
       printSchema(
         buildASTSchema(
@@ -61,29 +72,33 @@ describe('GenOrderTypesService', () => {
   });
   it('should return added Order enum when change options', () => {
     expect(
-      new GenOrderTypesService(
-        [
-          `scalar Date`,
-          `type Test { id: ID, name: String @ignore, date: Date }`,
-          `type Query { tests: [Test] @hoge}`,
-        ].join(`\n`),
-        {
-          orderByDirective: {
-            name: 'hoge',
-          },
-          orderByIgnoreDirective: {
-            name: 'ignore',
-          },
-          orderByArgument: {
-            name: 'arg',
-            isList: false,
-          },
-          orderType: {
-            suffix: 'Changed',
-          },
-          supportOrderableTypes: ['Date'],
-        },
-      ).genOrderTypes(),
+      printSchema(
+        buildASTSchema(
+          new GenOrderTypesService(
+            [
+              `scalar Date`,
+              `type Test { id: ID, name: String @ignore, date: Date }`,
+              `type Query { tests: [Test] @hoge}`,
+            ].join(`\n`),
+            {
+              orderByDirective: {
+                name: 'hoge',
+              },
+              orderByIgnoreDirective: {
+                name: 'ignore',
+              },
+              orderByArgument: {
+                name: 'arg',
+                isList: false,
+              },
+              orderType: {
+                suffix: 'Changed',
+              },
+              supportOrderableTypes: ['Date'],
+            },
+          ).genOrderTypes(),
+        ),
+      ),
     ).toEqual(
       printSchema(
         buildASTSchema(
@@ -104,38 +119,42 @@ describe('GenOrderTypesService', () => {
 
   it('should return added Order enum', () => {
     expect(
-      new GenOrderTypesService(
-        [
-          `type Test { id: ID, name: String @ignore }`,
-          `type Query { tests: [[Test!]]! @hoge}`,
-        ].join(`\n`),
-        {
-          orderByDirective: {
-            name: 'hoge',
-          },
-          orderByIgnoreDirective: {
-            name: 'ignore',
-          },
-          orderByArgument: {
-            name: 'arg',
-          },
-          orderType: {
-            prefix: 'Prefix',
-            suffix: 'Changed',
-            sortName: '_sort',
-            directionName: '_direction',
-          },
-          orderDirection: {
-            ascName: 'TOP',
-            descName: 'BOTTOM',
-            typeName: 'Position',
-          },
-          sortEnum: {
-            prefix: 'Prefix',
-            suffix: 'Suffix',
-          },
-        },
-      ).genOrderTypes(),
+      printSchema(
+        buildASTSchema(
+          new GenOrderTypesService(
+            [
+              `type Test { id: ID, name: String @ignore }`,
+              `type Query { tests: [[Test!]]! @hoge}`,
+            ].join(`\n`),
+            {
+              orderByDirective: {
+                name: 'hoge',
+              },
+              orderByIgnoreDirective: {
+                name: 'ignore',
+              },
+              orderByArgument: {
+                name: 'arg',
+              },
+              orderType: {
+                prefix: 'Prefix',
+                suffix: 'Changed',
+                sortName: '_sort',
+                directionName: '_direction',
+              },
+              orderDirection: {
+                ascName: 'TOP',
+                descName: 'BOTTOM',
+                typeName: 'Position',
+              },
+              sortEnum: {
+                prefix: 'Prefix',
+                suffix: 'Suffix',
+              },
+            },
+          ).genOrderTypes(),
+        ),
+      ),
     ).toEqual(
       printSchema(
         buildASTSchema(

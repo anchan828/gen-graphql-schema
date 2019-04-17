@@ -15,8 +15,9 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
+    "@anchan828/gen-graphql-schema-common": "^0.1.14",
+    "deepmerge": "3.2.0",
     "graphql": "14.2.1",
-    "merge-graphql-schemas": "1.5.8",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
@@ -35,5 +36,5 @@
   "bugs": {
     "url": "https://github.com/anchan828/gen-graphql-schema/issues"
   },
-  "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/gen-graphql-relay-schema#readme"
+  "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/relay-schema#readme"
 }

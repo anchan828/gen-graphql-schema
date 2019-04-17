@@ -1,17 +1,16 @@
 import {
+  appendDefinitionToDocumentNode,
   getDirectives,
   getFieldDefinitions,
   getFieldDefinitionsByDirective,
   getFieldTypeName,
   getObjectTypeDefinition,
-  getObjectTypeDefinitions,
+  hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
 } from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
 import {
-  buildASTSchema,
-  DefinitionNode,
   DirectiveNode,
   DocumentNode,
   EnumTypeDefinitionNode,
@@ -19,15 +18,19 @@ import {
   FieldDefinitionNode,
   ObjectTypeDefinitionNode,
   parse,
-  printSchema,
   TypeNode,
 } from 'graphql';
 import { DEFAULT_OPTIONS } from './constants';
 import { GenWhereTypesOptions } from './options';
 export class GenWhereTypesService {
-  public genWhereTypes(): string {
-    if (!this.hasWhereDirective()) {
-      return printSchema(buildASTSchema(this.documentNode));
+  public genWhereTypes(): DocumentNode {
+    if (
+      !hasDirectiveInDocumentNode(
+        this.documentNode,
+        this.options.whereDirective!.name!,
+      )
+    ) {
+      return this.documentNode;
     }
     const fields = getFieldDefinitionsByDirective(
       this.documentNode,
@@ -39,20 +42,21 @@ export class GenWhereTypesService {
       if (!whereType) {
         continue;
       }
-      this.appendDefinitionToDocumentNode(whereType);
+      appendDefinitionToDocumentNode(this.documentNode, whereType);
       this.appendWhereArgumentToFieldNode(field, whereType);
       this.removeWhereDirective(field);
       this.removeWhereIgnoreDirective(field);
     }
 
     for (const operator of this.typeOperatorMap.values()) {
-      this.appendDefinitionToDocumentNode(
+      appendDefinitionToDocumentNode(
+        this.documentNode,
         operator.enumType,
         operator.objectType,
       );
     }
 
-    return printSchema(buildASTSchema(this.documentNode));
+    return this.documentNode;
   }
 
   private genOperatorDefinitions(typeName: string): void {
@@ -268,25 +272,6 @@ export class GenWhereTypesService {
 
     return false;
   }
-  private hasWhereDirective(): boolean {
-    const definitions = getObjectTypeDefinitions(this.documentNode);
-    for (const definition of definitions) {
-      const fields = getFieldDefinitions(definition);
-
-      for (const field of fields) {
-        const directives = getDirectives(field);
-        if (
-          directives.find(
-            (d: DirectiveNode) =>
-              d.name.value === this.options.whereDirective!.name,
-          )
-        ) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
   private removeWhereDirective(field: FieldDefinitionNode): void {
     const directives = getDirectives(field);
@@ -318,14 +303,7 @@ export class GenWhereTypesService {
       );
     }
   }
-  private appendDefinitionToDocumentNode(
-    ...definitions: DefinitionNode[]
-  ): void {
-    Reflect.set(this.documentNode, 'definitions', [
-      ...this.documentNode.definitions,
-      ...definitions,
-    ]);
-  }
+
   private readonly documentNode: DocumentNode;
   private typeOperatorMap: Map<
     string,

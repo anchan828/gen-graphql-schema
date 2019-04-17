@@ -1,17 +1,16 @@
 import {
+  appendDefinitionToDocumentNode,
   getDirectives,
   getFieldDefinitions,
   getFieldDefinitionsByDirective,
   getFieldTypeName,
   getObjectTypeDefinition,
-  getObjectTypeDefinitions,
+  hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
 } from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
 import {
-  buildASTSchema,
-  DefinitionNode,
   DirectiveNode,
   DocumentNode,
   EnumTypeDefinitionNode,
@@ -21,21 +20,28 @@ import {
   NamedTypeNode,
   ObjectTypeDefinitionNode,
   parse,
-  printSchema,
 } from 'graphql';
 import { DEFAULT_OPTIONS } from './constants';
 import { GenOrderTypesOptions } from './options';
 export class GenOrderTypesService {
-  genOrderTypes(): string {
-    if (!this.hasOrderByDirective()) {
-      return printSchema(buildASTSchema(this.documentNode));
+  genOrderTypes(): DocumentNode {
+    if (
+      !hasDirectiveInDocumentNode(
+        this.documentNode,
+        this.options.orderByDirective!.name!,
+      )
+    ) {
+      return this.documentNode;
     }
 
     const fields = getFieldDefinitionsByDirective(
       this.documentNode,
       this.options.orderByDirective!.name!,
     );
-    this.appendDefinitionToDocumentNode(this.genOrderDirectionEnumDefinition());
+    appendDefinitionToDocumentNode(
+      this.documentNode,
+      this.genOrderDirectionEnumDefinition(),
+    );
     for (const field of fields) {
       const sortEnumType = this.genSortEnumTypeDefinition(field);
       const orderEnumType = this.genOrderObjectTypeDefinition(field);
@@ -43,34 +49,18 @@ export class GenOrderTypesService {
         continue;
       }
 
-      this.appendDefinitionToDocumentNode(sortEnumType, orderEnumType);
+      appendDefinitionToDocumentNode(
+        this.documentNode,
+        sortEnumType,
+        orderEnumType,
+      );
       this.appendOrderByArgumentToFieldNode(field, orderEnumType);
 
       this.removeOrderByDirective(field);
       this.removeOrderByIgnoreDirective(field);
     }
 
-    return printSchema(buildASTSchema(this.documentNode));
-  }
-  private hasOrderByDirective(): boolean {
-    const definitions = getObjectTypeDefinitions(this.documentNode);
-    for (const definition of definitions) {
-      const fields = getFieldDefinitions(definition);
-
-      for (const field of fields) {
-        const directives = getDirectives(field);
-        if (
-          directives.find(
-            (d: DirectiveNode) =>
-              d.name.value === this.options.orderByDirective!.name,
-          )
-        ) {
-          return true;
-        }
-      }
-    }
-
-    return false;
+    return this.documentNode;
   }
 
   private hasOrderByIgnoreDirective(field: FieldDefinitionNode): boolean {
@@ -215,14 +205,7 @@ export class GenOrderTypesService {
       })) as EnumValueDefinitionNode[],
     };
   }
-  private appendDefinitionToDocumentNode(
-    ...definitions: DefinitionNode[]
-  ): void {
-    Reflect.set(this.documentNode, 'definitions', [
-      ...this.documentNode.definitions,
-      ...definitions,
-    ]);
-  }
+
   private appendOrderByArgumentToFieldNode(
     field: FieldDefinitionNode,
     orderTypeDefinition: ObjectTypeDefinitionNode,

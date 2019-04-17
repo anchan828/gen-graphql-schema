@@ -1,4 +1,5 @@
 import {
+  DefinitionNode,
   DirectiveNode,
   DocumentNode,
   EnumTypeDefinitionNode,
@@ -134,5 +135,74 @@ export const getObjectTypeDefinition = (
 
   return getObjectTypeDefinitions(documentNode).find(
     definition => definition.name.value === name,
+  );
+};
+export const appendDefinitionToDocumentNode = (
+  documentNode: DocumentNode,
+  ...definitions: DefinitionNode[]
+): void => {
+  Reflect.set(documentNode, 'definitions', [
+    ...documentNode.definitions,
+    ...definitions,
+  ]);
+};
+export const hasDirectiveInDocumentNode = (
+  documentNode: DocumentNode,
+  directiveName: string,
+): boolean => {
+  const definitions = getObjectTypeDefinitions(documentNode);
+  for (const definition of definitions) {
+    const fields = getFieldDefinitions(definition);
+
+    for (const field of fields) {
+      const directives = getDirectives(field);
+      if (
+        directives.find((d: DirectiveNode) => d.name.value === directiveName)
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+export const getDefinitionByName = (
+  documentNode: DocumentNode,
+  name: string,
+): DefinitionNode | undefined => {
+  for (const definition of documentNode.definitions) {
+    if (
+      definition.kind === 'ObjectTypeDefinition' ||
+      definition.kind === 'EnumTypeDefinition' ||
+      definition.kind === 'InterfaceTypeDefinition'
+    ) {
+      if (definition.name.value === name) {
+        return definition;
+      }
+    }
+  }
+};
+
+export const removeDefinitionByName = (
+  documentNode: DocumentNode,
+  name: string,
+): void => {
+  Reflect.set(
+    documentNode,
+    'definitions',
+    documentNode.definitions.filter(definition => {
+      if (
+        !(
+          definition.kind === 'ObjectTypeDefinition' ||
+          definition.kind === 'EnumTypeDefinition' ||
+          definition.kind === 'InterfaceTypeDefinition' ||
+          definition.kind === 'InputObjectTypeDefinition'
+        )
+      ) {
+        return true;
+      }
+
+      return definition.name.value !== name;
+    }),
   );
 };

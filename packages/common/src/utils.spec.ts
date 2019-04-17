@@ -1,13 +1,22 @@
-import { parse } from 'graphql';
 import {
+  buildASTSchema,
+  ObjectTypeDefinitionNode,
+  parse,
+  printSchema,
+} from 'graphql';
+import {
+  appendDefinitionToDocumentNode,
+  getDefinitionByName,
   getDirectives,
   getEnumTypeDefinitions,
   getFieldDefinitions,
   getFieldDefinitionsByDirective,
   getFieldTypeName,
   getObjectTypeDefinitions,
+  hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
+  removeDefinitionByName,
 } from './utils';
 
 describe('util', () => {
@@ -243,6 +252,97 @@ describe('util', () => {
           'test',
         ),
       ).toHaveLength(0);
+    });
+  });
+
+  describe('hasDirectiveInDocumentNode', () => {
+    it('should return false', () => {
+      expect(
+        hasDirectiveInDocumentNode(parse(`type Test { id: ID }`), 'test'),
+      ).toBeFalsy();
+    });
+    it('should return true', () => {
+      expect(
+        hasDirectiveInDocumentNode(parse(`type Test { id: ID @hoge }`), 'test'),
+      ).toBeFalsy();
+    });
+    it('should return true', () => {
+      expect(
+        hasDirectiveInDocumentNode(parse(`type Test { id: ID @test }`), 'test'),
+      ).toBeTruthy();
+    });
+  });
+
+  describe('appendDefinitionToDocumentNode', () => {
+    it('should add definition', () => {
+      const documentNode = parse(`type Test { id: ID }`);
+
+      appendDefinitionToDocumentNode(documentNode, {
+        kind: 'ObjectTypeDefinition',
+        name: {
+          kind: 'Name',
+          value: 'Test2',
+        },
+      } as ObjectTypeDefinitionNode);
+
+      expect(printSchema(buildASTSchema(documentNode))).toEqual(
+        printSchema(buildASTSchema(parse(`type Test { id: ID }\ntype Test2`))),
+      );
+    });
+  });
+
+  describe('getDefinitionByName', () => {
+    it('should return false', () => {
+      expect(
+        getDefinitionByName(parse(`type Test { id: ID }`), 'Hoge'),
+      ).toBeFalsy();
+    });
+
+    it('should return true', () => {
+      expect(
+        getDefinitionByName(parse(`type Test { id: ID }`), 'Test'),
+      ).toBeTruthy();
+
+      expect(
+        getDefinitionByName(parse(`interface Test { id: ID }`), 'Test'),
+      ).toBeTruthy();
+
+      expect(
+        getDefinitionByName(parse(`enum Test { ID }`), 'Test'),
+      ).toBeTruthy();
+    });
+  });
+  describe('removeDefinitionByName', () => {
+    it('should remove definition', () => {
+      const documentNode = parse(`type Test { id: ID }`);
+      expect(documentNode.definitions).toHaveLength(1);
+      removeDefinitionByName(documentNode, 'Test');
+      expect(documentNode.definitions).toHaveLength(0);
+    });
+    it('should remove definition', () => {
+      const documentNode = parse(`enum Test { ID }`);
+      expect(documentNode.definitions).toHaveLength(1);
+      removeDefinitionByName(documentNode, 'Test');
+      expect(documentNode.definitions).toHaveLength(0);
+    });
+    it('should remove definition', () => {
+      const documentNode = parse(`interface Test { id: ID }`);
+      expect(documentNode.definitions).toHaveLength(1);
+      removeDefinitionByName(documentNode, 'Test');
+      expect(documentNode.definitions).toHaveLength(0);
+    });
+    it('should remove definition', () => {
+      const documentNode = parse(`input Test { id: ID }`);
+      expect(documentNode.definitions).toHaveLength(1);
+      removeDefinitionByName(documentNode, 'Test');
+      expect(documentNode.definitions).toHaveLength(0);
+    });
+
+    it('should not remove definition', () => {
+      const documentNode = parse(`schema { query: Query }\ntype Query`);
+      expect(documentNode.definitions).toHaveLength(2);
+      removeDefinitionByName(documentNode, 'schema');
+      expect(documentNode.definitions).toHaveLength(2);
     });
   });
 });

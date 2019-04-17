@@ -8,6 +8,7 @@ Generate order schema by directive
 
 ```ts
 import { genOrderTypes } from "@anchan828/gen-graphql-order-schema"
+import { buildASTSchema, printSchema } from 'graphql';
 
 const schema = `
 
@@ -21,7 +22,7 @@ type Query {
 
 `;
 
-genOrderTypes(schema);
+printSchema(buildASTSchema(genOrderTypes(schema)));
 //=>  enum OrderDirection {
 //      ASC
 //      DESC
