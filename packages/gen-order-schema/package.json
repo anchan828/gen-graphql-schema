@@ -1,0 +1,38 @@
+{
+  "name": "@anchan828/gen-order-schema",
+  "version": "0.1.12",
+  "description": "Auto generation for order type",
+  "author": "anchan828 <anchan828@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
+    "copy:license": "cp ../../LICENSE ./",
+    "build": "tsc -p tsconfig.build.json",
+    "watch": "tsc --watch",
+    "test": "jest --coverage",
+    "test:watch": "npm run test -- --watch"
+  },
+  "dependencies": {
+    "graphql": "14.2.1",
+    "reflect-metadata": "0.1.13"
+  },
+  "devDependencies": {
+    "@types/graphql": "14.2.0",
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.4",
+    "jest": "24.7.1",
+    "prettier": "1.17.0",
+    "ts-jest": "24.0.2",
+    "typescript": "3.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anchan828/gen-graphql-schema.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anchan828/gen-graphql-schema/issues"
+  },
+  "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/gen-order-schema#readme"
+}
