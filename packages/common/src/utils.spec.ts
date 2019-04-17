@@ -3,6 +3,7 @@ import {
   getDirectives,
   getEnumTypeDefinitions,
   getFieldDefinitions,
+  getFieldDefinitionsByDirective,
   getFieldTypeName,
   getObjectTypeDefinitions,
   isBasicType,
@@ -193,6 +194,55 @@ describe('util', () => {
         name: 'String',
         isList: true,
       });
+    });
+  });
+
+  describe('getFieldDefinitionsByDirective', () => {
+    it('should return empty array when no has directive', () => {
+      expect(
+        getFieldDefinitionsByDirective(
+          parse(
+            `type Test {
+    A: ID
+}`,
+          ),
+          'test',
+        ),
+      ).toHaveLength(0);
+    });
+
+    it('should return empty array when basic type has directive', () => {
+      expect(
+        getFieldDefinitionsByDirective(
+          parse([`type Query { test: [ID] @test }`].join('\n')),
+          'test',
+        ),
+      ).toHaveLength(0);
+    });
+
+    it('should return array when has directive', () => {
+      expect(
+        getFieldDefinitionsByDirective(
+          parse(
+            [`type Test { A: ID }`, `type Query { test: [Test] @test }`].join(
+              '\n',
+            ),
+          ),
+          'test',
+        ),
+      ).toHaveLength(1);
+    });
+    it('should return empty array when non list type has directive', () => {
+      expect(
+        getFieldDefinitionsByDirective(
+          parse(
+            [`type Test { A: ID }`, `type Query { test: Test @test }`].join(
+              '\n',
+            ),
+          ),
+          'test',
+        ),
+      ).toHaveLength(0);
     });
   });
 });

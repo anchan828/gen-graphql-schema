@@ -89,3 +89,39 @@ const getNonNullTypeName = (
 
   return { name: nonNullType.name.value, isList };
 };
+
+export const getFieldDefinitionsByDirective = (
+  documentNode: DocumentNode,
+  directiveName: string,
+): FieldDefinitionNode[] => {
+  const results: FieldDefinitionNode[] = [];
+  const definitions = getObjectTypeDefinitions(documentNode);
+  for (const definition of definitions) {
+    const fields = getFieldDefinitions(definition);
+
+    for (const field of fields) {
+      const directives = getDirectives(field);
+      if (
+        directives.find((d: DirectiveNode) => d.name.value === directiveName)
+      ) {
+        const { name, isList } = getFieldTypeName(field);
+        if (!isList) {
+          console.warn(
+            `Found ${directiveName} directive, but type of ${
+              field.name.value
+            } was not ListType. So skip.`,
+          );
+        } else if (isBasicType(name)) {
+          console.warn(
+            `Found ${directiveName} directive, but type of ${
+              field.name.value
+            } was basic types. So skip.`,
+          );
+        } else {
+          results.push(field);
+        }
+      }
+    }
+  }
+  return results;
+};
