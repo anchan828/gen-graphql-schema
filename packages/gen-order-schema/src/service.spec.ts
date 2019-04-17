@@ -23,7 +23,9 @@ describe('GenOrderTypesService', () => {
             [
               `type Test { id: ID }`,
               `type Query { tests (orderBy: [TestOrder] ): [Test]}`,
-              `enum TestOrder { id_ASC, id_DESC }`,
+              `enum OrderDirection { ASC, DESC }`,
+              `enum TestSort { ID }`,
+              `type TestOrder { sort: TestSort, direction: OrderDirection }`,
             ].join(`\n`),
           ),
         ),
@@ -48,7 +50,9 @@ describe('GenOrderTypesService', () => {
               `type Test1 { id: ID }`,
               `type Test2 { id: ID, test: Test1 }`,
               `type Query { tests (orderBy: [Test2Order] ): [Test2]}`,
-              `enum Test2Order { id_ASC, id_DESC }`,
+              `enum OrderDirection { ASC, DESC }`,
+              `enum Test2Sort { ID }`,
+              `type Test2Order { sort: Test2Sort, direction: OrderDirection }`,
             ].join(`\n`),
           ),
         ),
@@ -64,11 +68,19 @@ describe('GenOrderTypesService', () => {
           `type Query { tests: [Test] @hoge}`,
         ].join(`\n`),
         {
-          orderByDirectiveName: 'hoge',
-          orderByIgnoreDirectiveName: 'ignore',
-          orderByArgumentName: 'arg',
-          orderByArgumentTypeIsList: false,
-          orderEnumTypeSuffix: 'Changed',
+          orderByDirective: {
+            name: 'hoge',
+          },
+          orderByIgnoreDirective: {
+            name: 'ignore',
+          },
+          orderByArgument: {
+            name: 'arg',
+            isList: false,
+          },
+          orderType: {
+            suffix: 'Changed',
+          },
           supportOrderableTypes: ['Date'],
         },
       ).genOrderTypes(),
@@ -80,7 +92,9 @@ describe('GenOrderTypesService', () => {
               `scalar Date`,
               `type Test { id: ID, name: String, date: Date }`,
               `type Query { tests (arg: TestChanged ): [Test]}`,
-              `enum TestChanged { id_ASC, id_DESC, date_ASC, date_DESC }`,
+              `enum OrderDirection { ASC, DESC }`,
+              `enum TestSort { ID, DATE }`,
+              `type TestChanged { sort: TestSort, direction: OrderDirection }`,
             ].join(`\n`),
           ),
         ),
@@ -96,10 +110,30 @@ describe('GenOrderTypesService', () => {
           `type Query { tests: [[Test!]]! @hoge}`,
         ].join(`\n`),
         {
-          orderByDirectiveName: 'hoge',
-          orderByIgnoreDirectiveName: 'ignore',
-          orderByArgumentName: 'arg',
-          orderEnumTypeSuffix: 'Changed',
+          orderByDirective: {
+            name: 'hoge',
+          },
+          orderByIgnoreDirective: {
+            name: 'ignore',
+          },
+          orderByArgument: {
+            name: 'arg',
+          },
+          orderType: {
+            prefix: 'Prefix',
+            suffix: 'Changed',
+            sortName: '_sort',
+            directionName: '_direction',
+          },
+          orderDirection: {
+            ascName: 'TOP',
+            descName: 'BOTTOM',
+            typeName: 'Position',
+          },
+          sortEnum: {
+            prefix: 'Prefix',
+            suffix: 'Suffix',
+          },
         },
       ).genOrderTypes(),
     ).toEqual(
@@ -108,8 +142,10 @@ describe('GenOrderTypesService', () => {
           parse(
             [
               `type Test { id: ID, name: String }`,
-              `type Query { tests (arg: [TestChanged] ): [[Test!]]!}`,
-              `enum TestChanged { id_ASC, id_DESC }`,
+              `type Query { tests (arg: [PrefixTestChanged] ): [[Test!]]!}`,
+              `enum Position { TOP, BOTTOM }`,
+              `enum PrefixTestSuffix { ID }`,
+              `type PrefixTestChanged { _sort: PrefixTestSuffix, _direction: Position }`,
             ].join(`\n`),
           ),
         ),

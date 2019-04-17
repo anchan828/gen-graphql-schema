@@ -1,10 +1,12 @@
+import * as deepmerge from 'deepmerge';
 import {
   buildASTSchema,
+  DefinitionNode,
   DirectiveNode,
   DocumentNode,
   EnumTypeDefinitionNode,
+  EnumValueDefinitionNode,
   FieldDefinitionNode,
-  InputValueDefinitionNode,
   ListTypeNode,
   NamedTypeNode,
   ObjectTypeDefinitionNode,
@@ -21,7 +23,6 @@ import {
   isBasicType,
   isEnumType,
 } from './utils';
-
 export class GenOrderTypesService {
   genOrderTypes(): string {
     if (!this.hasOrderByDirective()) {
@@ -29,15 +30,17 @@ export class GenOrderTypesService {
     }
 
     const fields = this.getOrderByFieldDefinitions();
-
+    this.appendDefinitionToDocumentNode(this.genOrderDirectionEnumDefinition());
     for (const field of fields) {
-      const enumTypeDefinition = this.genOrderByEnumTypeDefinition(field);
-      if (!enumTypeDefinition) {
+      const sortEnumType = this.genSortEnumTypeDefinition(field);
+      const orderEnumType = this.genOrderObjectTypeDefinition(field);
+      if (!sortEnumType || !orderEnumType) {
         continue;
       }
 
-      this.appendDefinitionToDocumentNode(enumTypeDefinition);
-      this.appendOrderByArgumentToFieldNode(field, enumTypeDefinition);
+      this.appendDefinitionToDocumentNode(sortEnumType, orderEnumType);
+      this.appendOrderByArgumentToFieldNode(field, orderEnumType);
+
       this.removeOrderByDirective(field);
       this.removeOrderByIgnoreDirective(field);
     }
@@ -54,7 +57,7 @@ export class GenOrderTypesService {
         if (
           directives.find(
             (d: DirectiveNode) =>
-              d.name.value === this.options.orderByDirectiveName,
+              d.name.value === this.options.orderByDirective!.name,
           )
         ) {
           return true;
@@ -75,7 +78,7 @@ export class GenOrderTypesService {
         if (
           directives.find(
             (d: DirectiveNode) =>
-              d.name.value === this.options.orderByDirectiveName,
+              d.name.value === this.options.orderByDirective!.name,
           )
         ) {
           const { name, isList } = getFieldTypeName(field);
@@ -114,7 +117,7 @@ export class GenOrderTypesService {
     if (
       directives.find(
         (d: DirectiveNode) =>
-          d.name.value === this.options.orderByIgnoreDirectiveName,
+          d.name.value === this.options.orderByIgnoreDirective!.name,
       )
     ) {
       return true;
@@ -142,7 +145,89 @@ export class GenOrderTypesService {
     return orderableFieldNames;
   }
 
-  private genOrderByEnumTypeDefinition(
+  private genOrderDirectionEnumDefinition(): EnumTypeDefinitionNode {
+    const orderDirectionOptions = this.options!.orderDirection!;
+    return {
+      kind: 'EnumTypeDefinition',
+      name: {
+        kind: 'Name',
+        value: orderDirectionOptions.typeName!,
+      },
+      directives: [],
+      values: [
+        {
+          kind: 'EnumValueDefinition',
+          name: {
+            kind: 'Name',
+            value: orderDirectionOptions.ascName!,
+          },
+          directives: [],
+        },
+        {
+          kind: 'EnumValueDefinition',
+          name: {
+            kind: 'Name',
+            value: orderDirectionOptions.descName!,
+          },
+          directives: [],
+        },
+      ],
+    };
+  }
+
+  private genOrderObjectTypeDefinition(
+    field: FieldDefinitionNode,
+  ): ObjectTypeDefinitionNode | undefined {
+    const type = this.getObjectTypeDefinition(field);
+    if (!type) {
+      return;
+    }
+    const { name } = getFieldTypeName(field);
+    const orderTypeOptions = this.options.orderType!;
+    const sortEnumOptions = this.options.sortEnum!;
+    const orderDirectionOptions = this.options!.orderDirection!;
+    return {
+      kind: 'ObjectTypeDefinition',
+      name: {
+        kind: 'Name',
+        value: `${orderTypeOptions.prefix}${name}${orderTypeOptions.suffix}`,
+      },
+      directives: [],
+      fields: [
+        {
+          kind: 'FieldDefinition',
+          name: {
+            kind: 'Name',
+            value: orderTypeOptions.sortName,
+          },
+          type: {
+            kind: 'NamedType',
+            name: {
+              kind: 'Name',
+              value: `${sortEnumOptions.prefix}${name}${
+                sortEnumOptions.suffix
+              }`,
+            },
+          },
+        },
+        {
+          kind: 'FieldDefinition',
+          name: {
+            kind: 'Name',
+            value: orderTypeOptions.directionName,
+          },
+          type: {
+            kind: 'NamedType',
+            name: {
+              kind: 'Name',
+              value: orderDirectionOptions.typeName!,
+            },
+          },
+        },
+      ],
+    } as ObjectTypeDefinitionNode;
+  }
+  private genSortEnumTypeDefinition(
     field: FieldDefinitionNode,
   ): EnumTypeDefinitionNode | undefined {
     const type = this.getObjectTypeDefinition(field);
@@ -151,68 +236,54 @@ export class GenOrderTypesService {
     }
     const { name } = getFieldTypeName(field);
     const orderableFieldNames = this.getOrderableFieldNames(type);
+    const sortEnumOptions = this.options!.sortEnum!;
     return {
       kind: 'EnumTypeDefinition',
       name: {
         kind: 'Name',
-        value: `${name}${this.options.orderEnumTypeSuffix}`,
+        value: `${sortEnumOptions.prefix}${name}${sortEnumOptions.suffix}`,
       },
       directives: [],
-      values: [
-        ...Array.prototype.concat.apply(
-          [],
-          orderableFieldNames.map(orderableFieldName => [
-            {
-              kind: 'EnumValueDefinition',
-              name: {
-                kind: 'Name',
-                value: `${orderableFieldName}_ASC`,
-              },
-              directives: [],
-            },
-            {
-              kind: 'EnumValueDefinition',
-              name: {
-                kind: 'Name',
-                value: `${orderableFieldName}_DESC`,
-              },
-              directives: [],
-            },
-          ]),
-        ),
-      ],
+      values: orderableFieldNames.map(orderableFieldName => ({
+        kind: 'EnumValueDefinition',
+        name: {
+          kind: 'Name',
+          value: `${orderableFieldName.toUpperCase()}`,
+        },
+        directives: [],
+      })) as EnumValueDefinitionNode[],
     };
   }
   private appendDefinitionToDocumentNode(
-    enumTypeDefinition: EnumTypeDefinitionNode,
+    ...definitions: DefinitionNode[]
   ): void {
     Reflect.set(this.documentNode, 'definitions', [
       ...this.documentNode.definitions,
-      enumTypeDefinition,
+      ...definitions,
     ]);
   }
   private appendOrderByArgumentToFieldNode(
     field: FieldDefinitionNode,
-    enumTypeDefinition: EnumTypeDefinitionNode,
+    orderTypeDefinition: ObjectTypeDefinitionNode,
   ): void {
     Reflect.set(field, 'arguments', [
       ...(field.arguments || []),
-      this.genOrderByArgument(enumTypeDefinition),
+      this.genOrderByArgument(orderTypeDefinition),
     ]);
   }
 
   private genOrderByArgument(
-    enumType: EnumTypeDefinitionNode,
-  ): InputValueDefinitionNode {
+    orderTypeDefinition: ObjectTypeDefinitionNode,
+  ): FieldDefinitionNode {
     let type: NamedTypeNode | ListTypeNode = {
       kind: 'NamedType',
       name: {
         kind: 'Name',
-        value: `${enumType.name.value}`,
+        value: `${orderTypeDefinition.name.value}`,
       },
     };
-
-    if (this.options.orderByArgumentTypeIsList) {
+    const orderByArgumentOptions = this.options!.orderByArgument!;
+    if (orderByArgumentOptions.isList) {
       type = {
         kind: 'ListType',
         type,
@@ -220,22 +291,24 @@ export class GenOrderTypesService {
     }
 
     return {
-      kind: 'InputValueDefinition',
+      kind: 'FieldDefinition',
       name: {
         kind: 'Name',
-        value: this.options.orderByArgumentName!,
+        value: orderByArgumentOptions.name!,
       },
       type,
       directives: [],
     };
   }
+
   private removeOrderByDirective(field: FieldDefinitionNode): void {
     const directives = getDirectives(field);
     Reflect.set(
       field,
       'directives',
       directives.filter(
-        directive => directive.name.value !== this.options.orderByDirectiveName,
+        directive =>
+          directive.name.value !== this.options.orderByDirective!.name,
       ),
     );
   }
@@ -254,7 +327,7 @@ export class GenOrderTypesService {
         'directives',
         getDirectives(f).filter(
           directive =>
-            directive.name.value !== this.options.orderByIgnoreDirectiveName,
+            directive.name.value !== this.options.orderByIgnoreDirective!.name,
         ),
       );
     }
@@ -264,7 +337,7 @@ export class GenOrderTypesService {
     readonly types: string | DocumentNode,
     private readonly options: GenOrderTypesOptions = {},
   ) {
-    this.options = Object.assign({}, DEFAULT_OPTIONS, options);
+    this.options = deepmerge(DEFAULT_OPTIONS, options);
     this.documentNode = typeof types === 'string' ? parse(types) : types;
   }
 }

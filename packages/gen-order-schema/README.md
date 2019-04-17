@@ -22,31 +22,32 @@ type Query {
 `;
 
 genOrderTypes(schema);
-//=> type Query {
-//     tests(orderBy: [TestOrder]): [Test]
-//   }
-//  
-//   type Test {
-//     id: ID
-//   }
-//  
-//   enum TestOrder {
-//     id_ASC
-//     id_DESC
-//   }
-
+//=>  enum OrderDirection {
+//      ASC
+//      DESC
+//    }
+//    
+//    type Query {
+//      tests(orderBy: [TestOrder]): [Test]
+//    }
+//    
+//    type Test {
+//      id: ID
+//    }
+//    
+//    type TestOrder {
+//      sort: TestSort
+//      direction: OrderDirection
+//    }
+//    
+//    enum TestSort {
+//      ID
+//    }
 ```
 
 ## Options
 
-| name                       | type     | defailt        | description |
-| :------------------------- | :------- | :------------- | :---------- |
-| orderByDirectiveName       | string   | orderBy        | TODO        |
-| orderByIgnoreDirectiveName | string   | orderBy_ignore | TODO        |
-| orderByArgumentName        | string   | orderBy        | TODO        |
-| orderByArgumentTypeIsList  | boolean  | true           | TODO        |
-| orderEnumTypeSuffix        | string   | Order          | TODO        |
-| supportOrderableTypes      | string[] | []             | TODO        |
+TODO
 
 ## Supoprted Types
 
