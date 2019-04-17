@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-order-schema",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Auto generation for order type",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
