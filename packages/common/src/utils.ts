@@ -125,3 +125,14 @@ export const getFieldDefinitionsByDirective = (
   }
   return results;
 };
+
+export const getObjectTypeDefinition = (
+  documentNode: DocumentNode,
+  field: FieldDefinitionNode,
+): ObjectTypeDefinitionNode | undefined => {
+  const { name } = getFieldTypeName(field);
+
+  return getObjectTypeDefinitions(documentNode).find(
+    definition => definition.name.value === name,
+  );
+};

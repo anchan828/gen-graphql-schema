@@ -1,7 +1,9 @@
 import {
   getDirectives,
   getFieldDefinitions,
+  getFieldDefinitionsByDirective,
   getFieldTypeName,
+  getObjectTypeDefinition,
   getObjectTypeDefinitions,
   isBasicType,
   isEnumType,
@@ -29,7 +31,10 @@ export class GenOrderTypesService {
       return printSchema(buildASTSchema(this.documentNode));
     }
 
-    const fields = this.getOrderByFieldDefinitions();
+    const fields = getFieldDefinitionsByDirective(
+      this.documentNode,
+      this.options.orderByDirective!.name!,
+    );
     this.appendDefinitionToDocumentNode(this.genOrderDirectionEnumDefinition());
     for (const field of fields) {
       const sortEnumType = this.genSortEnumTypeDefinition(field);
@@ -66,50 +71,6 @@ export class GenOrderTypesService {
     }
 
     return false;
-  }
-  private getOrderByFieldDefinitions(): FieldDefinitionNode[] {
-    const results: FieldDefinitionNode[] = [];
-    const definitions = getObjectTypeDefinitions(this.documentNode);
-    for (const definition of definitions) {
-      const fields = getFieldDefinitions(definition);
-
-      for (const field of fields) {
-        const directives = getDirectives(field);
-        if (
-          directives.find(
-            (d: DirectiveNode) =>
-              d.name.value === this.options.orderByDirective!.name,
-          )
-        ) {
-          const { name, isList } = getFieldTypeName(field);
-          if (!isList) {
-            console.warn(
-              `Found order directive, but type of ${
-                field.name.value
-              } was not ListType. So skip.`,
-            );
-          } else if (isBasicType(name)) {
-            console.warn(
-              `Found order directive, but type of ${
-                field.name.value
-              } was basic types. So skip.`,
-            );
-          } else {
-            results.push(field);
-          }
-        }
-      }
-    }
-    return results;
-  }
-  private getObjectTypeDefinition(
-    field: FieldDefinitionNode,
-  ): ObjectTypeDefinitionNode | undefined {
-    const { name } = getFieldTypeName(field);
-
-    return getObjectTypeDefinitions(this.documentNode).find(
-      definition => definition.name.value === name,
-    );
   }
 
   private hasOrderByIgnoreDirective(field: FieldDefinitionNode): boolean {
@@ -178,7 +139,7 @@ export class GenOrderTypesService {
   private genOrderObjectTypeDefinition(
     field: FieldDefinitionNode,
   ): ObjectTypeDefinitionNode | undefined {
-    const type = this.getObjectTypeDefinition(field);
+    const type = getObjectTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
     }
@@ -230,7 +191,7 @@ export class GenOrderTypesService {
   private genSortEnumTypeDefinition(
     field: FieldDefinitionNode,
   ): EnumTypeDefinitionNode | undefined {
-    const type = this.getObjectTypeDefinition(field);
+    const type = getObjectTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
     }
@@ -313,7 +274,7 @@ export class GenOrderTypesService {
     );
   }
   private removeOrderByIgnoreDirective(field: FieldDefinitionNode): void {
-    const type = this.getObjectTypeDefinition(field);
+    const type = getObjectTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
     }

@@ -2,7 +2,7 @@
 
 ## Description
 
-Generate order enum schema by directive
+Generate order schema by directive
 
 ## Quick Start
 
