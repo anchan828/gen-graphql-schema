@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-where-schema",
-  "version": "0.1.17",
+  "version": "0.1.20",
   "description": "coAuto generation for where type",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
