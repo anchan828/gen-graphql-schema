@@ -7,7 +7,7 @@ Generate order schema by directive
 ## Quick Start
 
 ```ts
-import { genOrderTypes } from "@anchan828/gen-graphql-order-schema"
+import { genOrderTypes } from "@anchan828/gen-graphql-order-schema";
 import { buildASTSchema, printSchema } from 'graphql';
 
 const schema = `
