@@ -17,7 +17,7 @@ import {
   TypeDefinitionNode,
   TypeNode,
 } from 'graphql';
-import { DEFAULT_OPTIONS } from './constants';
+import { DEFAULT_OPTIONS, DESCRIPTIONS } from './constants';
 import { GenRelayTypesOptions } from './options';
 export class GenRelayTypesService {
   public genRelayTypes(): DocumentNode {
@@ -37,7 +37,6 @@ export class GenRelayTypesService {
     );
 
     for (const field of fields) {
-      // TODO Connection とか生成
       const filedType = getFieldTypeName(field);
       this.addNodeInterface(filedType.name);
       this.genEdgeType(filedType.name);
@@ -146,6 +145,12 @@ export class GenRelayTypesService {
         kind: 'Name',
         value: this.getEdgeTypeName(fieldTypeName),
       },
+      description: {
+        kind: 'StringValue',
+        value: DESCRIPTIONS.EDGE_TYPE.TYPE(
+          this.getConnectionTypeName(fieldTypeName),
+        ),
+      },
     } as ObjectTypeDefinitionNode;
     Reflect.set(edgeDefinition, 'fields', [
       {
@@ -154,6 +159,10 @@ export class GenRelayTypesService {
         name: {
           kind: 'Name',
           value: 'node',
+        },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.EDGE_TYPE.NODE,
         },
         type: {
           kind: 'NamedType',
@@ -169,6 +178,10 @@ export class GenRelayTypesService {
         name: {
           kind: 'Name',
           value: 'cursor',
+        },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.EDGE_INTERFACE.CURSOR,
         },
         type: {
           kind: 'NamedType',
@@ -206,6 +219,10 @@ export class GenRelayTypesService {
         kind: 'Name',
         value: this.getConnectionTypeName(fieldTypeName),
       },
+      description: {
+        kind: 'StringValue',
+        value: DESCRIPTIONS.CONNECTION_TYPE.TYPE(fieldTypeName),
+      },
     } as ObjectTypeDefinitionNode;
 
     Reflect.set(connectionDefinition, 'fields', [
@@ -215,6 +232,10 @@ export class GenRelayTypesService {
         name: {
           kind: 'Name',
           value: 'totalCount',
+        },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.CONNECTION_TYPE.TOTAL_COUNT(fieldTypeName),
         },
         type: {
           kind: 'NamedType',
@@ -230,6 +251,12 @@ export class GenRelayTypesService {
         name: {
           kind: 'Name',
           value: 'edges',
+        },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.CONNECTION_TYPE.EDGES(
+            this.getEdgeTypeName(fieldTypeName),
+          ),
         },
         type: {
           kind: 'ListType',
@@ -248,6 +275,10 @@ export class GenRelayTypesService {
         name: {
           kind: 'Name',
           value: 'pageInfo',
+        },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.CONNECTION_INTERFACE.PAGE_INFO,
         },
         type: {
           kind: 'NonNullType',
@@ -332,13 +363,20 @@ export class GenRelayTypesService {
           kind: 'Name',
           value: this.options.relayNodeInterface!.name,
         },
-
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.NODE_INTERFACE.INTERFACE,
+        },
         fields: [
           {
             kind: 'FieldDefinition',
             name: {
               kind: 'Name',
               value: this.options.relayNodeInterface!.idFieldName,
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.NODE_INTERFACE.ID,
             },
             type: {
               kind: 'NonNullType',
@@ -366,13 +404,20 @@ export class GenRelayTypesService {
           kind: 'Name',
           value: this.options.relayEdgeInterface!.name,
         },
-
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.EDGE_INTERFACE.INTERFACE,
+        },
         fields: [
           {
             kind: 'FieldDefinition',
             name: {
               kind: 'Name',
               value: 'cursor',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.EDGE_INTERFACE.CURSOR,
             },
             type: {
               kind: 'NamedType',
@@ -397,12 +442,20 @@ export class GenRelayTypesService {
           kind: 'Name',
           value: this.options.relayCnnectionInterface!.name!,
         },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.CONNECTION_INTERFACE.INTERFACE,
+        },
         fields: [
           {
             kind: 'FieldDefinition',
             name: {
               kind: 'Name',
               value: 'totalCount',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.CONNECTION_INTERFACE.TOTAL_COUNT,
             },
             type: {
               kind: 'NamedType',
@@ -417,6 +470,10 @@ export class GenRelayTypesService {
             name: {
               kind: 'Name',
               value: 'pageInfo',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.CONNECTION_INTERFACE.PAGE_INFO,
             },
             type: {
               kind: 'NonNullType',
@@ -434,6 +491,10 @@ export class GenRelayTypesService {
             name: {
               kind: 'Name',
               value: 'edges',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.CONNECTION_INTERFACE.EDGES,
             },
             type: {
               kind: 'ListType',
@@ -461,12 +522,20 @@ export class GenRelayTypesService {
           kind: 'Name',
           value: this.options.relayPageInfoType!.name!,
         },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.PAGE_INFO_TYPE.TYPE,
+        },
         fields: [
           {
             kind: 'FieldDefinition',
             name: {
               kind: 'Name',
               value: 'startCursor',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.PAGE_INFO_TYPE.START_CURSOR,
             },
             type: {
               kind: 'NamedType',
@@ -482,6 +551,10 @@ export class GenRelayTypesService {
               kind: 'Name',
               value: 'endCursor',
             },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.PAGE_INFO_TYPE.END_CURSOR,
+            },
             type: {
               kind: 'NamedType',
               name: {
@@ -496,6 +569,10 @@ export class GenRelayTypesService {
               kind: 'Name',
               value: 'hasNextPage',
             },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.PAGE_INFO_TYPE.HAS_NEXT_PAGE,
+            },
             type: {
               kind: 'NamedType',
               name: {
@@ -509,6 +586,10 @@ export class GenRelayTypesService {
             name: {
               kind: 'Name',
               value: 'hasPreviousPage',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.PAGE_INFO_TYPE.HAS_PREVIOUS_PAGE,
             },
             type: {
               kind: 'NamedType',
