@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-schema-common",
-  "version": "0.1.15",
+  "version": "0.1.21",
   "description": "common",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "jest": "24.7.1",
     "prettier": "1.17.0",
     "ts-jest": "24.0.2",
-    "typescript": "3.4.2"
+    "typescript": "3.4.3"
   },
   "repository": {
     "type": "git",

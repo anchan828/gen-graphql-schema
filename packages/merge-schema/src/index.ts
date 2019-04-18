@@ -31,8 +31,9 @@ export const mergeTypes = (
     }),
     options.orderOptions,
   );
+
   result = genWhereTypes(result, options.whereOptions);
   result = genRelayTypes(result, options.relayOptions);
 
-  return MergeTypesLib([printSchema(buildASTSchema(result))], { all: true });
+  return printSchema(buildASTSchema(result));
 };
