@@ -173,6 +173,7 @@ export const getDefinitionByName = (
   for (const definition of documentNode.definitions) {
     if (
       definition.kind === 'ObjectTypeDefinition' ||
+      definition.kind === 'InputObjectTypeDefinition' ||
       definition.kind === 'EnumTypeDefinition' ||
       definition.kind === 'InterfaceTypeDefinition'
     ) {
