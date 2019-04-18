@@ -17,6 +17,8 @@ import {
   EnumTypeDefinitionNode,
   EnumValueDefinitionNode,
   FieldDefinitionNode,
+  InputObjectTypeDefinitionNode,
+  InputValueDefinitionNode,
   ObjectTypeDefinitionNode,
   parse,
   TypeNode,
@@ -53,7 +55,7 @@ export class GenWhereTypesService {
       appendDefinitionToDocumentNode(
         this.documentNode,
         operator.enumType,
-        operator.objectType,
+        operator.inputObjectType,
       );
     }
 
@@ -99,8 +101,8 @@ export class GenWhereTypesService {
             } as EnumValueDefinitionNode),
         ),
       },
-      objectType: {
-        kind: 'ObjectTypeDefinition',
+      inputObjectType: {
+        kind: 'InputObjectTypeDefinition',
         name: {
           kind: 'Name',
           value: `${this.options.whereOperator!.prefix}${typeName}${
@@ -109,7 +111,7 @@ export class GenWhereTypesService {
         },
         fields: [
           {
-            kind: 'FieldDefinition',
+            kind: 'InputValueDefinition',
             name: {
               kind: 'Name',
               value: 'type',
@@ -128,7 +130,7 @@ export class GenWhereTypesService {
             },
           },
           {
-            kind: 'FieldDefinition',
+            kind: 'InputValueDefinition',
             name: {
               kind: 'Name',
               value: 'value',
@@ -148,13 +150,13 @@ export class GenWhereTypesService {
             },
           },
         ],
-      } as ObjectTypeDefinitionNode,
+      } as InputObjectTypeDefinitionNode,
     });
   }
 
   private appendWhereArgumentToFieldNode(
     field: FieldDefinitionNode,
-    whereTypeDefinition: ObjectTypeDefinitionNode,
+    whereTypeDefinition: InputObjectTypeDefinitionNode,
   ): void {
     Reflect.set(field, 'arguments', [
       ...(field.arguments || []),
@@ -178,14 +180,14 @@ export class GenWhereTypesService {
 
   private genWhereTypeDefinition(
     field: FieldDefinitionNode,
-  ): ObjectTypeDefinitionNode | undefined {
+  ): InputObjectTypeDefinitionNode | undefined {
     const fieldType = getObjectTypeDefinition(this.documentNode, field);
     if (!fieldType) {
       return;
     }
 
     const fieldNameAndTypes = this.getWhereFieldNameAndTypes(fieldType);
-    const fields: FieldDefinitionNode[] = [];
+    const fields: InputValueDefinitionNode[] = [];
     for (const { name, type } of fieldNameAndTypes) {
       this.genOperatorDefinitions(type);
       let fieldTypeNode: TypeNode;
@@ -212,12 +214,11 @@ export class GenWhereTypesService {
         };
       }
       fields.push({
-        kind: 'FieldDefinition',
+        kind: 'InputValueDefinition',
         name: {
           kind: 'Name',
           value: name,
         },
-        arguments: [],
         type: fieldTypeNode,
         directives: [],
       });
@@ -230,19 +231,19 @@ export class GenWhereTypesService {
     let whereType = getDefinitionByName(
       this.documentNode,
       whereTypeName,
-    ) as ObjectTypeDefinitionNode;
+    ) as InputObjectTypeDefinitionNode;
     if (whereType) {
       return whereType;
     }
     whereType = {
-      kind: 'ObjectTypeDefinition',
+      kind: 'InputObjectTypeDefinition',
       name: {
         kind: 'Name',
         value: whereTypeName,
       },
       directives: [],
       fields,
-    } as ObjectTypeDefinitionNode;
+    } as InputObjectTypeDefinitionNode;
     appendDefinitionToDocumentNode(this.documentNode, whereType);
     return whereType;
   }
@@ -319,13 +320,13 @@ export class GenWhereTypesService {
     string,
     {
       enumType: EnumTypeDefinitionNode;
-      objectType: ObjectTypeDefinitionNode;
+      inputObjectType: InputObjectTypeDefinitionNode;
     }
   > = new Map<
     string,
     {
       enumType: EnumTypeDefinitionNode;
-      objectType: ObjectTypeDefinitionNode;
+      inputObjectType: InputObjectTypeDefinitionNode;
     }
   >();
   constructor(

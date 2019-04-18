@@ -76,13 +76,13 @@ describe('GenWhereTypesService', () => {
               `enum IntWhereOperatorType { EQ, NOT_EQ, IN, NOT_IN, LT, LTE, GT, GTE }`,
               `enum FloatWhereOperatorType { EQ, NOT_EQ, IN, NOT_IN, LT, LTE, GT, GTE }`,
               `enum TestEnumWhereOperatorType { EQ, NOT_EQ, IN, NOT_IN }`,
-              `type IDWhereOperator { type: IDWhereOperatorType!, value: [ID]! }`,
-              `type StringWhereOperator { type: StringWhereOperatorType!, value: [String]! }`,
-              `type DateWhereOperator { type: DateWhereOperatorType!, value: [Date]! }`,
-              `type IntWhereOperator { type: IntWhereOperatorType!, value: [Int]! }`,
-              `type FloatWhereOperator { type: FloatWhereOperatorType!, value: [Float]! }`,
-              `type TestEnumWhereOperator { type: TestEnumWhereOperatorType!, value: [TestEnum]! }`,
-              `type TestWhere {
+              `input IDWhereOperator { type: IDWhereOperatorType!, value: [ID]! }`,
+              `input StringWhereOperator { type: StringWhereOperatorType!, value: [String]! }`,
+              `input DateWhereOperator { type: DateWhereOperatorType!, value: [Date]! }`,
+              `input IntWhereOperator { type: IntWhereOperatorType!, value: [Int]! }`,
+              `input FloatWhereOperator { type: FloatWhereOperatorType!, value: [Float]! }`,
+              `input TestEnumWhereOperator { type: TestEnumWhereOperatorType!, value: [TestEnum]! }`,
+              `input TestWhere {
                 id: [IDWhereOperator]
                 name: [StringWhereOperator]
                 texts: [StringWhereOperator]
@@ -146,9 +146,9 @@ describe('GenWhereTypesService', () => {
           parse(
             [
               `type Test { id: ID! name: String }`,
-              `type PreOperatorIDSufOperator { type: PreOperatorTypeIDSufOperatorType! value: [ID]!}`,
+              `input PreOperatorIDSufOperator { type: PreOperatorTypeIDSufOperatorType! value: [ID]!}`,
               `enum PreOperatorTypeIDSufOperatorType { EQ NOT_EQ IN NOT_IN }`,
-              `type PreWhereTypeTestSufWhereType { id: [PreOperatorIDSufOperator] }`,
+              `input PreWhereTypeTestSufWhereType { id: [PreOperatorIDSufOperator] }`,
               `type Query { tests(Hoge: PreWhereTypeTestSufWhereType): [Test] }`,
             ].join(`\n`),
           ),

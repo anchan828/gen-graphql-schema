@@ -17,6 +17,7 @@ import {
   EnumTypeDefinitionNode,
   EnumValueDefinitionNode,
   FieldDefinitionNode,
+  InputObjectTypeDefinitionNode,
   ListTypeNode,
   NamedTypeNode,
   ObjectTypeDefinitionNode,
@@ -45,12 +46,12 @@ export class GenOrderTypesService {
     );
     for (const field of fields) {
       const sortEnumType = this.genSortEnumTypeDefinition(field);
-      const orderEnumType = this.genOrderObjectTypeDefinition(field);
-      if (!sortEnumType || !orderEnumType) {
+      const orderEnumInputType = this.genOrderInputObjectTypeDefinition(field);
+      if (!sortEnumType || !orderEnumInputType) {
         continue;
       }
 
-      this.appendOrderByArgumentToFieldNode(field, orderEnumType);
+      this.appendOrderByArgumentToFieldNode(field, orderEnumInputType);
 
       this.removeOrderByDirective(field);
       this.removeOrderByIgnoreDirective(field);
@@ -122,9 +123,9 @@ export class GenOrderTypesService {
     };
   }
 
-  private genOrderObjectTypeDefinition(
+  private genOrderInputObjectTypeDefinition(
     field: FieldDefinitionNode,
-  ): ObjectTypeDefinitionNode | undefined {
+  ): InputObjectTypeDefinitionNode | undefined {
     const type = getObjectTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
@@ -139,12 +140,12 @@ export class GenOrderTypesService {
     let orderType = getDefinitionByName(
       this.documentNode,
       orderTypeName,
-    ) as ObjectTypeDefinitionNode;
+    ) as InputObjectTypeDefinitionNode;
     if (orderType) {
       return orderType;
     }
     orderType = {
-      kind: 'ObjectTypeDefinition',
+      kind: 'InputObjectTypeDefinition',
       name: {
         kind: 'Name',
         value: orderTypeName,
@@ -152,7 +153,7 @@ export class GenOrderTypesService {
       directives: [],
       fields: [
         {
-          kind: 'FieldDefinition',
+          kind: 'InputValueDefinition',
           name: {
             kind: 'Name',
             value: orderTypeOptions.sortName,
@@ -168,7 +169,7 @@ export class GenOrderTypesService {
           },
         },
         {
-          kind: 'FieldDefinition',
+          kind: 'InputValueDefinition',
           name: {
             kind: 'Name',
             value: orderTypeOptions.directionName,
@@ -182,7 +183,7 @@ export class GenOrderTypesService {
           },
         },
       ],
-    } as ObjectTypeDefinitionNode;
+    } as InputObjectTypeDefinitionNode;
     appendDefinitionToDocumentNode(this.documentNode, orderType);
     return orderType;
   }
@@ -229,22 +230,22 @@ export class GenOrderTypesService {
 
   private appendOrderByArgumentToFieldNode(
     field: FieldDefinitionNode,
-    orderTypeDefinition: ObjectTypeDefinitionNode,
+    orderInputTypeDefinition: InputObjectTypeDefinitionNode,
   ): void {
     Reflect.set(field, 'arguments', [
       ...(field.arguments || []),
-      this.genOrderByArgument(orderTypeDefinition),
+      this.genOrderByArgument(orderInputTypeDefinition),
     ]);
   }
 
   private genOrderByArgument(
-    orderTypeDefinition: ObjectTypeDefinitionNode,
+    orderInputTypeDefinition: InputObjectTypeDefinitionNode,
   ): FieldDefinitionNode {
     let type: NamedTypeNode | ListTypeNode = {
       kind: 'NamedType',
       name: {
         kind: 'Name',
-        value: `${orderTypeDefinition.name.value}`,
+        value: `${orderInputTypeDefinition.name.value}`,
       },
     };
     const orderByArgumentOptions = this.options!.orderByArgument!;
