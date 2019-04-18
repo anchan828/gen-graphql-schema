@@ -17,7 +17,7 @@ type Project {
 }
 
 type Query {
-    projects: [Project] @is_relay
+    projects: [Project] @relay
 }
 
 `;
