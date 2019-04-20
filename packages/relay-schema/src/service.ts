@@ -140,7 +140,6 @@ export class GenRelayTypesService {
     }
     const edgeDefinition = {
       kind: 'ObjectTypeDefinition',
-      directives: [],
       name: {
         kind: 'Name',
         value: this.getEdgeTypeName(fieldTypeName),
@@ -155,7 +154,7 @@ export class GenRelayTypesService {
     Reflect.set(edgeDefinition, 'fields', [
       {
         kind: 'FieldDefinition',
-        directives: [],
+
         name: {
           kind: 'Name',
           value: 'node',
@@ -174,7 +173,7 @@ export class GenRelayTypesService {
       },
       {
         kind: 'FieldDefinition',
-        directives: [],
+
         name: {
           kind: 'Name',
           value: 'cursor',
@@ -214,7 +213,7 @@ export class GenRelayTypesService {
     }
     const connectionDefinition = {
       kind: 'ObjectTypeDefinition',
-      directives: [],
+
       name: {
         kind: 'Name',
         value: this.getConnectionTypeName(fieldTypeName),
@@ -228,7 +227,7 @@ export class GenRelayTypesService {
     Reflect.set(connectionDefinition, 'fields', [
       {
         kind: 'FieldDefinition',
-        directives: [],
+
         name: {
           kind: 'Name',
           value: 'totalCount',
@@ -247,7 +246,7 @@ export class GenRelayTypesService {
       },
       {
         kind: 'FieldDefinition',
-        directives: [],
+
         name: {
           kind: 'Name',
           value: 'edges',
@@ -271,7 +270,7 @@ export class GenRelayTypesService {
       },
       {
         kind: 'FieldDefinition',
-        directives: [],
+
         name: {
           kind: 'Name',
           value: 'pageInfo',
