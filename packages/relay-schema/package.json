@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-relay-schema",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "Auto generation for relay type",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "@anchan828/gen-graphql-schema-common": "^0.1.23",
+    "@anchan828/gen-graphql-schema-common": "^0.1.24",
     "deepmerge": "3.2.0",
     "graphql": "14.2.1",
     "reflect-metadata": "0.1.13"
