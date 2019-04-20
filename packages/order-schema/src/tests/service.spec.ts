@@ -30,9 +30,49 @@ describe('GenOrderTypesService', () => {
             [
               `type Test { id: ID }`,
               `type Query { tests (orderBy: [TestOrder] ): [Test]}`,
-              `enum OrderDirection { ASC, DESC }`,
-              `enum TestSort { ID }`,
-              `input TestOrder { sort: TestSort, direction: OrderDirection }`,
+              `
+              """
+              Sort the results in ascending or descending order
+              """
+              enum OrderDirection {
+                """
+                Sort the results in ascending order
+                """
+                ASC
+                """
+                Sort the results in descending order
+                """
+                DESC
+              }
+              `,
+
+              `
+              """
+              Properties by which Test can be ordered.
+              """
+              enum TestOrderField {
+                """
+                Order Test by id
+                """
+                ID
+              }
+              `,
+
+              `
+              """
+              Ordering options for Test
+              """
+              input TestOrder {
+                """
+                The field to order Test by.
+                """
+                field: TestOrderField
+                """
+                The ordering direction.
+                """
+                direction: OrderDirection
+              }
+              `,
             ].join(`\n`),
           ),
         ),
@@ -61,9 +101,47 @@ describe('GenOrderTypesService', () => {
               `type Test1 { id: ID }`,
               `type Test2 { id: ID, test: Test1 }`,
               `type Query { tests (orderBy: [Test2Order] ): [Test2]}`,
-              `enum OrderDirection { ASC, DESC }`,
-              `enum Test2Sort { ID }`,
-              `input Test2Order { sort: Test2Sort, direction: OrderDirection }`,
+              `
+              """
+              Sort the results in ascending or descending order
+              """
+              enum OrderDirection {
+                """
+                Sort the results in ascending order
+                """
+                ASC
+                """
+                Sort the results in descending order
+                """
+                DESC
+              }
+              `,
+              `
+              """
+              Properties by which Test2 can be ordered.
+              """
+              enum Test2OrderField {
+                """
+                Order Test2 by id
+                """
+                ID
+              }
+              `,
+              `
+              """
+              Ordering options for Test2
+              """
+              input Test2Order {
+                """
+                The field to order Test2 by.
+                """
+                field: Test2OrderField
+                """
+                The ordering direction.
+                """
+                direction: OrderDirection
+              }
+              `,
             ].join(`\n`),
           ),
         ),
@@ -107,9 +185,51 @@ describe('GenOrderTypesService', () => {
               `scalar Date`,
               `type Test { id: ID, name: String, date: Date }`,
               `type Query { tests (arg: TestChanged ): [Test]}`,
-              `enum OrderDirection { ASC, DESC }`,
-              `enum TestSort { ID, DATE }`,
-              `input TestChanged { sort: TestSort, direction: OrderDirection }`,
+              `
+              """
+              Sort the results in ascending or descending order
+              """
+              enum OrderDirection {
+                """
+                Sort the results in ascending order
+                """
+                ASC
+                """
+                Sort the results in descending order
+                """
+                DESC
+              }
+              `,
+              `
+              """
+              Properties by which Test can be ordered.
+              """
+              enum TestOrderField {
+                """
+                Order Test by id
+                """
+                ID
+                """
+                Order Test by date
+                """
+                DATE
+              }
+              `,
+              `
+              """
+              Ordering options for Test
+              """
+              input TestChanged {
+                """
+                The field to order Test by.
+                """
+                field: TestOrderField
+                """
+                The ordering direction.
+                """
+                direction: OrderDirection
+              }
+              `,
             ].join(`\n`),
           ),
         ),
@@ -139,7 +259,7 @@ describe('GenOrderTypesService', () => {
               orderType: {
                 prefix: 'Prefix',
                 suffix: 'Changed',
-                sortName: '_sort',
+                fieldName: '_sort',
                 directionName: '_direction',
               },
               orderDirection: {
@@ -147,7 +267,7 @@ describe('GenOrderTypesService', () => {
                 descName: 'BOTTOM',
                 typeName: 'Position',
               },
-              sortEnum: {
+              orderFieldEnum: {
                 prefix: 'Prefix',
                 suffix: 'Suffix',
               },
@@ -162,9 +282,47 @@ describe('GenOrderTypesService', () => {
             [
               `type Test { id: ID, name: String }`,
               `type Query { tests (arg: [PrefixTestChanged] ): [[Test!]]!}`,
-              `enum Position { TOP, BOTTOM }`,
-              `enum PrefixTestSuffix { ID }`,
-              `input PrefixTestChanged { _sort: PrefixTestSuffix, _direction: Position }`,
+              `
+              """
+              Sort the results in ascending or descending order
+              """
+              enum Position {
+                """
+                Sort the results in ascending order
+                """
+                TOP
+                """
+                Sort the results in descending order
+                """
+                BOTTOM
+              }
+              `,
+              `
+              """
+              Properties by which Test can be ordered.
+              """
+              enum PrefixTestSuffix {
+                """
+                Order Test by id
+                """
+                ID
+              }
+              `,
+              `
+              """
+              Ordering options for Test
+              """
+              input PrefixTestChanged {
+                """
+                The field to order Test by.
+                """
+                _sort: PrefixTestSuffix
+                """
+                The ordering direction.
+                """
+                _direction: Position
+              }
+              `,
             ].join(`\n`),
           ),
         ),

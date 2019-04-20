@@ -1,40 +1,49 @@
 import { GenOrderTypesOptions } from './options';
 
-const ORDER_BY_DIRECTIVE = {
-  name: 'orderBy',
-};
-const ORDER_BY_IGNORE_DIRECTIVE = {
-  name: 'orderBy_ignore',
-};
-const ORDER_BY_ARGUMENT = {
-  name: 'orderBy',
-  isList: true,
-};
-
-const ORDER_DIRECTION_ENUM = {
-  typeName: `OrderDirection`,
-  ascName: 'ASC',
-  descName: 'DESC',
-};
-
-const ORDER_TYPE = {
-  prefix: '',
-  suffix: 'Order',
-  sortName: 'sort',
-  directionName: 'direction',
-};
-
-const SORT_ENUM = {
-  prefix: '',
-  suffix: 'Sort',
+export const DESCRIPTIONS = {
+  OEDER_DIRECTION: {
+    TYPE: 'Sort the results in ascending or descending order',
+    ASC: 'Sort the results in ascending order',
+    DESC: 'Sort the results in descending order',
+  },
+  ORDER: {
+    TYPE: (typeName: string) => `Ordering options for ${typeName}`,
+    FIELD: (typeName: string) => `The field to order ${typeName} by.`,
+    DIRECTION: `The ordering direction.`,
+  },
+  ORDER_FIELD: {
+    ENUM: (typeName: string) =>
+      `Properties by which ${typeName} can be ordered.`,
+    VALUE: (typeName: string, fieldName: string) =>
+      `Order ${typeName} by ${fieldName}`,
+  },
 };
 
 export const DEFAULT_OPTIONS: GenOrderTypesOptions = {
-  orderByDirective: ORDER_BY_DIRECTIVE,
-  orderByIgnoreDirective: ORDER_BY_IGNORE_DIRECTIVE,
-  orderDirection: ORDER_DIRECTION_ENUM,
-  orderByArgument: ORDER_BY_ARGUMENT,
-  orderType: ORDER_TYPE,
-  sortEnum: SORT_ENUM,
+  orderByDirective: {
+    name: 'orderBy',
+  },
+  orderByIgnoreDirective: {
+    name: 'orderBy_ignore',
+  },
+  orderDirection: {
+    typeName: `OrderDirection`,
+    ascName: 'ASC',
+    descName: 'DESC',
+  },
+  orderByArgument: {
+    name: 'orderBy',
+    isList: true,
+  },
+  orderType: {
+    prefix: '',
+    suffix: 'Order',
+    fieldName: 'field',
+    directionName: 'direction',
+  },
+  orderFieldEnum: {
+    prefix: '',
+    suffix: 'OrderField',
+  },
   supportOrderableTypes: [],
 };
