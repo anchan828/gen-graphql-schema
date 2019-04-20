@@ -1,3 +1,4 @@
+import * as changeCase from 'change-case';
 import {
   DefinitionNode,
   DirectiveNode,
@@ -7,7 +8,6 @@ import {
   ObjectTypeDefinitionNode,
   TypeNode,
 } from 'graphql';
-
 export const getObjectTypeDefinitions = (
   documentNode: DocumentNode,
 ): ObjectTypeDefinitionNode[] => {
@@ -207,3 +207,6 @@ export const removeDefinitionByName = (
     }),
   );
 };
+
+export const toConstanceCase = (str: string): string =>
+  changeCase.constantCase(str);

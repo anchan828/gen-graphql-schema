@@ -9,6 +9,7 @@ import {
   hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
+  toConstanceCase,
 } from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
 import {
@@ -242,7 +243,7 @@ export class GenOrderTypesService {
         kind: 'EnumValueDefinition',
         name: {
           kind: 'Name',
-          value: `${orderableFieldName.toUpperCase()}`,
+          value: `${toConstanceCase(orderableFieldName)}`,
         },
         description: {
           kind: 'StringValue',

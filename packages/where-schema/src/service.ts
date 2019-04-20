@@ -9,6 +9,7 @@ import {
   hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
+  toConstanceCase,
 } from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
 import {
@@ -96,7 +97,7 @@ export class GenWhereTypesService {
               kind: 'EnumValueDefinition',
               name: {
                 kind: 'Name',
-                value: operatorName.toUpperCase(),
+                value: toConstanceCase(operatorName),
               },
             } as EnumValueDefinitionNode),
         ),
