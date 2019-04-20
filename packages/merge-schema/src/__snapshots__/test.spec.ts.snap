@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mergeTypes should merge types 1`] = `
+"type Query
+
+type Test {
+  id: ID
+}
+
+type Test2 {
+  id: ID
+}
+"
+`;
+
+exports[`mergeTypes should work orderBy directive 1`] = `
+"\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
+enum OrderDirection {
+  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
+  ASC
+
+  \\"\\"\\"Sort the results in descending order\\"\\"\\"
+  DESC
+}
+
+type Query
+
+type Test {
+  id: ID
+}
+
+type Test2 {
+  tests(orderBy: [TestOrder]): [Test]
+}
+
+\\"\\"\\"Ordering options for Test\\"\\"\\"
+input TestOrder {
+  \\"\\"\\"The field to order Test by.\\"\\"\\"
+  field: TestOrderField
+
+  \\"\\"\\"The ordering direction.\\"\\"\\"
+  direction: OrderDirection
+}
+
+\\"\\"\\"Properties by which Test can be ordered.\\"\\"\\"
+enum TestOrderField {
+  \\"\\"\\"Order Test by id\\"\\"\\"
+  ID
+}
+"
+`;
+
+exports[`mergeTypes should work orderBy, where, and relay directive 1`] = `
+"\\"\\"\\"A connection for relay\\"\\"\\"
+interface Connection {
+  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
+  totalCount: Int
+
+  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  pageInfo: PageInfo!
+
+  \\"\\"\\"A list of edges.\\"\\"\\"
+  edges: [Edge]
+}
+
+\\"\\"\\"An edge in a connection.\\"\\"\\"
+interface Edge {
+  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  cursor: String
+}
+
+input IDWhereOperator {
+  type: IDWhereOperatorType!
+  value: [ID]!
+}
+
+enum IDWhereOperatorType {
+  EQ
+  NOT_EQ
+  IN
+  NOT_IN
+}
+
+\\"\\"\\"An object with an ID.\\"\\"\\"
+interface Node {
+  \\"\\"\\"ID of the object.\\"\\"\\"
+  id: ID!
+}
+
+\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
+enum OrderDirection {
+  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
+  ASC
+
+  \\"\\"\\"Sort the results in descending order\\"\\"\\"
+  DESC
+}
+
+\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
+type PageInfo {
+  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
+  startCursor: String
+
+  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
+  endCursor: String
+
+  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
+  hasNextPage: Boolean
+
+  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
+  hasPreviousPage: Boolean
+}
+
+type Query
+
+type Test implements Node {
+  id: ID
+}
+
+type Test2 {
+  tests(orderBy: [TestOrder], where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection
+}
+
+\\"\\"\\"The connection type for Test\\"\\"\\"
+type TestConnection implements Connection {
+  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+  totalCount: Int
+
+  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  edges: [TestEdge]
+
+  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  pageInfo: PageInfo!
+}
+
+\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
+type TestEdge implements Edge {
+  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
+  node: Test
+
+  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  cursor: String
+}
+
+\\"\\"\\"Ordering options for Test\\"\\"\\"
+input TestOrder {
+  \\"\\"\\"The field to order Test by.\\"\\"\\"
+  field: TestOrderField
+
+  \\"\\"\\"The ordering direction.\\"\\"\\"
+  direction: OrderDirection
+}
+
+\\"\\"\\"Properties by which Test can be ordered.\\"\\"\\"
+enum TestOrderField {
+  \\"\\"\\"Order Test by id\\"\\"\\"
+  ID
+}
+
+input TestWhere {
+  id: [IDWhereOperator]
+}
+"
+`;
+
+exports[`mergeTypes should work relay directive 1`] = `
+"\\"\\"\\"A connection for relay\\"\\"\\"
+interface Connection {
+  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
+  totalCount: Int
+
+  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  pageInfo: PageInfo!
+
+  \\"\\"\\"A list of edges.\\"\\"\\"
+  edges: [Edge]
+}
+
+\\"\\"\\"An edge in a connection.\\"\\"\\"
+interface Edge {
+  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  cursor: String
+}
+
+\\"\\"\\"An object with an ID.\\"\\"\\"
+interface Node {
+  \\"\\"\\"ID of the object.\\"\\"\\"
+  id: ID!
+}
+
+\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
+type PageInfo {
+  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
+  startCursor: String
+
+  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
+  endCursor: String
+
+  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
+  hasNextPage: Boolean
+
+  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
+  hasPreviousPage: Boolean
+}
+
+type Query
+
+type Test implements Node {
+  id: ID
+}
+
+type Test2 {
+  tests(before: String, after: String, first: Int, last: Int): TestConnection
+}
+
+\\"\\"\\"The connection type for Test\\"\\"\\"
+type TestConnection implements Connection {
+  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+  totalCount: Int
+
+  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  edges: [TestEdge]
+
+  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  pageInfo: PageInfo!
+}
+
+\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
+type TestEdge implements Edge {
+  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
+  node: Test
+
+  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  cursor: String
+}
+"
+`;
+
+exports[`mergeTypes should work where directive 1`] = `
+"input IDWhereOperator {
+  type: IDWhereOperatorType!
+  value: [ID]!
+}
+
+enum IDWhereOperatorType {
+  EQ
+  NOT_EQ
+  IN
+  NOT_IN
+}
+
+type Query
+
+type Test {
+  id: ID
+}
+
+type Test2 {
+  tests(where: TestWhere): [Test]
+}
+
+input TestWhere {
+  id: [IDWhereOperator]
+}
+"
+`;
