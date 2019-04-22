@@ -3,6 +3,7 @@
 exports[`mergeTypes should merge types 1`] = `
 "type Query
 
+\\"\\"\\"Test\\"\\"\\"
 type Test {
   id: ID
 }

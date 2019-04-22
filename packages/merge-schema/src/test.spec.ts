@@ -2,7 +2,7 @@ import { mergeTypes } from './index';
 
 describe('mergeTypes', () => {
   it('should merge types', () => {
-    const types = [`type Test {id: ID}`, `type Test2 {id: ID}`];
+    const types = [`"""Test""" type Test {id: ID}`, `type Test2 {id: ID}`];
     expect(mergeTypes(types)).toMatchSnapshot();
   });
   it('should work orderBy directive', () => {

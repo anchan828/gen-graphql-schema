@@ -13,6 +13,7 @@ import {
 import * as deepmerge from 'deepmerge';
 import { buildASTSchema, DocumentNode, printSchema } from 'graphql';
 import { mergeTypes as MergeTypesLib } from 'merge-graphql-schemas';
+import { MergeSchemaService } from './service';
 export const mergeTypes = (
   types: Array<string | DocumentNode>,
   options?: {
@@ -25,6 +26,9 @@ export const mergeTypes = (
     { orderOptions: {}, whereOptions: {}, relayOptions: {} },
     options || {},
   );
+  const service = new MergeSchemaService();
+  types.forEach(type => service.cacheDescriptions(type));
+
   let result = genOrderTypes(
     MergeTypesLib([...types, `type Query`], {
       all: true,
@@ -34,6 +38,6 @@ export const mergeTypes = (
 
   result = genWhereTypes(result, options.whereOptions);
   result = genRelayTypes(result, options.relayOptions);
-
+  service.setDescriptions(result);
   return printSchema(buildASTSchema(result));
 };
