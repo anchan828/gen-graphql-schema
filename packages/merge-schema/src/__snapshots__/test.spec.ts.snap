@@ -69,15 +69,27 @@ interface Edge {
   cursor: String
 }
 
+\\"\\"\\"ID query with using operators\\"\\"\\"
 input IDWhereOperator {
+  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
   type: IDWhereOperatorType!
+
+  \\"\\"\\"Query value of ID\\"\\"\\"
   value: [ID]!
 }
 
+\\"\\"\\"Query type of ID with using operators\\"\\"\\"
 enum IDWhereOperatorType {
+  \\"\\"\\"Must match the given data exactly\\"\\"\\"
   EQ
+
+  \\"\\"\\"Must be different from the given data\\"\\"\\"
   NOT_EQ
+
+  \\"\\"\\"Must be an element of the array\\"\\"\\"
   IN
+
+  \\"\\"\\"Must not be an element of the array\\"\\"\\"
   NOT_IN
 }
 
@@ -157,7 +169,9 @@ enum TestOrderField {
   ID
 }
 
+\\"\\"\\"Query of Test with using operators\\"\\"\\"
 input TestWhere {
+  \\"\\"\\"Query with using id field\\"\\"\\"
   id: [IDWhereOperator]
 }
 "
@@ -237,15 +251,27 @@ type TestEdge implements Edge {
 `;
 
 exports[`mergeTypes should work where directive 1`] = `
-"input IDWhereOperator {
+"\\"\\"\\"ID query with using operators\\"\\"\\"
+input IDWhereOperator {
+  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
   type: IDWhereOperatorType!
+
+  \\"\\"\\"Query value of ID\\"\\"\\"
   value: [ID]!
 }
 
+\\"\\"\\"Query type of ID with using operators\\"\\"\\"
 enum IDWhereOperatorType {
+  \\"\\"\\"Must match the given data exactly\\"\\"\\"
   EQ
+
+  \\"\\"\\"Must be different from the given data\\"\\"\\"
   NOT_EQ
+
+  \\"\\"\\"Must be an element of the array\\"\\"\\"
   IN
+
+  \\"\\"\\"Must not be an element of the array\\"\\"\\"
   NOT_IN
 }
 
@@ -259,7 +285,9 @@ type Test2 {
   tests(where: TestWhere): [Test]
 }
 
+\\"\\"\\"Query of Test with using operators\\"\\"\\"
 input TestWhere {
+  \\"\\"\\"Query with using id field\\"\\"\\"
   id: [IDWhereOperator]
 }
 "
