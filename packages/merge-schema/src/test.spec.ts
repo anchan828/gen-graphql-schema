@@ -25,4 +25,14 @@ describe('mergeTypes', () => {
     ];
     expect(mergeTypes(types)).toMatchSnapshot();
   });
+
+  it('should have interface', () => {
+    const types = [
+      `interface Node { id: ID }`,
+      `type Test implements Node { id: ID }`,
+      `interface Interface { id: ID }`,
+      `type Test implements Interface { id: ID }`,
+    ];
+    expect(mergeTypes(types)).toMatchSnapshot();
+  });
 });

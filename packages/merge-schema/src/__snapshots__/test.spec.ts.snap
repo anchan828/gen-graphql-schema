@@ -1,5 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`mergeTypes should have interface 1`] = `
+"interface Interface {
+  id: ID
+}
+
+interface Node {
+  id: ID
+}
+
+type Query
+
+type Test implements Node & Interface {
+  id: ID
+}
+"
+`;
+
 exports[`mergeTypes should merge types 1`] = `
 "type Query
 

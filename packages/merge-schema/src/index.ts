@@ -27,7 +27,7 @@ export const mergeTypes = (
     options || {},
   );
   const service = new MergeSchemaService();
-  types.forEach(type => service.cacheDescriptions(type));
+  types.forEach(type => service.cache(type));
 
   let result = genOrderTypes(
     MergeTypesLib([...types, `type Query`], {
@@ -38,6 +38,6 @@ export const mergeTypes = (
 
   result = genWhereTypes(result, options.whereOptions);
   result = genRelayTypes(result, options.relayOptions);
-  service.setDescriptions(result);
+  service.apply(result);
   return printSchema(buildASTSchema(result));
 };
