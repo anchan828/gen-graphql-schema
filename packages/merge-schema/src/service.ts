@@ -14,16 +14,20 @@ export class MergeSchemaService {
     }
 
     for (const definition of getObjectTypeDefinitions(type)) {
-      if (
-        definition.description &&
-        definition.description.value &&
-        !this.descriptionMap.has(definition.name.value)
-      ) {
-        this.descriptionMap.set(
-          definition.name.value,
-          definition.description.value,
-        );
+      if (!(definition.description && definition.description.value)) {
+        continue;
       }
+
+      let description = definition.description.value;
+
+      if (this.descriptionMap.has(definition.name.value)) {
+        description = [
+          this.descriptionMap.get(definition.name.value),
+          definition.name.value,
+        ].join('\n');
+      }
+
+      this.descriptionMap.set(definition.name.value, description);
     }
   }
 
