@@ -24,7 +24,7 @@ import {
   parse,
   TypeNode,
 } from 'graphql';
-import { DEFAULT_OPTIONS } from './constants';
+import { DEFAULT_OPTIONS, DESCRIPTIONS } from './constants';
 import { GenWhereTypesOptions } from './options';
 export class GenWhereTypesService {
   public genWhereTypes(): DocumentNode {
@@ -91,6 +91,10 @@ export class GenWhereTypesService {
             this.options.whereOperatorType!.suffix
           }`,
         },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.WHERE_OPERATOR_TYPE.TYPE(typeName),
+        },
         values: operatorNames.map(
           operatorName =>
             ({
@@ -98,6 +102,13 @@ export class GenWhereTypesService {
               name: {
                 kind: 'Name',
                 value: toConstanceCase(operatorName),
+              },
+              description: {
+                kind: 'StringValue',
+                value: Reflect.get(
+                  DESCRIPTIONS.WHERE_OPERATOR_TYPE.OPERATORS,
+                  toConstanceCase(operatorName),
+                ),
               },
             } as EnumValueDefinitionNode),
         ),
@@ -110,12 +121,20 @@ export class GenWhereTypesService {
             this.options.whereOperator!.suffix
           }`,
         },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.WHERE_OPERATOR.TYPE(typeName),
+        },
         fields: [
           {
             kind: 'InputValueDefinition',
             name: {
               kind: 'Name',
               value: 'type',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.WHERE_OPERATOR.FIELDS.TYPE(typeName),
             },
             type: {
               kind: 'NonNullType',
@@ -135,6 +154,10 @@ export class GenWhereTypesService {
             name: {
               kind: 'Name',
               value: 'value',
+            },
+            description: {
+              kind: 'StringValue',
+              value: DESCRIPTIONS.WHERE_OPERATOR.FIELDS.VALUE(typeName),
             },
             type: {
               kind: 'NonNullType',
@@ -220,6 +243,10 @@ export class GenWhereTypesService {
           kind: 'Name',
           value: name,
         },
+        description: {
+          kind: 'StringValue',
+          value: DESCRIPTIONS.WHERE_TYPE.FIELDS(name),
+        },
         type: fieldTypeNode,
         directives: [],
       });
@@ -241,6 +268,10 @@ export class GenWhereTypesService {
       name: {
         kind: 'Name',
         value: whereTypeName,
+      },
+      description: {
+        kind: 'StringValue',
+        value: DESCRIPTIONS.WHERE_TYPE.TYPE(getFieldTypeName(field).name),
       },
       directives: [],
       fields,

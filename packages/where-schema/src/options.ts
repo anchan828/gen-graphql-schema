@@ -3,12 +3,15 @@ export type OperatorType =
   | 'ends_with'
   | 'eq'
   | 'not_eq'
+  | 'contains'
   | 'in'
   | 'not_in'
   | 'lt'
   | 'lte'
   | 'gt'
-  | 'gte';
+  | 'gte'
+  | 'regex'
+  | 'glob';
 export interface GenWhereTypesOptions {
   whereDirective?: { name?: string };
   whereIgnoreDirective?: { name?: string };
