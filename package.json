@@ -16,9 +16,9 @@
     "publish:major": "lerna publish --yes major"
   },
   "devDependencies": {
-    "@types/node": "11.13.7",
+    "@types/node": "11.13.8",
     "husky": "2.1.0",
-    "lerna": "3.13.3",
+    "lerna": "3.13.4",
     "lint-staged": "8.1.5",
     "prettier": "1.17.0",
     "ts-node": "8.1.0",
