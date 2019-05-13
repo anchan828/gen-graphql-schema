@@ -19,7 +19,7 @@
     "@types/node": "11.13.8",
     "husky": "2.1.0",
     "lerna": "3.13.4",
-    "lint-staged": "8.1.5",
+    "lint-staged": "8.1.6",
     "prettier": "1.17.0",
     "ts-node": "8.1.0",
     "tslint": "5.16.0",
