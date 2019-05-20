@@ -14,6 +14,7 @@ import * as deepmerge from 'deepmerge';
 import { buildASTSchema, DocumentNode, printSchema } from 'graphql';
 import { mergeTypes as MergeTypesLib } from 'merge-graphql-schemas';
 import { MergeSchemaService } from './service';
+export { toConstanceCase } from '@anchan828/gen-graphql-schema-common';
 export const mergeTypes = (
   types: Array<string | DocumentNode>,
   options?: {
