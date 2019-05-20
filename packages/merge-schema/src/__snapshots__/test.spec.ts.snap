@@ -63,7 +63,7 @@ input TestOrder {
 \\"\\"\\"Properties by which Test can be ordered.\\"\\"\\"
 enum TestOrderField {
   \\"\\"\\"Order Test by id\\"\\"\\"
-  ID
+  id
 }
 "
 `;
@@ -184,7 +184,7 @@ input TestOrder {
 \\"\\"\\"Properties by which Test can be ordered.\\"\\"\\"
 enum TestOrderField {
   \\"\\"\\"Order Test by id\\"\\"\\"
-  ID
+  id
 }
 
 \\"\\"\\"Query of Test with using operators\\"\\"\\"
