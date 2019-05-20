@@ -54,7 +54,7 @@ describe('GenOrderTypesService', () => {
                 """
                 Order Test by id
                 """
-                ID
+                id
               }
               `,
 
@@ -124,7 +124,7 @@ describe('GenOrderTypesService', () => {
                 """
                 Order Test2 by id
                 """
-                ID
+                id
               }
               `,
               `
@@ -208,11 +208,11 @@ describe('GenOrderTypesService', () => {
                 """
                 Order Test by id
                 """
-                ID
+                id
                 """
                 Order Test by date
                 """
-                DATE
+                date
               }
               `,
               `
@@ -305,7 +305,7 @@ describe('GenOrderTypesService', () => {
                 """
                 Order Test by id
                 """
-                ID
+                id
               }
               `,
               `
