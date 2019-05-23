@@ -20,7 +20,7 @@
     "@anchan828/gen-graphql-schema-common": "^0.1.30",
     "@anchan828/gen-graphql-where-schema": "^0.1.30",
     "deepmerge": "3.2.0",
-    "graphql": "14.3.0",
+    "graphql": "14.3.1",
     "merge-graphql-schemas": "1.5.8"
   },
   "devDependencies": {
