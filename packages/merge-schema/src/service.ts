@@ -129,9 +129,8 @@ export class MergeSchemaService {
     }
     const cached: Set<string> = new Set<string>();
     return definitions.filter(def => {
-      const cacheKey = JSON.stringify(def.loc);
-      if (!cached.has(cacheKey)) {
-        cached.add(cacheKey);
+      if (!cached.has(def.name.value)) {
+        cached.add(def.name.value);
         return true;
       } else {
         return false;

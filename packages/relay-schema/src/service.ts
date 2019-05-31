@@ -36,9 +36,12 @@ export class GenRelayTypesService {
     const fields = getFieldDefinitionsByDirective(
       this.documentNode,
       this.options.relayDirective!.name!,
-    );
+    ).filter(field => field.type.kind === 'ListType');
 
     for (const field of fields) {
+      if (field.type.kind === 'NamedType') {
+        continue;
+      }
       const filedType = getFieldTypeName(field);
 
       this.addNodeInterface(filedType.name);
