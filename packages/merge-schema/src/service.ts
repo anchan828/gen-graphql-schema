@@ -127,6 +127,15 @@ export class MergeSchemaService {
         definitions.push(objOrUnion);
       }
     }
-    return definitions;
+    const cached: Set<string> = new Set<string>();
+    return definitions.filter(def => {
+      const cacheKey = JSON.stringify(def.loc);
+      if (!cached.has(cacheKey)) {
+        cached.add(cacheKey);
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 }
