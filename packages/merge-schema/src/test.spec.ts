@@ -20,6 +20,16 @@ describe('mergeTypes', () => {
   });
   it('should work orderBy, where, and relay directive', () => {
     const types = [
+      `type Test1 { id: ID, name: String! }`,
+      `type Test2 { id: ID, age: Int! }`,
+      `union Test = Test1 | Test2`,
+      `type Test3 {tests: [Test] @orderBy @where @relay }`,
+    ];
+    expect(mergeTypes(types)).toMatchSnapshot();
+  });
+
+  it('should work orderBy, where, and relay directive in union', () => {
+    const types = [
       `type Test {id: ID}`,
       `type Test2 {tests: [Test] @orderBy @where @relay }`,
     ];

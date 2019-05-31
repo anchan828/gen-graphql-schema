@@ -5,10 +5,12 @@ import {
   getFieldDefinitions,
   getFieldDefinitionsByDirective,
   getFieldTypeName,
-  getObjectTypeDefinition,
+  getObjectOrUnionTypeDefinition,
+  getObjectTypeDefinitionsFromUnion,
   hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
+  isUnionType,
   toConstanceCase,
 } from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
@@ -23,6 +25,7 @@ import {
   ObjectTypeDefinitionNode,
   parse,
   TypeNode,
+  UnionTypeDefinitionNode,
 } from 'graphql';
 import { DEFAULT_OPTIONS, DESCRIPTIONS } from './constants';
 import { GenWhereTypesOptions } from './options';
@@ -205,7 +208,7 @@ export class GenWhereTypesService {
   private genWhereTypeDefinition(
     field: FieldDefinitionNode,
   ): InputObjectTypeDefinitionNode | undefined {
-    const fieldType = getObjectTypeDefinition(this.documentNode, field);
+    const fieldType = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!fieldType) {
       return;
     }
@@ -280,17 +283,30 @@ export class GenWhereTypesService {
     return whereType;
   }
   private getWhereFieldNameAndTypes(
-    definition: ObjectTypeDefinitionNode,
+    definition: ObjectTypeDefinitionNode | UnionTypeDefinitionNode,
   ): Array<{ name: string; type: string; isList: boolean }> {
     const fieldNames: Array<{
       name: string;
       type: string;
       isList: boolean;
     }> = [];
-    for (const field of getFieldDefinitions(definition)) {
-      const { name, isList } = getFieldTypeName(field);
 
+    const fields: FieldDefinitionNode[] = [];
+
+    if (isUnionType(definition)) {
+      for (const def of getObjectTypeDefinitionsFromUnion(
+        this.documentNode,
+        definition,
+      )) {
+        fields.push(...getFieldDefinitions(def));
+      }
+    } else {
+      fields.push(...getFieldDefinitions(definition));
+    }
+    for (const field of fields) {
+      const { name, isList } = getFieldTypeName(field);
       if (
+        fieldNames.findIndex(fn => fn.name === field.name.value) === -1 &&
         (isBasicType(name) ||
           isEnumType(this.documentNode, name) ||
           Reflect.get(this.options.supportOperatorTypes!, name)) &&
@@ -327,23 +343,33 @@ export class GenWhereTypesService {
     );
   }
   private removeWhereIgnoreDirective(field: FieldDefinitionNode): void {
-    const type = getObjectTypeDefinition(this.documentNode, field);
+    const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
     }
+    const definitions: ObjectTypeDefinitionNode[] = [];
 
-    for (const f of getFieldDefinitions(type)) {
-      if (!this.hasWhereIgnoreDirective(f)) {
-        continue;
-      }
-      Reflect.set(
-        f,
-        'directives',
-        getDirectives(f).filter(
-          directive =>
-            directive.name.value !== this.options.whereIgnoreDirective!.name,
-        ),
+    if (isUnionType(type)) {
+      definitions.push(
+        ...getObjectTypeDefinitionsFromUnion(this.documentNode, type),
       );
+    } else {
+      definitions.push(type);
+    }
+    for (const definition of definitions) {
+      for (const f of getFieldDefinitions(definition)) {
+        if (!this.hasWhereIgnoreDirective(f)) {
+          continue;
+        }
+        Reflect.set(
+          f,
+          'directives',
+          getDirectives(f).filter(
+            directive =>
+              directive.name.value !== this.options.whereIgnoreDirective!.name,
+          ),
+        );
+      }
     }
   }
 

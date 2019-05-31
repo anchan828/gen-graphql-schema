@@ -5,10 +5,12 @@ import {
   getFieldDefinitions,
   getFieldDefinitionsByDirective,
   getFieldTypeName,
-  getObjectTypeDefinition,
+  getObjectOrUnionTypeDefinition,
+  getObjectTypeDefinitionsFromUnion,
   hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
+  isUnionType,
 } from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
 import {
@@ -135,7 +137,7 @@ export class GenOrderTypesService {
   private genOrderInputObjectTypeDefinition(
     field: FieldDefinitionNode,
   ): InputObjectTypeDefinitionNode | undefined {
-    const type = getObjectTypeDefinition(this.documentNode, field);
+    const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
     }
@@ -210,13 +212,30 @@ export class GenOrderTypesService {
   private genSortEnumTypeDefinition(
     field: FieldDefinitionNode,
   ): EnumTypeDefinitionNode | undefined {
-    const type = getObjectTypeDefinition(this.documentNode, field);
+    const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
     }
 
     const { name } = getFieldTypeName(field);
-    const orderableFieldNames = this.getOrderableFieldNames(type);
+    const orderableFieldNames: Set<string> = new Set<string>();
+
+    if (isUnionType(type)) {
+      const definitions = getObjectTypeDefinitionsFromUnion(
+        this.documentNode,
+        type,
+      );
+
+      for (const definition of definitions) {
+        this.getOrderableFieldNames(definition).forEach(fName =>
+          orderableFieldNames.add(fName),
+        );
+      }
+    } else {
+      this.getOrderableFieldNames(type).forEach(fName =>
+        orderableFieldNames.add(fName),
+      );
+    }
     const orderFieldEnumOptions = this.options!.orderFieldEnum!;
     const orderFieldEnumName = `${orderFieldEnumOptions.prefix}${name}${
       orderFieldEnumOptions.suffix
@@ -238,7 +257,7 @@ export class GenOrderTypesService {
         kind: 'StringValue',
         value: DESCRIPTIONS.ORDER_FIELD.ENUM(name),
       },
-      values: orderableFieldNames.map(orderableFieldName => ({
+      values: [...orderableFieldNames.values()].map(orderableFieldName => ({
         kind: 'EnumValueDefinition',
         name: {
           kind: 'Name',
@@ -304,23 +323,36 @@ export class GenOrderTypesService {
     );
   }
   private removeOrderByIgnoreDirective(field: FieldDefinitionNode): void {
-    const type = getObjectTypeDefinition(this.documentNode, field);
+    const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
     }
 
-    for (const f of getFieldDefinitions(type)) {
-      if (!this.hasOrderByIgnoreDirective(f)) {
-        continue;
-      }
-      Reflect.set(
-        f,
-        'directives',
-        getDirectives(f).filter(
-          directive =>
-            directive.name.value !== this.options.orderByIgnoreDirective!.name,
-        ),
+    const definitions: ObjectTypeDefinitionNode[] = [];
+
+    if (isUnionType(type)) {
+      definitions.push(
+        ...getObjectTypeDefinitionsFromUnion(this.documentNode, type),
       );
+    } else {
+      definitions.push(type);
+    }
+
+    for (const definition of definitions) {
+      for (const f of getFieldDefinitions(definition)) {
+        if (!this.hasOrderByIgnoreDirective(f)) {
+          continue;
+        }
+        Reflect.set(
+          f,
+          'directives',
+          getDirectives(f).filter(
+            directive =>
+              directive.name.value !==
+              this.options.orderByIgnoreDirective!.name,
+          ),
+        );
+      }
     }
   }
   private readonly documentNode: DocumentNode;

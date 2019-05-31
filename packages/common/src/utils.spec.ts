@@ -1,5 +1,6 @@
 import {
   buildASTSchema,
+  FieldDefinitionNode,
   ObjectTypeDefinitionNode,
   parse,
   printSchema,
@@ -12,7 +13,8 @@ import {
   getFieldDefinitions,
   getFieldDefinitionsByDirective,
   getFieldTypeName,
-  getObjectTypeDefinitions,
+  getObjectOrUnionTypeDefinition,
+  getObjectOrUnionTypeDefinitions,
   hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
@@ -20,10 +22,29 @@ import {
 } from './utils';
 
 describe('util', () => {
-  describe('getObjectTypeDefinitions', () => {
+  describe('getObjectOrUnionTypeDefinition', () => {
+    it('should return undefeind', () => {
+      expect(
+        getObjectOrUnionTypeDefinition(
+          parse(`type Test {
+          id: ID!
+      }`),
+          {
+            type: {
+              kind: 'NamedType',
+              name: {
+                value: 'test',
+              },
+            },
+          } as FieldDefinitionNode,
+        ),
+      ).toBeUndefined();
+    });
+  });
+  describe('getObjectOrUnionTypeDefinitions', () => {
     it('should return empty array', () => {
       expect(
-        getObjectTypeDefinitions(
+        getObjectOrUnionTypeDefinitions(
           parse(`enum Test {
           A
       }`),
@@ -33,12 +54,23 @@ describe('util', () => {
 
     it('should return array', () => {
       expect(
-        getObjectTypeDefinitions(
+        getObjectOrUnionTypeDefinitions(
           parse(`type Test {
             A: ID
         }`),
         ),
       ).toHaveLength(1);
+    });
+
+    it('should return array', () => {
+      expect(
+        getObjectOrUnionTypeDefinitions(
+          parse(`
+          type Test1 { id: ID!, name: String! }
+          type Test2 { id: ID!, age: Int! }
+          union Test = Test1 | Test2`),
+        ),
+      ).toHaveLength(3);
     });
   });
 
@@ -67,13 +99,11 @@ describe('util', () => {
   describe('getFieldDefinitions', () => {
     it('should return array', () => {
       expect(
-        getFieldDefinitions(
-          getObjectTypeDefinitions(
-            parse(`type Test {
+        getFieldDefinitions(getObjectOrUnionTypeDefinitions(
+          parse(`type Test {
             A: ID
         }`),
-          )[0],
-        ),
+        )[0] as ObjectTypeDefinitionNode),
       ).toHaveLength(1);
     });
   });
@@ -82,24 +112,20 @@ describe('util', () => {
     it('should return empty array', () => {
       expect(
         getDirectives(
-          getFieldDefinitions(
-            getObjectTypeDefinitions(
-              parse(`type Test {
+          getFieldDefinitions(getObjectOrUnionTypeDefinitions(
+            parse(`type Test {
               A: ID
           }`),
-            )[0],
-          )[0],
+          )[0] as ObjectTypeDefinitionNode)[0],
         ),
       ).toHaveLength(0);
     });
     it('should return empty array', () => {
-      const field = getFieldDefinitions(
-        getObjectTypeDefinitions(
-          parse(`type Test {
+      const field = getFieldDefinitions(getObjectOrUnionTypeDefinitions(
+        parse(`type Test {
                 A: ID
             }`),
-        )[0],
-      )[0];
+      )[0] as ObjectTypeDefinitionNode)[0];
       Reflect.set(field, 'directives', undefined);
       expect(getDirectives(field)).toHaveLength(0);
     });
@@ -107,13 +133,11 @@ describe('util', () => {
     it('should return empty array', () => {
       expect(
         getDirectives(
-          getFieldDefinitions(
-            getObjectTypeDefinitions(
-              parse(`type Test {
+          getFieldDefinitions(getObjectOrUnionTypeDefinitions(
+            parse(`type Test {
                 A: ID @test
             }`),
-            )[0],
-          )[0],
+          )[0] as ObjectTypeDefinitionNode)[0],
         ),
       ).toHaveLength(1);
     });
@@ -164,7 +188,7 @@ describe('util', () => {
 
   describe('getFieldTypeName', () => {
     it('should get name', () => {
-      const type = getObjectTypeDefinitions(
+      const type = getObjectOrUnionTypeDefinitions(
         parse(`type Test {
           A: ID
           B: [String]
@@ -174,7 +198,7 @@ describe('util', () => {
           F: [[String]!]
       }`),
       )[0];
-      const fields = getFieldDefinitions(type);
+      const fields = getFieldDefinitions(type as ObjectTypeDefinitionNode);
       expect(getFieldTypeName(fields[0])).toEqual({
         name: 'ID',
         isList: false,
@@ -252,6 +276,22 @@ describe('util', () => {
           'test',
         ),
       ).toHaveLength(0);
+    });
+
+    it('should return array when union type has directive', () => {
+      expect(
+        getFieldDefinitionsByDirective(
+          parse(
+            [
+              `type Test1 { id: ID!, name: String! }
+               type Test2 { id: ID!, age: Int! }
+               union Test = Test1 | Test2`,
+              `type Query { test: [Test] @test }`,
+            ].join('\n'),
+          ),
+          'test',
+        ),
+      ).toHaveLength(1);
     });
   });
 

@@ -387,4 +387,155 @@ describe('GenWhereTypesService', () => {
       ),
     );
   });
+
+  it('should return added Where types when has union type and where directive', () => {
+    expect(
+      printSchema(
+        buildASTSchema(
+          new GenWhereTypesService(
+            [
+              `type Test1 { id: ID, name: String! }`,
+              `type Test2 { id: ID, age: Int! }`,
+              `union Test = Test1 | Test2`,
+              `type Query { tests: [Test] @where}`,
+            ].join(`\n`),
+            {
+              supportOperatorTypes: {
+                Date: [
+                  'eq',
+                  'not_eq',
+                  'in',
+                  'not_in',
+                  'lt',
+                  'lte',
+                  'gt',
+                  'gte',
+                ],
+              },
+            },
+          ).genWhereTypes(),
+        ),
+      ),
+    ).toEqual(
+      printSchema(
+        buildASTSchema(
+          parse(`
+    type Test1 { id: ID, name: String! }
+    type Test2 { id: ID, age: Int! }
+    union Test = Test1 | Test2
+    
+    """ID query with using operators"""
+    input IDWhereOperator {
+      """Query type of ID with using operators"""
+      type: IDWhereOperatorType!
+
+      """Query value of ID"""
+      value: [ID]!
+    }
+
+    """Query type of ID with using operators"""
+    enum IDWhereOperatorType {
+      """Must match the given data exactly"""
+      EQ
+
+      """Must be different from the given data"""
+      NOT_EQ
+
+      """Must be an element of the array"""
+      IN
+
+      """Must not be an element of the array"""
+      NOT_IN
+    }
+
+    """Int query with using operators"""
+    input IntWhereOperator {
+      """Query type of Int with using operators"""
+      type: IntWhereOperatorType!
+
+      """Query value of Int"""
+      value: [Int]!
+    }
+
+    """Query type of Int with using operators"""
+    enum IntWhereOperatorType {
+      """Must match the given data exactly"""
+      EQ
+
+      """Must be different from the given data"""
+      NOT_EQ
+
+      """Must be an element of the array"""
+      IN
+
+      """Must not be an element of the array"""
+      NOT_IN
+
+      """Must be less than given value"""
+      LT
+
+      """Must be less than or equal to given value"""
+      LTE
+
+      """Must be greater than given value"""
+      GT
+
+      """Must be greater than or equal to given value"""
+      GTE
+    }
+
+    type Query {
+      tests(where: TestWhere): [Test]
+    }
+
+    """String query with using operators"""
+    input StringWhereOperator {
+      """Query type of String with using operators"""
+      type: StringWhereOperatorType!
+
+      """Query value of String"""
+      value: [String]!
+    }
+
+    """Query type of String with using operators"""
+    enum StringWhereOperatorType {
+      """Must match the string starts with the given data exactly"""
+      STARTS_WITH
+
+      """Must match the string ends with the given data exactly"""
+      ENDS_WITH
+
+      """Must match the given data exactly"""
+      EQ
+
+      """Must be different from the given data"""
+      NOT_EQ
+
+      """
+      Determines whether the given string may be found within another string.
+      """
+      CONTAINS
+
+      """Must be an element of the array"""
+      IN
+
+      """Must not be an element of the array"""
+      NOT_IN
+    }
+
+    """Query of Test with using operators"""
+    input TestWhere {
+      """Query with using id field"""
+      id: [IDWhereOperator]
+
+      """Query with using name field"""
+      name: [StringWhereOperator]
+
+      """Query with using age field"""
+      age: [IntWhereOperator]
+    }`),
+        ),
+      ),
+    );
+  });
 });

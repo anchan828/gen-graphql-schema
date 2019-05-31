@@ -1,7 +1,12 @@
-import { getObjectTypeDefinitions } from '@anchan828/gen-graphql-schema-common';
+import {
+  getObjectOrUnionTypeDefinitions,
+  getObjectTypeDefinitionsFromUnion,
+  isUnionType,
+} from '@anchan828/gen-graphql-schema-common';
 import {
   DocumentNode,
   InterfaceTypeDefinitionNode,
+  ObjectTypeDefinitionNode,
   parse,
   StringValueNode,
 } from 'graphql';
@@ -30,7 +35,7 @@ export class MergeSchemaService {
     this.applyInterfaces(type);
   }
   private cacheInterfaces(type: DocumentNode): void {
-    for (const definition of getObjectTypeDefinitions(type)) {
+    for (const definition of this.getAllObjectDefinitionsByDocumentNode(type)) {
       if (!Array.isArray(definition.interfaces)) {
         continue;
       }
@@ -53,7 +58,7 @@ export class MergeSchemaService {
     }
   }
   private cacheDescriptions(type: DocumentNode): void {
-    for (const definition of getObjectTypeDefinitions(type)) {
+    for (const definition of this.getAllObjectDefinitionsByDocumentNode(type)) {
       if (!(definition.description && definition.description.value)) {
         continue;
       }
@@ -72,7 +77,7 @@ export class MergeSchemaService {
   }
 
   public applyDescriptions(type: DocumentNode): void {
-    for (const definition of getObjectTypeDefinitions(type)) {
+    for (const definition of this.getAllObjectDefinitionsByDocumentNode(type)) {
       if (this.descriptionMap.has(definition.name.value)) {
         Reflect.set(definition, 'description', {
           kind: 'StringValue',
@@ -82,7 +87,7 @@ export class MergeSchemaService {
     }
   }
   public applyInterfaces(type: DocumentNode): void {
-    for (const definition of getObjectTypeDefinitions(type)) {
+    for (const definition of this.getAllObjectDefinitionsByDocumentNode(type)) {
       if (this.interfaceMap.has(definition.name.value)) {
         const interfaces = Object.assign(
           [],
@@ -106,5 +111,22 @@ export class MergeSchemaService {
         Reflect.set(definition, 'interfaces', interfaces);
       }
     }
+  }
+
+  private getAllObjectDefinitionsByDocumentNode(
+    documentNode: DocumentNode,
+  ): ObjectTypeDefinitionNode[] {
+    const definitions: ObjectTypeDefinitionNode[] = [];
+
+    for (const objOrUnion of getObjectOrUnionTypeDefinitions(documentNode)) {
+      if (isUnionType(objOrUnion)) {
+        definitions.push(
+          ...getObjectTypeDefinitionsFromUnion(documentNode, objOrUnion),
+        );
+      } else {
+        definitions.push(objOrUnion);
+      }
+    }
+    return definitions;
   }
 }

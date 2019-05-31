@@ -329,4 +329,83 @@ describe('GenOrderTypesService', () => {
       ),
     );
   });
+
+  it('should support union type', () => {
+    expect(
+      printSchema(
+        buildASTSchema(
+          new GenOrderTypesService(
+            [
+              `type Test1 { id: ID, name: String! }`,
+              `type Test2 { id: ID, age: Int! }`,
+              `union Test = Test1 | Test2`,
+              `type Query { tests: [Test] @orderBy}`,
+            ].join(`\n`),
+          ).genOrderTypes(),
+        ),
+      ),
+    ).toEqual(
+      printSchema(
+        buildASTSchema(
+          parse(
+            [
+              `type Test1 { id: ID, name: String! }`,
+              `type Test2 { id: ID, age: Int! }`,
+              `union Test = Test1 | Test2`,
+              `type Query { tests (orderBy: [TestOrder] ): [Test]}`,
+              `
+              """
+              Sort the results in ascending or descending order
+              """
+              enum OrderDirection {
+                """
+                Sort the results in ascending order
+                """
+                ASC
+                """
+                Sort the results in descending order
+                """
+                DESC
+              }
+              `,
+              `
+              """
+              Properties by which Test can be ordered.
+              """
+              enum TestOrderField {
+                """
+                Order Test by id
+                """
+                id
+                """
+                Order Test by name
+                """
+                name
+                """
+                Order Test by age
+                """
+                age
+              }
+              `,
+              `
+              """
+              Ordering options for Test
+              """
+              input TestOrder {
+                """
+                The field to order Test by.
+                """
+                field: TestOrderField
+                """
+                The ordering direction.
+                """
+                direction: OrderDirection
+              }
+              `,
+            ].join(`\n`),
+          ),
+        ),
+      ),
+    );
+  });
 });

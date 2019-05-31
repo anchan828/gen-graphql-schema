@@ -4,7 +4,9 @@ import {
   getDirectives,
   getFieldDefinitionsByDirective,
   getFieldTypeName,
+  getObjectTypeDefinitionsFromUnion,
   hasDirectiveInDocumentNode,
+  isUnionType,
 } from '@anchan828/gen-graphql-schema-common';
 import * as deepmerge from 'deepmerge';
 import {
@@ -38,6 +40,7 @@ export class GenRelayTypesService {
 
     for (const field of fields) {
       const filedType = getFieldTypeName(field);
+
       this.addNodeInterface(filedType.name);
       this.genEdgeType(filedType.name);
       this.genConnectionType(filedType.name);
@@ -303,28 +306,37 @@ export class GenRelayTypesService {
     appendDefinitionToDocumentNode(this.documentNode, connectionDefinition);
   }
   private addNodeInterface(fieldTypeName: string): void {
-    const fieldType = getDefinitionByName(
+    const definition = getDefinitionByName(
       this.documentNode,
       fieldTypeName,
     ) as ObjectTypeDefinitionNode;
-
-    if (
-      !fieldType ||
-      this.hasInterface(fieldType, this.options.relayNodeInterface!.name!)
-    ) {
-      return;
+    const filedTypes: ObjectTypeDefinitionNode[] = [];
+    if (isUnionType(definition)) {
+      filedTypes.push(
+        ...getObjectTypeDefinitionsFromUnion(this.documentNode, definition),
+      );
+    } else {
+      filedTypes.push(definition);
     }
+    for (const fieldType of filedTypes) {
+      if (
+        !fieldType ||
+        this.hasInterface(fieldType, this.options.relayNodeInterface!.name!)
+      ) {
+        continue;
+      }
 
-    Reflect.set(fieldType, 'interfaces', [
-      ...(fieldType.interfaces || []),
-      {
-        kind: 'InterfaceTypeDefinition',
-        name: {
-          kind: 'Name',
-          value: 'Node',
-        },
-      } as InterfaceTypeDefinitionNode,
-    ]);
+      Reflect.set(fieldType, 'interfaces', [
+        ...(fieldType.interfaces || []),
+        {
+          kind: 'InterfaceTypeDefinition',
+          name: {
+            kind: 'Name',
+            value: 'Node',
+          },
+        } as InterfaceTypeDefinitionNode,
+      ]);
+    }
   }
   private hasInterface(
     definition: ObjectTypeDefinitionNode,

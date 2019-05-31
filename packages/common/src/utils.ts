@@ -5,14 +5,18 @@ import {
   DocumentNode,
   EnumTypeDefinitionNode,
   FieldDefinitionNode,
+  NamedTypeNode,
   ObjectTypeDefinitionNode,
   TypeNode,
+  UnionTypeDefinitionNode,
 } from 'graphql';
-export const getObjectTypeDefinitions = (
+export const getObjectOrUnionTypeDefinitions = (
   documentNode: DocumentNode,
-): ObjectTypeDefinitionNode[] => {
+): Array<ObjectTypeDefinitionNode | UnionTypeDefinitionNode> => {
   return documentNode.definitions.filter(
-    definition => definition.kind === 'ObjectTypeDefinition',
+    definition =>
+      definition.kind === 'ObjectTypeDefinition' ||
+      definition.kind === 'UnionTypeDefinition',
   ) as ObjectTypeDefinitionNode[];
 };
 
@@ -46,6 +50,12 @@ export const isEnumType = (types: DocumentNode, typeName: string): boolean => {
   return (
     enumTypes.findIndex(enumType => enumType.name.value === typeName) !== -1
   );
+};
+
+export const isUnionType = (
+  definition: DefinitionNode,
+): definition is UnionTypeDefinitionNode => {
+  return definition && definition.kind === 'UnionTypeDefinition';
 };
 
 export const getFieldTypeName = (
@@ -96,9 +106,21 @@ export const getFieldDefinitionsByDirective = (
   directiveName: string,
 ): FieldDefinitionNode[] => {
   const results: FieldDefinitionNode[] = [];
-  const definitions = getObjectTypeDefinitions(documentNode);
+  const definitions = getObjectOrUnionTypeDefinitions(documentNode);
   for (const definition of definitions) {
-    const fields = getFieldDefinitions(definition);
+    const fields: FieldDefinitionNode[] = [];
+
+    if (isUnionType(definition)) {
+      const definitionsInUnion = getObjectTypeDefinitionsFromUnion(
+        documentNode,
+        definition,
+      );
+      for (const definitionInUnion of definitionsInUnion) {
+        fields.push(...getFieldDefinitions(definitionInUnion));
+      }
+    } else {
+      fields.push(...getFieldDefinitions(definition));
+    }
 
     for (const field of fields) {
       const directives = getDirectives(field);
@@ -127,15 +149,35 @@ export const getFieldDefinitionsByDirective = (
   return results;
 };
 
-export const getObjectTypeDefinition = (
+export const getObjectOrUnionTypeDefinition = (
   documentNode: DocumentNode,
   field: FieldDefinitionNode,
-): ObjectTypeDefinitionNode | undefined => {
+): ObjectTypeDefinitionNode | UnionTypeDefinitionNode | undefined => {
   const { name } = getFieldTypeName(field);
 
-  return getObjectTypeDefinitions(documentNode).find(
+  return getObjectOrUnionTypeDefinitions(documentNode).find(
     definition => definition.name.value === name,
   );
+};
+
+export const getObjectTypeDefinitionsFromUnion = (
+  documentNode: DocumentNode,
+  unionDefinition: UnionTypeDefinitionNode,
+): ObjectTypeDefinitionNode[] => {
+  if (!Array.isArray(unionDefinition.types)) {
+    return [];
+  }
+  const definitions: ObjectTypeDefinitionNode[] = [];
+  for (const type of unionDefinition.types as NamedTypeNode[]) {
+    const definition = getDefinitionByName(
+      documentNode,
+      type.name.value,
+    ) as ObjectTypeDefinitionNode;
+    if (definition) {
+      definitions.push(definition);
+    }
+  }
+  return definitions;
 };
 export const appendDefinitionToDocumentNode = (
   documentNode: DocumentNode,
@@ -150,10 +192,21 @@ export const hasDirectiveInDocumentNode = (
   documentNode: DocumentNode,
   directiveName: string,
 ): boolean => {
-  const definitions = getObjectTypeDefinitions(documentNode);
+  const definitions = getObjectOrUnionTypeDefinitions(documentNode);
   for (const definition of definitions) {
-    const fields = getFieldDefinitions(definition);
+    const fields: FieldDefinitionNode[] = [];
 
+    if (isUnionType(definition)) {
+      const definitionsInUnion = getObjectTypeDefinitionsFromUnion(
+        documentNode,
+        definition,
+      );
+      for (const definitionInUnion of definitionsInUnion) {
+        fields.push(...getFieldDefinitions(definitionInUnion));
+      }
+    } else {
+      fields.push(...getFieldDefinitions(definition));
+    }
     for (const field of fields) {
       const directives = getDirectives(field);
       if (
@@ -175,7 +228,8 @@ export const getDefinitionByName = (
       definition.kind === 'ObjectTypeDefinition' ||
       definition.kind === 'InputObjectTypeDefinition' ||
       definition.kind === 'EnumTypeDefinition' ||
-      definition.kind === 'InterfaceTypeDefinition'
+      definition.kind === 'InterfaceTypeDefinition' ||
+      definition.kind === 'UnionTypeDefinition'
     ) {
       if (definition.name.value === name) {
         return definition;
