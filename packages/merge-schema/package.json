@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-merge-schema",
-  "version": "0.1.32",
+  "version": "0.1.33",
   "description": "merge multiple schema. merge-graphql-schemas based.",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@anchan828/gen-graphql-order-schema": "^0.1.31",
-    "@anchan828/gen-graphql-relay-schema": "^0.1.31",
+    "@anchan828/gen-graphql-relay-schema": "^0.1.33",
     "@anchan828/gen-graphql-schema-common": "^0.1.31",
     "@anchan828/gen-graphql-where-schema": "^0.1.31",
     "deepmerge": "3.2.0",
