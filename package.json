@@ -21,7 +21,7 @@
     "husky": "2.7.0",
     "lerna": "3.13.4",
     "lint-staged": "8.2.1",
-    "prettier": "1.17.1",
+    "prettier": "1.18.2",
     "ts-node": "8.1.0",
     "tslint": "5.18.0",
     "tslint-config-prettier": "1.18.0",
