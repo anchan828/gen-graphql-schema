@@ -23,11 +23,11 @@
   "devDependencies": {
     "@types/graphql": "14.2.0",
     "@types/jest": "24.0.13",
-    "@types/node": "11.13.10",
+    "@types/node": "11.13.17",
     "jest": "24.8.0",
-    "prettier": "1.17.1",
+    "prettier": "1.18.2",
     "ts-jest": "24.0.2",
-    "typescript": "3.5.1"
+    "typescript": "3.5.2"
   },
   "repository": {
     "type": "git",
