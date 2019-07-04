@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@types/node": "11.13.17",
-    "husky": "2.3.0",
+    "husky": "2.7.0",
     "lerna": "3.13.4",
     "lint-staged": "8.1.7",
     "prettier": "1.17.1",
