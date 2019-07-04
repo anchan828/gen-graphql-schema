@@ -20,11 +20,11 @@
     "@anchan828/gen-graphql-schema-common": "^0.1.31",
     "@anchan828/gen-graphql-where-schema": "^0.1.31",
     "deepmerge": "3.2.0",
-    "graphql": "14.3.0",
+    "graphql": "14.4.2",
     "merge-graphql-schemas": "1.5.8"
   },
   "devDependencies": {
-    "@types/graphql": "14.2.0",
+    "@types/graphql": "14.2.2",
     "@types/jest": "24.0.13",
     "@types/node": "11.13.17",
     "jest": "24.8.0",
