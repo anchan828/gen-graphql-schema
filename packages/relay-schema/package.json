@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@anchan828/gen-graphql-schema-common": "^0.1.31",
-    "deepmerge": "3.2.0",
+    "deepmerge": "4.0.0",
     "graphql": "14.4.2",
     "reflect-metadata": "0.1.13"
   },
