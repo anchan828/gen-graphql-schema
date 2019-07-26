@@ -191,16 +191,18 @@ export class GenRelayTypesService {
           value: DESCRIPTIONS.EDGE_TYPE.NODE,
         },
         type: {
-          kind: 'NamedType',
-          name: {
-            kind: 'Name',
-            value: fieldTypeName,
+          kind: 'NonNullType',
+          type: {
+            kind: 'NamedType',
+            name: {
+              kind: 'Name',
+              value: fieldTypeName,
+            },
           },
         },
       },
       {
         kind: 'FieldDefinition',
-
         name: {
           kind: 'Name',
           value: 'cursor',

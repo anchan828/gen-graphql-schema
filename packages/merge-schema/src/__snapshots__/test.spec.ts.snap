@@ -245,7 +245,7 @@ type TestConnection implements Connection {
 \\"\\"\\"An edge in a TestConnection.\\"\\"\\"
 type TestEdge implements Edge {
   \\"\\"\\"The item at the end of the edge.\\"\\"\\"
-  node: Test
+  node: Test!
 
   \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
   cursor: String
@@ -384,7 +384,7 @@ type TestConnection implements Connection {
 \\"\\"\\"An edge in a TestConnection.\\"\\"\\"
 type TestEdge implements Edge {
   \\"\\"\\"The item at the end of the edge.\\"\\"\\"
-  node: Test
+  node: Test!
 
   \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
   cursor: String
@@ -478,7 +478,7 @@ type TestConnection implements Connection {
 \\"\\"\\"An edge in a TestConnection.\\"\\"\\"
 type TestEdge implements Edge {
   \\"\\"\\"The item at the end of the edge.\\"\\"\\"
-  node: Test
+  node: Test!
 
   \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
   cursor: String
