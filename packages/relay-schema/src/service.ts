@@ -44,6 +44,24 @@ export class GenRelayTypesService {
       }
       const filedType = getFieldTypeName(field);
 
+      if (
+        this.options &&
+        this.options.relayCnnectionType &&
+        this.options.relayCnnectionType.prefix &&
+        filedType.name.startsWith(this.options.relayCnnectionType.prefix)
+      ) {
+        continue;
+      }
+
+      if (
+        this.options &&
+        this.options.relayCnnectionType &&
+        this.options.relayCnnectionType.suffix &&
+        filedType.name.endsWith(this.options.relayCnnectionType.suffix)
+      ) {
+        continue;
+      }
+
       this.addNodeInterface(filedType.name);
       this.genEdgeType(filedType.name);
       this.genConnectionType(filedType.name);
