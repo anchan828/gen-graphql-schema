@@ -227,7 +227,7 @@ type Test2 implements Node {
 }
 
 type Test3 {
-  tests(orderBy: [TestOrder], where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection
+  tests(orderBy: [TestOrder], where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
 \\"\\"\\"The connection type for Test\\"\\"\\"
@@ -366,7 +366,7 @@ type Test implements Node {
 }
 
 type Test2 {
-  tests(orderBy: [TestOrder], where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection
+  tests(orderBy: [TestOrder], where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
 \\"\\"\\"The connection type for Test\\"\\"\\"
@@ -460,7 +460,7 @@ type Test implements Node {
 }
 
 type Test2 {
-  tests(before: String, after: String, first: Int, last: Int): TestConnection
+  tests(before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
 \\"\\"\\"The connection type for Test\\"\\"\\"

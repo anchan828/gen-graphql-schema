@@ -68,10 +68,13 @@ export class GenRelayTypesService {
     field: FieldDefinitionNode,
   ): void {
     Reflect.set(field, 'type', {
-      kind: 'NamedType',
-      name: {
-        kind: 'Name',
-        value: this.getConnectionTypeName(fieldTypeName),
+      kind: 'NonNullType',
+      type: {
+        kind: 'NamedType',
+        name: {
+          kind: 'Name',
+          value: this.getConnectionTypeName(fieldTypeName),
+        },
       },
     } as TypeNode);
     // before: String, after: String, first: Int, last: Int
