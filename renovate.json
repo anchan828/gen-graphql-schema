@@ -4,6 +4,5 @@
   "major": {
     "automerge": false
   },
-  "rebaseStalePrs": true,
-  "semanticCommits":true
+  "rebaseStalePrs": true
 }
