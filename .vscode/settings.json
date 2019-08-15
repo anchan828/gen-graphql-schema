@@ -1,17 +1,24 @@
 {
-    "[typescript]": {
-        "editor.formatOnSave": true
-    },
-    "[javascript]": {
-        "editor.formatOnSave": true
-    },
-    "window.zoomLevel": 0,
-    "linter_codeclimate.enabled": true,
+  "editor.formatOnSave": true,
+  "[typescript]": {
     "editor.codeActionsOnSave": {
-        "source.organizeImports": true,
-        "source.fixAll.tslint": true,
+      "source.organizeImports": true
+    }
+  },
+  "eslint.autoFixOnSave": true,
+  "eslint.options": {
+    "extensinons": [".js", ".ts"]
+  },
+  "eslint.validate": [
+    {
+      "autoFix": true,
+      "language": "javascript"
     },
-    "breadcrumbs.enabled": true,
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "typescript.preferences.importModuleSpecifier": "relative"
+    {
+      "autoFix": true,
+      "language": "typescript"
+    }
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "relative"
 }

@@ -1,17 +1,15 @@
-import { buildASTSchema, parse, printSchema } from 'graphql';
-import { GenWhereTypesService } from './service';
+import { buildASTSchema, parse, printSchema } from "graphql";
+import { GenWhereTypesService } from "./service";
 
-describe('GenWhereTypesService', () => {
-  it('should return same schema when no where directive', () => {
+describe("GenWhereTypesService", () => {
+  it("should return same schema when no where directive", () => {
     const types = `type Test { id: ID }`;
-    expect(
-      printSchema(
-        buildASTSchema(new GenWhereTypesService(types).genWhereTypes()),
-      ),
-    ).toEqual(printSchema(buildASTSchema(parse(types))));
+    expect(printSchema(buildASTSchema(new GenWhereTypesService(types).genWhereTypes()))).toEqual(
+      printSchema(buildASTSchema(parse(types))),
+    );
   });
 
-  it('should return added Where types when has where directive', () => {
+  it("should return added Where types when has where directive", () => {
     expect(
       printSchema(
         buildASTSchema(
@@ -35,16 +33,7 @@ describe('GenWhereTypesService', () => {
             ].join(`\n`),
             {
               supportOperatorTypes: {
-                Date: [
-                  'eq',
-                  'not_eq',
-                  'in',
-                  'not_in',
-                  'lt',
-                  'lte',
-                  'gt',
-                  'gte',
-                ],
+                Date: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte"],
               },
             },
           ).genWhereTypes(),
@@ -302,7 +291,7 @@ describe('GenWhereTypesService', () => {
     );
   });
 
-  it('should return added Where types when has custom directive', () => {
+  it("should return added Where types when has custom directive", () => {
     expect(
       printSchema(
         buildASTSchema(
@@ -318,25 +307,25 @@ describe('GenWhereTypesService', () => {
             ),
             {
               whereArgment: {
-                name: 'Hoge',
+                name: "Hoge",
               },
               whereDirective: {
-                name: 'fuga',
+                name: "fuga",
               },
               whereIgnoreDirective: {
-                name: 'foo',
+                name: "foo",
               },
               whereOperator: {
-                prefix: 'PreOperator',
-                suffix: 'SufOperator',
+                prefix: "PreOperator",
+                suffix: "SufOperator",
               },
               whereOperatorType: {
-                prefix: 'PreOperatorType',
-                suffix: 'SufOperatorType',
+                prefix: "PreOperatorType",
+                suffix: "SufOperatorType",
               },
               whereType: {
-                prefix: 'PreWhereType',
-                suffix: 'SufWhereType',
+                prefix: "PreWhereType",
+                suffix: "SufWhereType",
               },
             },
           ).genWhereTypes(),
@@ -388,7 +377,7 @@ describe('GenWhereTypesService', () => {
     );
   });
 
-  it('should return added Where types when has union type and where directive', () => {
+  it("should return added Where types when has union type and where directive", () => {
     expect(
       printSchema(
         buildASTSchema(
@@ -401,16 +390,7 @@ describe('GenWhereTypesService', () => {
             ].join(`\n`),
             {
               supportOperatorTypes: {
-                Date: [
-                  'eq',
-                  'not_eq',
-                  'in',
-                  'not_in',
-                  'lt',
-                  'lte',
-                  'gt',
-                  'gte',
-                ],
+                Date: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte"],
               },
             },
           ).genWhereTypes(),

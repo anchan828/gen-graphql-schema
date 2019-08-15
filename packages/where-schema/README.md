@@ -7,8 +7,8 @@ Generate where schema by directive
 ## Quick Start
 
 ```ts
-import { genWhereTypes } from "@anchan828/gen-graphql-where-schema"
-import { buildASTSchema, printSchema } from 'graphql';
+import { genWhereTypes } from "@anchan828/gen-graphql-where-schema";
+import { buildASTSchema, printSchema } from "graphql";
 
 const schema = `
 
@@ -27,22 +27,22 @@ printSchema(buildASTSchema(genWhereTypes(schema)));
 //      type: IDWhereOperatorType!
 //      value: [ID]!
 //    }
-//    
+//
 //    enum IDWhereOperatorType {
 //      EQ
 //      NOT_EQ
 //      IN
 //      NOT_IN
 //    }
-//    
+//
 //    type Query {
 //      tests(where: TestWhere): [Test]
 //    }
-//    
+//
 //    type Test {
 //      id: ID
 //    }
-//    
+//
 //    type TestWhere {
 //      id: [IDWhereOperator]
 //    }

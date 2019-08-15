@@ -4,8 +4,10 @@
     "outDir": "./dist",
     "baseUrl": "./"
   },
-  "references": [{
-    "path": "../common"
-  }],
+  "references": [
+    {
+      "path": "../common"
+    }
+  ],
   "exclude": ["node_modules", "dist"]
 }
