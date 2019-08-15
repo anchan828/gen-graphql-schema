@@ -1,20 +1,11 @@
-import {
-  genOrderTypes,
-  GenOrderTypesOptions,
-} from '@anchan828/gen-graphql-order-schema';
-import {
-  genRelayTypes,
-  GenRelayTypesOptions,
-} from '@anchan828/gen-graphql-relay-schema';
-import {
-  genWhereTypes,
-  GenWhereTypesOptions,
-} from '@anchan828/gen-graphql-where-schema';
-import * as deepmerge from 'deepmerge';
-import { buildASTSchema, DocumentNode, printSchema } from 'graphql';
-import { mergeTypes as MergeTypesLib } from 'merge-graphql-schemas';
-import { MergeSchemaService } from './service';
-export { toConstanceCase } from '@anchan828/gen-graphql-schema-common';
+import { genOrderTypes, GenOrderTypesOptions } from "@anchan828/gen-graphql-order-schema";
+import { genRelayTypes, GenRelayTypesOptions } from "@anchan828/gen-graphql-relay-schema";
+import { genWhereTypes, GenWhereTypesOptions } from "@anchan828/gen-graphql-where-schema";
+import * as deepmerge from "deepmerge";
+import { buildASTSchema, DocumentNode, printSchema } from "graphql";
+import { mergeTypes as MergeTypesLib } from "merge-graphql-schemas";
+import { MergeSchemaService } from "./service";
+export { toConstanceCase } from "@anchan828/gen-graphql-schema-common";
 export const mergeTypes = (
   types: Array<string | DocumentNode>,
   options?: {
@@ -23,10 +14,7 @@ export const mergeTypes = (
     relayOptions?: GenRelayTypesOptions;
   },
 ): string => {
-  options = deepmerge(
-    { orderOptions: {}, whereOptions: {}, relayOptions: {} },
-    options || {},
-  );
+  options = deepmerge({ orderOptions: {}, whereOptions: {}, relayOptions: {} }, options || {});
   const service = new MergeSchemaService();
   types.forEach(type => service.cache(type));
 

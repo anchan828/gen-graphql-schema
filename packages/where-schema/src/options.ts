@@ -1,17 +1,17 @@
 export type OperatorType =
-  | 'starts_with'
-  | 'ends_with'
-  | 'eq'
-  | 'not_eq'
-  | 'contains'
-  | 'in'
-  | 'not_in'
-  | 'lt'
-  | 'lte'
-  | 'gt'
-  | 'gte'
-  | 'regex'
-  | 'glob';
+  | "starts_with"
+  | "ends_with"
+  | "eq"
+  | "not_eq"
+  | "contains"
+  | "in"
+  | "not_in"
+  | "lt"
+  | "lte"
+  | "gt"
+  | "gte"
+  | "regex"
+  | "glob";
 export interface GenWhereTypesOptions {
   whereDirective?: { name?: string };
   whereIgnoreDirective?: { name?: string };

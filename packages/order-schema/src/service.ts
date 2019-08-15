@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   appendDefinitionToDocumentNode,
   getDefinitionByName,
@@ -11,8 +12,8 @@ import {
   isBasicType,
   isEnumType,
   isUnionType,
-} from '@anchan828/gen-graphql-schema-common';
-import * as deepmerge from 'deepmerge';
+} from "@anchan828/gen-graphql-schema-common";
+import * as deepmerge from "deepmerge";
 import {
   DirectiveNode,
   DocumentNode,
@@ -24,28 +25,17 @@ import {
   NamedTypeNode,
   ObjectTypeDefinitionNode,
   parse,
-} from 'graphql';
-import { DEFAULT_OPTIONS, DESCRIPTIONS } from './constants';
-import { GenOrderTypesOptions } from './options';
+} from "graphql";
+import { DEFAULT_OPTIONS, DESCRIPTIONS } from "./constants";
+import { GenOrderTypesOptions } from "./options";
 export class GenOrderTypesService {
   genOrderTypes(): DocumentNode {
-    if (
-      !hasDirectiveInDocumentNode(
-        this.documentNode,
-        this.options.orderByDirective!.name!,
-      )
-    ) {
+    if (!hasDirectiveInDocumentNode(this.documentNode, this.options.orderByDirective!.name!)) {
       return this.documentNode;
     }
 
-    const fields = getFieldDefinitionsByDirective(
-      this.documentNode,
-      this.options.orderByDirective!.name!,
-    );
-    appendDefinitionToDocumentNode(
-      this.documentNode,
-      this.genOrderDirectionEnumDefinition(),
-    );
+    const fields = getFieldDefinitionsByDirective(this.documentNode, this.options.orderByDirective!.name!);
+    appendDefinitionToDocumentNode(this.documentNode, this.genOrderDirectionEnumDefinition());
     for (const field of fields) {
       const orderFieldEnumType = this.genSortEnumTypeDefinition(field);
       const orderEnumInputType = this.genOrderInputObjectTypeDefinition(field);
@@ -64,20 +54,14 @@ export class GenOrderTypesService {
 
   private hasOrderByIgnoreDirective(field: FieldDefinitionNode): boolean {
     const directives = getDirectives(field);
-    if (
-      directives.find(
-        (d: DirectiveNode) =>
-          d.name.value === this.options.orderByIgnoreDirective!.name,
-      )
-    ) {
+    if (directives.find((d: DirectiveNode) => d.name.value === this.options.orderByIgnoreDirective!.name)) {
       return true;
     }
 
     return false;
   }
-  private getOrderableFieldNames(
-    definition: ObjectTypeDefinitionNode,
-  ): string[] {
+
+  private getOrderableFieldNames(definition: ObjectTypeDefinitionNode): string[] {
     const orderableFieldNames: string[] = [];
     for (const field of getFieldDefinitions(definition)) {
       const { name } = getFieldTypeName(field);
@@ -98,35 +82,35 @@ export class GenOrderTypesService {
   private genOrderDirectionEnumDefinition(): EnumTypeDefinitionNode {
     const orderDirectionOptions = this.options!.orderDirection!;
     return {
-      kind: 'EnumTypeDefinition',
+      kind: "EnumTypeDefinition",
       name: {
-        kind: 'Name',
+        kind: "Name",
         value: orderDirectionOptions.typeName!,
       },
       description: {
-        kind: 'StringValue',
+        kind: "StringValue",
         value: DESCRIPTIONS.OEDER_DIRECTION.TYPE,
       },
       values: [
         {
-          kind: 'EnumValueDefinition',
+          kind: "EnumValueDefinition",
           name: {
-            kind: 'Name',
+            kind: "Name",
             value: orderDirectionOptions.ascName!,
           },
           description: {
-            kind: 'StringValue',
+            kind: "StringValue",
             value: DESCRIPTIONS.OEDER_DIRECTION.ASC,
           },
         },
         {
-          kind: 'EnumValueDefinition',
+          kind: "EnumValueDefinition",
           name: {
-            kind: 'Name',
+            kind: "Name",
             value: orderDirectionOptions.descName!,
           },
           description: {
-            kind: 'StringValue',
+            kind: "StringValue",
             value: DESCRIPTIONS.OEDER_DIRECTION.DESC,
           },
         },
@@ -134,9 +118,7 @@ export class GenOrderTypesService {
     };
   }
 
-  private genOrderInputObjectTypeDefinition(
-    field: FieldDefinitionNode,
-  ): InputObjectTypeDefinitionNode | undefined {
+  private genOrderInputObjectTypeDefinition(field: FieldDefinitionNode): InputObjectTypeDefinitionNode | undefined {
     const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
@@ -145,61 +127,54 @@ export class GenOrderTypesService {
     const orderTypeOptions = this.options.orderType!;
     const orderFieldEnumOptions = this.options.orderFieldEnum!;
     const orderDirectionOptions = this.options!.orderDirection!;
-    const orderTypeName = `${orderTypeOptions.prefix}${name}${
-      orderTypeOptions.suffix
-    }`;
-    let orderType = getDefinitionByName(
-      this.documentNode,
-      orderTypeName,
-    ) as InputObjectTypeDefinitionNode;
+    const orderTypeName = `${orderTypeOptions.prefix}${name}${orderTypeOptions.suffix}`;
+    let orderType = getDefinitionByName(this.documentNode, orderTypeName) as InputObjectTypeDefinitionNode;
     if (orderType) {
       return orderType;
     }
     orderType = {
-      kind: 'InputObjectTypeDefinition',
+      kind: "InputObjectTypeDefinition",
       name: {
-        kind: 'Name',
+        kind: "Name",
         value: orderTypeName,
       },
       description: {
-        kind: 'StringValue',
+        kind: "StringValue",
         value: DESCRIPTIONS.ORDER.TYPE(name),
       },
       fields: [
         {
-          kind: 'InputValueDefinition',
+          kind: "InputValueDefinition",
           name: {
-            kind: 'Name',
+            kind: "Name",
             value: orderTypeOptions.fieldName,
           },
           description: {
-            kind: 'StringValue',
+            kind: "StringValue",
             value: DESCRIPTIONS.ORDER.FIELD(name),
           },
           type: {
-            kind: 'NamedType',
+            kind: "NamedType",
             name: {
-              kind: 'Name',
-              value: `${orderFieldEnumOptions.prefix}${name}${
-                orderFieldEnumOptions.suffix
-              }`,
+              kind: "Name",
+              value: `${orderFieldEnumOptions.prefix}${name}${orderFieldEnumOptions.suffix}`,
             },
           },
         },
         {
-          kind: 'InputValueDefinition',
+          kind: "InputValueDefinition",
           name: {
-            kind: 'Name',
+            kind: "Name",
             value: orderTypeOptions.directionName,
           },
           description: {
-            kind: 'StringValue',
+            kind: "StringValue",
             value: DESCRIPTIONS.ORDER.DIRECTION,
           },
           type: {
-            kind: 'NamedType',
+            kind: "NamedType",
             name: {
-              kind: 'Name',
+              kind: "Name",
               value: orderDirectionOptions.typeName!,
             },
           },
@@ -209,9 +184,8 @@ export class GenOrderTypesService {
     appendDefinitionToDocumentNode(this.documentNode, orderType);
     return orderType;
   }
-  private genSortEnumTypeDefinition(
-    field: FieldDefinitionNode,
-  ): EnumTypeDefinitionNode | undefined {
+
+  private genSortEnumTypeDefinition(field: FieldDefinitionNode): EnumTypeDefinitionNode | undefined {
     const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
@@ -221,50 +195,38 @@ export class GenOrderTypesService {
     const orderableFieldNames: Set<string> = new Set<string>();
 
     if (isUnionType(type)) {
-      const definitions = getObjectTypeDefinitionsFromUnion(
-        this.documentNode,
-        type,
-      );
+      const definitions = getObjectTypeDefinitionsFromUnion(this.documentNode, type);
 
       for (const definition of definitions) {
-        this.getOrderableFieldNames(definition).forEach(fName =>
-          orderableFieldNames.add(fName),
-        );
+        this.getOrderableFieldNames(definition).forEach(fName => orderableFieldNames.add(fName));
       }
     } else {
-      this.getOrderableFieldNames(type).forEach(fName =>
-        orderableFieldNames.add(fName),
-      );
+      this.getOrderableFieldNames(type).forEach(fName => orderableFieldNames.add(fName));
     }
     const orderFieldEnumOptions = this.options!.orderFieldEnum!;
-    const orderFieldEnumName = `${orderFieldEnumOptions.prefix}${name}${
-      orderFieldEnumOptions.suffix
-    }`;
-    let orderFieldEnum = getDefinitionByName(
-      this.documentNode,
-      orderFieldEnumName,
-    ) as EnumTypeDefinitionNode;
+    const orderFieldEnumName = `${orderFieldEnumOptions.prefix}${name}${orderFieldEnumOptions.suffix}`;
+    let orderFieldEnum = getDefinitionByName(this.documentNode, orderFieldEnumName) as EnumTypeDefinitionNode;
     if (orderFieldEnum) {
       return orderFieldEnum;
     }
     orderFieldEnum = {
-      kind: 'EnumTypeDefinition',
+      kind: "EnumTypeDefinition",
       name: {
-        kind: 'Name',
+        kind: "Name",
         value: orderFieldEnumName,
       },
       description: {
-        kind: 'StringValue',
+        kind: "StringValue",
         value: DESCRIPTIONS.ORDER_FIELD.ENUM(name),
       },
       values: [...orderableFieldNames.values()].map(orderableFieldName => ({
-        kind: 'EnumValueDefinition',
+        kind: "EnumValueDefinition",
         name: {
-          kind: 'Name',
+          kind: "Name",
           value: orderableFieldName,
         },
         description: {
-          kind: 'StringValue',
+          kind: "StringValue",
           value: DESCRIPTIONS.ORDER_FIELD.VALUE(name, orderableFieldName),
         },
       })) as EnumValueDefinitionNode[],
@@ -277,34 +239,29 @@ export class GenOrderTypesService {
     field: FieldDefinitionNode,
     orderInputTypeDefinition: InputObjectTypeDefinitionNode,
   ): void {
-    Reflect.set(field, 'arguments', [
-      ...(field.arguments || []),
-      this.genOrderByArgument(orderInputTypeDefinition),
-    ]);
+    Reflect.set(field, "arguments", [...(field.arguments || []), this.genOrderByArgument(orderInputTypeDefinition)]);
   }
 
-  private genOrderByArgument(
-    orderInputTypeDefinition: InputObjectTypeDefinitionNode,
-  ): FieldDefinitionNode {
+  private genOrderByArgument(orderInputTypeDefinition: InputObjectTypeDefinitionNode): FieldDefinitionNode {
     let type: NamedTypeNode | ListTypeNode = {
-      kind: 'NamedType',
+      kind: "NamedType",
       name: {
-        kind: 'Name',
+        kind: "Name",
         value: `${orderInputTypeDefinition.name.value}`,
       },
     };
     const orderByArgumentOptions = this.options!.orderByArgument!;
     if (orderByArgumentOptions.isList) {
       type = {
-        kind: 'ListType',
+        kind: "ListType",
         type,
       };
     }
 
     return {
-      kind: 'FieldDefinition',
+      kind: "FieldDefinition",
       name: {
-        kind: 'Name',
+        kind: "Name",
         value: orderByArgumentOptions.name!,
       },
       type,
@@ -315,13 +272,11 @@ export class GenOrderTypesService {
     const directives = getDirectives(field);
     Reflect.set(
       field,
-      'directives',
-      directives.filter(
-        directive =>
-          directive.name.value !== this.options.orderByDirective!.name,
-      ),
+      "directives",
+      directives.filter(directive => directive.name.value !== this.options.orderByDirective!.name),
     );
   }
+
   private removeOrderByIgnoreDirective(field: FieldDefinitionNode): void {
     const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
@@ -331,9 +286,7 @@ export class GenOrderTypesService {
     const definitions: ObjectTypeDefinitionNode[] = [];
 
     if (isUnionType(type)) {
-      definitions.push(
-        ...getObjectTypeDefinitionsFromUnion(this.documentNode, type),
-      );
+      definitions.push(...getObjectTypeDefinitionsFromUnion(this.documentNode, type));
     } else {
       definitions.push(type);
     }
@@ -345,22 +298,17 @@ export class GenOrderTypesService {
         }
         Reflect.set(
           f,
-          'directives',
-          getDirectives(f).filter(
-            directive =>
-              directive.name.value !==
-              this.options.orderByIgnoreDirective!.name,
-          ),
+          "directives",
+          getDirectives(f).filter(directive => directive.name.value !== this.options.orderByIgnoreDirective!.name),
         );
       }
     }
   }
+
   private readonly documentNode: DocumentNode;
-  constructor(
-    readonly types: string | DocumentNode,
-    private readonly options: GenOrderTypesOptions = {},
-  ) {
+
+  constructor(readonly types: string | DocumentNode, private readonly options: GenOrderTypesOptions = {}) {
     this.options = deepmerge(DEFAULT_OPTIONS, options);
-    this.documentNode = typeof types === 'string' ? parse(types) : types;
+    this.documentNode = typeof types === "string" ? parse(types) : types;
   }
 }

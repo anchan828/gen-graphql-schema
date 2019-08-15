@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   appendDefinitionToDocumentNode,
   getDefinitionByName,
@@ -12,8 +13,8 @@ import {
   isEnumType,
   isUnionType,
   toConstanceCase,
-} from '@anchan828/gen-graphql-schema-common';
-import * as deepmerge from 'deepmerge';
+} from "@anchan828/gen-graphql-schema-common";
+import * as deepmerge from "deepmerge";
 import {
   DirectiveNode,
   DocumentNode,
@@ -26,23 +27,15 @@ import {
   parse,
   TypeNode,
   UnionTypeDefinitionNode,
-} from 'graphql';
-import { DEFAULT_OPTIONS, DESCRIPTIONS } from './constants';
-import { GenWhereTypesOptions } from './options';
+} from "graphql";
+import { DEFAULT_OPTIONS, DESCRIPTIONS } from "./constants";
+import { GenWhereTypesOptions } from "./options";
 export class GenWhereTypesService {
   public genWhereTypes(): DocumentNode {
-    if (
-      !hasDirectiveInDocumentNode(
-        this.documentNode,
-        this.options.whereDirective!.name!,
-      )
-    ) {
+    if (!hasDirectiveInDocumentNode(this.documentNode, this.options.whereDirective!.name!)) {
       return this.documentNode;
     }
-    const fields = getFieldDefinitionsByDirective(
-      this.documentNode,
-      this.options.whereDirective!.name!,
-    );
+    const fields = getFieldDefinitionsByDirective(this.documentNode, this.options.whereDirective!.name!);
     for (const field of fields) {
       const whereType = this.genWhereTypeDefinition(field);
 
@@ -56,11 +49,7 @@ export class GenWhereTypesService {
     }
 
     for (const operator of this.typeOperatorMap.values()) {
-      appendDefinitionToDocumentNode(
-        this.documentNode,
-        operator.enumType,
-        operator.inputObjectType,
-      );
+      appendDefinitionToDocumentNode(this.documentNode, operator.enumType, operator.inputObjectType);
     }
 
     return this.documentNode;
@@ -70,15 +59,9 @@ export class GenWhereTypesService {
     if (this.typeOperatorMap.has(typeName)) {
       return;
     }
-    let operatorNames = Reflect.get(
-      this.options.supportOperatorTypes!,
-      typeName,
-    ) as string[];
+    let operatorNames = Reflect.get(this.options.supportOperatorTypes!, typeName) as string[];
 
-    if (
-      !Array.isArray(operatorNames) &&
-      isEnumType(this.documentNode, typeName)
-    ) {
+    if (!Array.isArray(operatorNames) && isEnumType(this.documentNode, typeName)) {
       operatorNames = this.options.enumTypeOperator!;
     }
     if (!Array.isArray(operatorNames)) {
@@ -87,64 +70,57 @@ export class GenWhereTypesService {
 
     this.typeOperatorMap.set(typeName, {
       enumType: {
-        kind: 'EnumTypeDefinition',
+        kind: "EnumTypeDefinition",
         name: {
-          kind: 'Name',
-          value: `${this.options.whereOperatorType!.prefix}${typeName}${
-            this.options.whereOperatorType!.suffix
-          }`,
+          kind: "Name",
+          value: `${this.options.whereOperatorType!.prefix}${typeName}${this.options.whereOperatorType!.suffix}`,
         },
         description: {
-          kind: 'StringValue',
+          kind: "StringValue",
           value: DESCRIPTIONS.WHERE_OPERATOR_TYPE.TYPE(typeName),
         },
         values: operatorNames.map(
           operatorName =>
             ({
-              kind: 'EnumValueDefinition',
+              kind: "EnumValueDefinition",
               name: {
-                kind: 'Name',
+                kind: "Name",
                 value: toConstanceCase(operatorName),
               },
               description: {
-                kind: 'StringValue',
-                value: Reflect.get(
-                  DESCRIPTIONS.WHERE_OPERATOR_TYPE.OPERATORS,
-                  toConstanceCase(operatorName),
-                ),
+                kind: "StringValue",
+                value: Reflect.get(DESCRIPTIONS.WHERE_OPERATOR_TYPE.OPERATORS, toConstanceCase(operatorName)),
               },
             } as EnumValueDefinitionNode),
         ),
       },
       inputObjectType: {
-        kind: 'InputObjectTypeDefinition',
+        kind: "InputObjectTypeDefinition",
         name: {
-          kind: 'Name',
-          value: `${this.options.whereOperator!.prefix}${typeName}${
-            this.options.whereOperator!.suffix
-          }`,
+          kind: "Name",
+          value: `${this.options.whereOperator!.prefix}${typeName}${this.options.whereOperator!.suffix}`,
         },
         description: {
-          kind: 'StringValue',
+          kind: "StringValue",
           value: DESCRIPTIONS.WHERE_OPERATOR.TYPE(typeName),
         },
         fields: [
           {
-            kind: 'InputValueDefinition',
+            kind: "InputValueDefinition",
             name: {
-              kind: 'Name',
-              value: 'type',
+              kind: "Name",
+              value: "type",
             },
             description: {
-              kind: 'StringValue',
+              kind: "StringValue",
               value: DESCRIPTIONS.WHERE_OPERATOR.FIELDS.TYPE(typeName),
             },
             type: {
-              kind: 'NonNullType',
+              kind: "NonNullType",
               type: {
-                kind: 'NamedType',
+                kind: "NamedType",
                 name: {
-                  kind: 'Name',
+                  kind: "Name",
                   value: `${this.options.whereOperatorType!.prefix}${typeName}${
                     this.options.whereOperatorType!.suffix
                   }`,
@@ -153,23 +129,23 @@ export class GenWhereTypesService {
             },
           },
           {
-            kind: 'InputValueDefinition',
+            kind: "InputValueDefinition",
             name: {
-              kind: 'Name',
-              value: 'value',
+              kind: "Name",
+              value: "value",
             },
             description: {
-              kind: 'StringValue',
+              kind: "StringValue",
               value: DESCRIPTIONS.WHERE_OPERATOR.FIELDS.VALUE(typeName),
             },
             type: {
-              kind: 'NonNullType',
+              kind: "NonNullType",
               type: {
-                kind: 'ListType',
+                kind: "ListType",
                 type: {
-                  kind: 'NamedType',
+                  kind: "NamedType",
                   name: {
-                    kind: 'Name',
+                    kind: "Name",
                     value: typeName,
                   },
                 },
@@ -185,18 +161,18 @@ export class GenWhereTypesService {
     field: FieldDefinitionNode,
     whereTypeDefinition: InputObjectTypeDefinitionNode,
   ): void {
-    Reflect.set(field, 'arguments', [
+    Reflect.set(field, "arguments", [
       ...(field.arguments || []),
       {
-        kind: 'FieldDefinition',
+        kind: "FieldDefinition",
         name: {
-          kind: 'Name',
+          kind: "Name",
           value: this.options.whereArgment!.name!,
         },
         type: {
-          kind: 'NamedType',
+          kind: "NamedType",
           name: {
-            kind: 'Name',
+            kind: "Name",
             value: whereTypeDefinition.name.value,
           },
         },
@@ -205,9 +181,7 @@ export class GenWhereTypesService {
     ]);
   }
 
-  private genWhereTypeDefinition(
-    field: FieldDefinitionNode,
-  ): InputObjectTypeDefinitionNode | undefined {
+  private genWhereTypeDefinition(field: FieldDefinitionNode): InputObjectTypeDefinitionNode | undefined {
     const fieldType = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!fieldType) {
       return;
@@ -218,36 +192,34 @@ export class GenWhereTypesService {
     for (const { name, type } of fieldNameAndTypes) {
       this.genOperatorDefinitions(type);
       let fieldTypeNode: TypeNode;
-      if (type === 'Boolean') {
+      if (type === "Boolean") {
         fieldTypeNode = {
-          kind: 'NamedType',
+          kind: "NamedType",
           name: {
-            kind: 'Name',
+            kind: "Name",
             value: type,
           },
         };
       } else {
         fieldTypeNode = {
-          kind: 'ListType',
+          kind: "ListType",
           type: {
-            kind: 'NamedType',
+            kind: "NamedType",
             name: {
-              kind: 'Name',
-              value: `${this.options.whereOperator!.prefix}${type}${
-                this.options.whereOperator!.suffix
-              }`,
+              kind: "Name",
+              value: `${this.options.whereOperator!.prefix}${type}${this.options.whereOperator!.suffix}`,
             },
           },
         };
       }
       fields.push({
-        kind: 'InputValueDefinition',
+        kind: "InputValueDefinition",
         name: {
-          kind: 'Name',
+          kind: "Name",
           value: name,
         },
         description: {
-          kind: 'StringValue',
+          kind: "StringValue",
           value: DESCRIPTIONS.WHERE_TYPE.FIELDS(name),
         },
         type: fieldTypeNode,
@@ -256,24 +228,19 @@ export class GenWhereTypesService {
     }
 
     const whereTypeOptions = this.options.whereType!;
-    const whereTypeName = `${whereTypeOptions.prefix}${
-      getFieldTypeName(field).name
-    }${whereTypeOptions.suffix}`;
-    let whereType = getDefinitionByName(
-      this.documentNode,
-      whereTypeName,
-    ) as InputObjectTypeDefinitionNode;
+    const whereTypeName = `${whereTypeOptions.prefix}${getFieldTypeName(field).name}${whereTypeOptions.suffix}`;
+    let whereType = getDefinitionByName(this.documentNode, whereTypeName) as InputObjectTypeDefinitionNode;
     if (whereType) {
       return whereType;
     }
     whereType = {
-      kind: 'InputObjectTypeDefinition',
+      kind: "InputObjectTypeDefinition",
       name: {
-        kind: 'Name',
+        kind: "Name",
         value: whereTypeName,
       },
       description: {
-        kind: 'StringValue',
+        kind: "StringValue",
         value: DESCRIPTIONS.WHERE_TYPE.TYPE(getFieldTypeName(field).name),
       },
       directives: [],
@@ -282,6 +249,7 @@ export class GenWhereTypesService {
     appendDefinitionToDocumentNode(this.documentNode, whereType);
     return whereType;
   }
+
   private getWhereFieldNameAndTypes(
     definition: ObjectTypeDefinitionNode | UnionTypeDefinitionNode,
   ): Array<{ name: string; type: string; isList: boolean }> {
@@ -294,10 +262,7 @@ export class GenWhereTypesService {
     const fields: FieldDefinitionNode[] = [];
 
     if (isUnionType(definition)) {
-      for (const def of getObjectTypeDefinitionsFromUnion(
-        this.documentNode,
-        definition,
-      )) {
+      for (const def of getObjectTypeDefinitionsFromUnion(this.documentNode, definition)) {
         fields.push(...getFieldDefinitions(def));
       }
     } else {
@@ -318,14 +283,10 @@ export class GenWhereTypesService {
 
     return fieldNames;
   }
+
   private hasWhereIgnoreDirective(field: FieldDefinitionNode): boolean {
     const directives = getDirectives(field);
-    if (
-      directives.find(
-        (d: DirectiveNode) =>
-          d.name.value === this.options.whereIgnoreDirective!.name,
-      )
-    ) {
+    if (directives.find((d: DirectiveNode) => d.name.value === this.options.whereIgnoreDirective!.name)) {
       return true;
     }
 
@@ -336,12 +297,11 @@ export class GenWhereTypesService {
     const directives = getDirectives(field);
     Reflect.set(
       field,
-      'directives',
-      directives.filter(
-        directive => directive.name.value !== this.options.whereDirective!.name,
-      ),
+      "directives",
+      directives.filter(directive => directive.name.value !== this.options.whereDirective!.name),
     );
   }
+
   private removeWhereIgnoreDirective(field: FieldDefinitionNode): void {
     const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
@@ -350,9 +310,7 @@ export class GenWhereTypesService {
     const definitions: ObjectTypeDefinitionNode[] = [];
 
     if (isUnionType(type)) {
-      definitions.push(
-        ...getObjectTypeDefinitionsFromUnion(this.documentNode, type),
-      );
+      definitions.push(...getObjectTypeDefinitionsFromUnion(this.documentNode, type));
     } else {
       definitions.push(type);
     }
@@ -363,17 +321,15 @@ export class GenWhereTypesService {
         }
         Reflect.set(
           f,
-          'directives',
-          getDirectives(f).filter(
-            directive =>
-              directive.name.value !== this.options.whereIgnoreDirective!.name,
-          ),
+          "directives",
+          getDirectives(f).filter(directive => directive.name.value !== this.options.whereIgnoreDirective!.name),
         );
       }
     }
   }
 
   private readonly documentNode: DocumentNode;
+
   private typeOperatorMap: Map<
     string,
     {
@@ -387,11 +343,9 @@ export class GenWhereTypesService {
       inputObjectType: InputObjectTypeDefinitionNode;
     }
   >();
-  constructor(
-    readonly types: string | DocumentNode,
-    private readonly options: GenWhereTypesOptions = {},
-  ) {
+
+  constructor(readonly types: string | DocumentNode, private readonly options: GenWhereTypesOptions = {}) {
     this.options = deepmerge(DEFAULT_OPTIONS, options);
-    this.documentNode = typeof types === 'string' ? parse(types) : types;
+    this.documentNode = typeof types === "string" ? parse(types) : types;
   }
 }

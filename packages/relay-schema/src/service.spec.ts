@@ -1,24 +1,19 @@
-import { buildASTSchema, parse, printSchema } from 'graphql';
-import { GenRelayTypesService } from './service';
-describe('GenRelayTypesService', () => {
-  it('should return same schema when no where directive', () => {
+import { buildASTSchema, parse, printSchema } from "graphql";
+import { GenRelayTypesService } from "./service";
+describe("GenRelayTypesService", () => {
+  it("should return same schema when no where directive", () => {
     const types = `type Test { id: ID }`;
-    expect(
-      printSchema(
-        buildASTSchema(new GenRelayTypesService(types).genRelayTypes()),
-      ),
-    ).toEqual(printSchema(buildASTSchema(parse(types))));
+    expect(printSchema(buildASTSchema(new GenRelayTypesService(types).genRelayTypes()))).toEqual(
+      printSchema(buildASTSchema(parse(types))),
+    );
   });
 
-  it('should return added Where types when has where directive', () => {
+  it("should return added Where types when has where directive", () => {
     expect(
       printSchema(
         buildASTSchema(
           new GenRelayTypesService(
-            [
-              `type Test { id: ID! }`,
-              `type Query { tests: [Test] @relay, tests2: [Test] @relay}`,
-            ].join(`\n`),
+            [`type Test { id: ID! }`, `type Query { tests: [Test] @relay, tests2: [Test] @relay}`].join(`\n`),
           ).genRelayTypes(),
         ),
       ),
@@ -101,7 +96,7 @@ describe('GenRelayTypesService', () => {
     );
   });
 
-  it('should return added Where types when has union type', () => {
+  it("should return added Where types when has union type", () => {
     expect(
       printSchema(
         buildASTSchema(

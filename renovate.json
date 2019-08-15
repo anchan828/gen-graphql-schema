@@ -5,5 +5,5 @@
     "automerge": false
   },
   "rebaseStalePrs": true,
-  "semanticCommits":true
+  "semanticCommits": true
 }

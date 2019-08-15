@@ -1,25 +1,20 @@
-import { buildASTSchema, parse, printSchema } from 'graphql';
-import { GenOrderTypesService } from '../service';
+import { buildASTSchema, parse, printSchema } from "graphql";
+import { GenOrderTypesService } from "../service";
 
-describe('GenOrderTypesService', () => {
-  it('should return same schema when no orderBy directive', () => {
+describe("GenOrderTypesService", () => {
+  it("should return same schema when no orderBy directive", () => {
     const types = `type Test { id: ID }`;
-    expect(
-      printSchema(
-        buildASTSchema(new GenOrderTypesService(types).genOrderTypes()),
-      ),
-    ).toEqual(printSchema(buildASTSchema(parse(types))));
+    expect(printSchema(buildASTSchema(new GenOrderTypesService(types).genOrderTypes()))).toEqual(
+      printSchema(buildASTSchema(parse(types))),
+    );
   });
 
-  it('should return added Order enum when has orderBy directive', () => {
+  it("should return added Order enum when has orderBy directive", () => {
     expect(
       printSchema(
         buildASTSchema(
           new GenOrderTypesService(
-            [
-              `type Test { id: ID }`,
-              `type Query { tests: [Test] @orderBy}`,
-            ].join(`\n`),
+            [`type Test { id: ID }`, `type Query { tests: [Test] @orderBy}`].join(`\n`),
           ).genOrderTypes(),
         ),
       ),
@@ -80,7 +75,7 @@ describe('GenOrderTypesService', () => {
     );
   });
 
-  it('should ignore object type in enum', () => {
+  it("should ignore object type in enum", () => {
     expect(
       printSchema(
         buildASTSchema(
@@ -148,7 +143,7 @@ describe('GenOrderTypesService', () => {
       ),
     );
   });
-  it('should return added Order enum when change options', () => {
+  it("should return added Order enum when change options", () => {
     expect(
       printSchema(
         buildASTSchema(
@@ -160,19 +155,19 @@ describe('GenOrderTypesService', () => {
             ].join(`\n`),
             {
               orderByDirective: {
-                name: 'hoge',
+                name: "hoge",
               },
               orderByIgnoreDirective: {
-                name: 'ignore',
+                name: "ignore",
               },
               orderByArgument: {
-                name: 'arg',
+                name: "arg",
                 isList: false,
               },
               orderType: {
-                suffix: 'Changed',
+                suffix: "Changed",
               },
-              supportOrderableTypes: ['Date'],
+              supportOrderableTypes: ["Date"],
             },
           ).genOrderTypes(),
         ),
@@ -237,39 +232,36 @@ describe('GenOrderTypesService', () => {
     );
   });
 
-  it('should return added Order enum', () => {
+  it("should return added Order enum", () => {
     expect(
       printSchema(
         buildASTSchema(
           new GenOrderTypesService(
-            [
-              `type Test { id: ID, name: String @ignore }`,
-              `type Query { tests: [[Test!]]! @hoge}`,
-            ].join(`\n`),
+            [`type Test { id: ID, name: String @ignore }`, `type Query { tests: [[Test!]]! @hoge}`].join(`\n`),
             {
               orderByDirective: {
-                name: 'hoge',
+                name: "hoge",
               },
               orderByIgnoreDirective: {
-                name: 'ignore',
+                name: "ignore",
               },
               orderByArgument: {
-                name: 'arg',
+                name: "arg",
               },
               orderType: {
-                prefix: 'Prefix',
-                suffix: 'Changed',
-                fieldName: '_sort',
-                directionName: '_direction',
+                prefix: "Prefix",
+                suffix: "Changed",
+                fieldName: "_sort",
+                directionName: "_direction",
               },
               orderDirection: {
-                ascName: 'TOP',
-                descName: 'BOTTOM',
-                typeName: 'Position',
+                ascName: "TOP",
+                descName: "BOTTOM",
+                typeName: "Position",
               },
               orderFieldEnum: {
-                prefix: 'Prefix',
-                suffix: 'Suffix',
+                prefix: "Prefix",
+                suffix: "Suffix",
               },
             },
           ).genOrderTypes(),
@@ -330,7 +322,7 @@ describe('GenOrderTypesService', () => {
     );
   });
 
-  it('should support union type', () => {
+  it("should support union type", () => {
     expect(
       printSchema(
         buildASTSchema(
