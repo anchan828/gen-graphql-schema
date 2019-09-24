@@ -17,6 +17,20 @@ type Test implements Node & Interface {
 "
 `;
 
+exports[`mergeTypes should merge descriptions 1`] = `
+"type Query
+
+\\"\\"\\"Test\\"\\"\\"
+type Test {
+  \\"\\"\\"id descrip\\"\\"\\"
+  id: ID
+
+  \\"\\"\\"name descrip\\"\\"\\"
+  name: ID
+}
+"
+`;
+
 exports[`mergeTypes should merge types 1`] = `
 "type Query
 

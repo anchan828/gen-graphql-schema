@@ -42,4 +42,9 @@ describe("mergeTypes", () => {
     ];
     expect(mergeTypes(types)).toMatchSnapshot();
   });
+
+  it("should merge descriptions", () => {
+    const types = [`"""Test""" type Test {"""id descrip""" id: ID}`, `type Test { """name descrip""" name: ID}`];
+    expect(mergeTypes(types)).toMatchSnapshot();
+  });
 });

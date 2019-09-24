@@ -4,7 +4,6 @@ import { genWhereTypes, GenWhereTypesOptions } from "@anchan828/gen-graphql-wher
 import * as deepmerge from "deepmerge";
 import { buildASTSchema, DocumentNode, printSchema } from "graphql";
 import { mergeTypes as MergeTypesLib } from "merge-graphql-schemas";
-import { MergeSchemaService } from "./service";
 export { toConstanceCase } from "@anchan828/gen-graphql-schema-common";
 export const mergeTypes = (
   types: Array<string | DocumentNode>,
@@ -15,8 +14,6 @@ export const mergeTypes = (
   },
 ): string => {
   options = deepmerge({ orderOptions: {}, whereOptions: {}, relayOptions: {} }, options || {});
-  const service = new MergeSchemaService();
-  types.forEach(type => service.cache(type));
 
   let result = genOrderTypes(
     MergeTypesLib([...types, `type Query`], {
@@ -27,6 +24,5 @@ export const mergeTypes = (
 
   result = genWhereTypes(result, options.whereOptions);
   result = genRelayTypes(result, options.relayOptions);
-  service.apply(result);
   return printSchema(buildASTSchema(result));
 };
