@@ -107,7 +107,7 @@ input IDWhereOperator {
   type: IDWhereOperatorType!
 
   \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]!
+  value: [ID]
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
@@ -131,7 +131,7 @@ input IntWhereOperator {
   type: IntWhereOperatorType!
 
   \\"\\"\\"Query value of Int\\"\\"\\"
-  value: [Int]!
+  value: [Int]
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
@@ -199,7 +199,7 @@ input StringWhereOperator {
   type: StringWhereOperatorType!
 
   \\"\\"\\"Query value of String\\"\\"\\"
-  value: [String]!
+  value: [String]
 }
 
 \\"\\"\\"Query type of String with using operators\\"\\"\\"
@@ -325,7 +325,7 @@ input IDWhereOperator {
   type: IDWhereOperatorType!
 
   \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]!
+  value: [ID]
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
@@ -507,7 +507,7 @@ input IDWhereOperator {
   type: IDWhereOperatorType!
 
   \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]!
+  value: [ID]
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
