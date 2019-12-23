@@ -4,24 +4,31 @@ on: [push]
 
 jobs:
   test:
-    name: Test
+    strategy:
+      matrix:
+        node: [12, 13]
+    name: Test Node v${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
-          fetch-depth: 1
+          node-version: ${{ matrix.node }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install npm packages
-        run: npm i
-      - name: Setup cc-test-reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
+        run: npm ci
       - name: Lint
         run: npm run lint
       - name: Test monorepo packages
-        run: |
-          npm test
-          npx ts-node scripts/merge-coverage.ts
-      - name: Report coverage
-        run: ./cc-test-reporter after-build -r ${{ secrets.CC_TEST_REPORTER_ID }} --coverage-input-type lcov
+        if: github.repository != 'anchan828/nest-lerna-template'
+        uses: paambaati/codeclimate-action@v2.3.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: npm test
+          debug: true
