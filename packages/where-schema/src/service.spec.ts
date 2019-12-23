@@ -50,7 +50,7 @@ describe("GenWhereTypesService", () => {
       type: DateWhereOperatorType!
 
       """Query value of Date"""
-      value: [Date]!
+      value: [Date]
     }
 
     """Query type of Date with using operators"""
@@ -86,7 +86,7 @@ describe("GenWhereTypesService", () => {
       type: FloatWhereOperatorType!
 
       """Query value of Float"""
-      value: [Float]!
+      value: [Float]
     }
 
     """Query type of Float with using operators"""
@@ -122,7 +122,7 @@ describe("GenWhereTypesService", () => {
       type: IDWhereOperatorType!
 
       """Query value of ID"""
-      value: [ID]!
+      value: [ID]
     }
 
     """Query type of ID with using operators"""
@@ -146,7 +146,7 @@ describe("GenWhereTypesService", () => {
       type: IntWhereOperatorType!
 
       """Query value of Int"""
-      value: [Int]!
+      value: [Int]
     }
 
     """Query type of Int with using operators"""
@@ -186,7 +186,7 @@ describe("GenWhereTypesService", () => {
       type: StringWhereOperatorType!
 
       """Query value of String"""
-      value: [String]!
+      value: [String]
     }
 
     """Query type of String with using operators"""
@@ -239,7 +239,7 @@ describe("GenWhereTypesService", () => {
       type: TestEnumWhereOperatorType!
 
       """Query value of TestEnum"""
-      value: [TestEnum]!
+      value: [TestEnum]
     }
 
     """Query type of TestEnum with using operators"""
@@ -340,7 +340,7 @@ describe("GenWhereTypesService", () => {
       type: PreOperatorTypeIDSufOperatorType!
 
       """Query value of ID"""
-      value: [ID]!
+      value: [ID]
     }
 
     """Query type of ID with using operators"""
@@ -410,7 +410,7 @@ describe("GenWhereTypesService", () => {
       type: IDWhereOperatorType!
 
       """Query value of ID"""
-      value: [ID]!
+      value: [ID]
     }
 
     """Query type of ID with using operators"""
@@ -434,7 +434,7 @@ describe("GenWhereTypesService", () => {
       type: IntWhereOperatorType!
 
       """Query value of Int"""
-      value: [Int]!
+      value: [Int]
     }
 
     """Query type of Int with using operators"""
@@ -474,7 +474,7 @@ describe("GenWhereTypesService", () => {
       type: StringWhereOperatorType!
 
       """Query value of String"""
-      value: [String]!
+      value: [String]
     }
 
     """Query type of String with using operators"""

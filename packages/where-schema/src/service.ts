@@ -139,15 +139,12 @@ export class GenWhereTypesService {
               value: DESCRIPTIONS.WHERE_OPERATOR.FIELDS.VALUE(typeName),
             },
             type: {
-              kind: "NonNullType",
+              kind: "ListType",
               type: {
-                kind: "ListType",
-                type: {
-                  kind: "NamedType",
-                  name: {
-                    kind: "Name",
-                    value: typeName,
-                  },
+                kind: "NamedType",
+                name: {
+                  kind: "Name",
+                  value: typeName,
                 },
               },
             },
