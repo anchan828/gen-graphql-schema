@@ -93,11 +93,13 @@ describe("util", () => {
   describe("getFieldDefinitions", () => {
     it("should return array", () => {
       expect(
-        getFieldDefinitions(getObjectOrUnionTypeDefinitions(
-          parse(`type Test {
+        getFieldDefinitions(
+          getObjectOrUnionTypeDefinitions(
+            parse(`type Test {
             A: ID
         }`),
-        )[0] as ObjectTypeDefinitionNode),
+          )[0] as ObjectTypeDefinitionNode,
+        ),
       ).toHaveLength(1);
     });
   });
@@ -106,20 +108,24 @@ describe("util", () => {
     it("should return empty array", () => {
       expect(
         getDirectives(
-          getFieldDefinitions(getObjectOrUnionTypeDefinitions(
-            parse(`type Test {
+          getFieldDefinitions(
+            getObjectOrUnionTypeDefinitions(
+              parse(`type Test {
               A: ID
           }`),
-          )[0] as ObjectTypeDefinitionNode)[0],
+            )[0] as ObjectTypeDefinitionNode,
+          )[0],
         ),
       ).toHaveLength(0);
     });
     it("should return empty array", () => {
-      const field = getFieldDefinitions(getObjectOrUnionTypeDefinitions(
-        parse(`type Test {
+      const field = getFieldDefinitions(
+        getObjectOrUnionTypeDefinitions(
+          parse(`type Test {
                 A: ID
             }`),
-      )[0] as ObjectTypeDefinitionNode)[0];
+        )[0] as ObjectTypeDefinitionNode,
+      )[0];
       Reflect.set(field, "directives", undefined);
       expect(getDirectives(field)).toHaveLength(0);
     });
@@ -127,11 +133,13 @@ describe("util", () => {
     it("should return empty array", () => {
       expect(
         getDirectives(
-          getFieldDefinitions(getObjectOrUnionTypeDefinitions(
-            parse(`type Test {
+          getFieldDefinitions(
+            getObjectOrUnionTypeDefinitions(
+              parse(`type Test {
                 A: ID @test
             }`),
-          )[0] as ObjectTypeDefinitionNode)[0],
+            )[0] as ObjectTypeDefinitionNode,
+          )[0],
         ),
       ).toHaveLength(1);
     });
