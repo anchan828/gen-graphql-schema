@@ -15,6 +15,8 @@ export type OperatorType =
 export interface GenWhereTypesOptions {
   whereDirective?: { name?: string };
   whereIgnoreDirective?: { name?: string };
+
+  whereEqOnlyDirective?: { name?: string };
   whereType?: { prefix?: string; suffix?: string };
   whereArgment?: { name?: string };
   whereOperatorType?: { prefix?: string; suffix?: string };
@@ -27,4 +29,11 @@ export interface GenWhereTypesOptions {
     ID?: OperatorType[];
     [key: string]: OperatorType[] | undefined;
   };
+}
+
+export interface WhereFieldNameAndType {
+  name: string;
+  type: string;
+  isList: boolean;
+  isEqOnly: boolean;
 }

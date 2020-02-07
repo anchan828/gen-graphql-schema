@@ -1,4 +1,4 @@
-import { GenWhereTypesOptions } from "./options";
+import { GenWhereTypesOptions } from "./interfaces";
 export const DESCRIPTIONS = {
   WHERE_OPERATOR_TYPE: {
     TYPE: (typeName: string): string => `Query type of ${typeName} with using operators`,
@@ -31,6 +31,7 @@ export const DESCRIPTIONS = {
 export const DEFAULT_OPTIONS: GenWhereTypesOptions = {
   whereDirective: { name: "where" },
   whereIgnoreDirective: { name: "where_ignore" },
+  whereEqOnlyDirective: { name: "where_eq_only" },
   whereType: { prefix: "", suffix: "Where" },
   whereArgment: { name: "where" },
   whereOperatorType: {

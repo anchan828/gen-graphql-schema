@@ -29,7 +29,7 @@ import {
   UnionTypeDefinitionNode,
 } from "graphql";
 import { DEFAULT_OPTIONS, DESCRIPTIONS } from "./constants";
-import { GenWhereTypesOptions } from "./options";
+import { GenWhereTypesOptions, WhereFieldNameAndType } from "./interfaces";
 export class GenWhereTypesService {
   public genWhereTypes(): DocumentNode {
     if (!hasDirectiveInDocumentNode(this.documentNode, this.options.whereDirective!.name!)) {
@@ -186,10 +186,10 @@ export class GenWhereTypesService {
 
     const fieldNameAndTypes = this.getWhereFieldNameAndTypes(fieldType);
     const fields: InputValueDefinitionNode[] = [];
-    for (const { name, type } of fieldNameAndTypes) {
-      this.genOperatorDefinitions(type);
+    for (const { name, type, isEqOnly } of fieldNameAndTypes) {
       let fieldTypeNode: TypeNode;
-      if (type === "Boolean") {
+
+      if (type === "Boolean" || isEqOnly) {
         fieldTypeNode = {
           kind: "NamedType",
           name: {
@@ -198,6 +198,7 @@ export class GenWhereTypesService {
           },
         };
       } else {
+        this.genOperatorDefinitions(type);
         fieldTypeNode = {
           kind: "ListType",
           type: {
@@ -249,12 +250,8 @@ export class GenWhereTypesService {
 
   private getWhereFieldNameAndTypes(
     definition: ObjectTypeDefinitionNode | UnionTypeDefinitionNode,
-  ): Array<{ name: string; type: string; isList: boolean }> {
-    const fieldNames: Array<{
-      name: string;
-      type: string;
-      isList: boolean;
-    }> = [];
+  ): WhereFieldNameAndType[] {
+    const fieldNames: WhereFieldNameAndType[] = [];
 
     const fields: FieldDefinitionNode[] = [];
 
@@ -272,22 +269,42 @@ export class GenWhereTypesService {
         (isBasicType(name) ||
           isEnumType(this.documentNode, name) ||
           Reflect.get(this.options.supportOperatorTypes!, name)) &&
-        !this.hasWhereIgnoreDirective(field)
+        !this.hasDirective(field, this.options.whereIgnoreDirective?.name)
       ) {
-        fieldNames.push({ name: field.name.value, type: name, isList });
+        fieldNames.push({
+          name: field.name.value,
+          type: name,
+          isList,
+          isEqOnly: this.hasDirective(field, this.options.whereEqOnlyDirective?.name),
+        });
       }
     }
 
     return fieldNames;
   }
 
-  private hasWhereIgnoreDirective(field: FieldDefinitionNode): boolean {
+  private hasDirective(field: FieldDefinitionNode, directiveName?: string): boolean {
+    if (!directiveName) {
+      return false;
+    }
+
     const directives = getDirectives(field);
-    if (directives.find((d: DirectiveNode) => d.name.value === this.options.whereIgnoreDirective!.name)) {
+    if (directives.find((d: DirectiveNode) => d.name.value === directiveName)) {
       return true;
     }
 
     return false;
+  }
+
+  private removeDirectives(field: FieldDefinitionNode, directiveNames: (string | undefined)[]): void {
+    const names: string[] = directiveNames.filter(
+      (directiveName: string | undefined): directiveName is string => directiveName !== undefined,
+    );
+    Reflect.set(
+      field,
+      "directives",
+      getDirectives(field).filter(directive => !names.includes(directive.name.value)),
+    );
   }
 
   private removeWhereDirective(field: FieldDefinitionNode): void {
@@ -313,14 +330,7 @@ export class GenWhereTypesService {
     }
     for (const definition of definitions) {
       for (const f of getFieldDefinitions(definition)) {
-        if (!this.hasWhereIgnoreDirective(f)) {
-          continue;
-        }
-        Reflect.set(
-          f,
-          "directives",
-          getDirectives(f).filter(directive => directive.name.value !== this.options.whereIgnoreDirective!.name),
-        );
+        this.removeDirectives(f, [this.options.whereIgnoreDirective?.name, this.options.whereEqOnlyDirective?.name]);
       }
     }
   }

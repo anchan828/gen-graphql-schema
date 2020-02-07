@@ -518,4 +518,73 @@ describe("GenWhereTypesService", () => {
       ),
     );
   });
+
+  it("should apply where_eq_only directive", () => {
+    expect(
+      printSchema(
+        buildASTSchema(
+          new GenWhereTypesService(
+            [
+              `type Test {
+            id: ID!
+            name: String! @where_eq_only
+        }`,
+              `type Query { tests: [Test] @where}`,
+            ].join(`\n`),
+            {
+              supportOperatorTypes: {
+                Date: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte"],
+              },
+            },
+          ).genWhereTypes(),
+        ),
+      ),
+    ).toEqual(
+      printSchema(
+        buildASTSchema(
+          parse(`"""ID query with using operators"""
+    input IDWhereOperator {
+      """Query type of ID with using operators"""
+      type: IDWhereOperatorType!
+    
+      """Query value of ID"""
+      value: [ID]
+    }
+    
+    """Query type of ID with using operators"""
+    enum IDWhereOperatorType {
+      """Must match the given data exactly"""
+      EQ
+    
+      """Must be different from the given data"""
+      NOT_EQ
+    
+      """Must be an element of the array"""
+      IN
+    
+      """Must not be an element of the array"""
+      NOT_IN
+    }
+    
+    type Query {
+      tests(where: TestWhere): [Test]
+    }
+    
+    type Test {
+      id: ID!
+      name: String!
+    }
+    
+    """Query of Test with using operators"""
+    input TestWhere {
+      """Query with using id field"""
+      id: [IDWhereOperator]
+    
+      """Query with using name field"""
+      name: String
+    }`),
+        ),
+      ),
+    );
+  });
 });
