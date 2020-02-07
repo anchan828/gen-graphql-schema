@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.39](https://github.com/anchan828/gen-graphql-schema/compare/v0.1.38...v0.1.39) (2020-02-07)
+
+### Bug Fixes
+
+- **deps:** update dependency graphql to v14.6.0 ([e6b31c6](https://github.com/anchan828/gen-graphql-schema/commit/e6b31c6b158050f43dc1a07929ac289ebed24d11))
+- lint ([e755411](https://github.com/anchan828/gen-graphql-schema/commit/e75541120d8747d5254fffab2556229d0282d53a))
+- **deps:** update dependency change-case to v4 ([fa454ce](https://github.com/anchan828/gen-graphql-schema/commit/fa454ce8dec319a3b7ff4e7cd5a0fd1c27b0db8f))
+- **deps:** update dependency merge-graphql-schemas to v1.7.4 ([0abc25e](https://github.com/anchan828/gen-graphql-schema/commit/0abc25e831d83ba5c14dc254279f76880e2779e2))
+- **deps:** update dependency merge-graphql-schemas to v1.7.5 ([1bb2147](https://github.com/anchan828/gen-graphql-schema/commit/1bb214794fdc3a7fe10c3208246d2ad1546b92ce))
+- **deps:** update dependency merge-graphql-schemas to v1.7.6 ([4984477](https://github.com/anchan828/gen-graphql-schema/commit/49844772a74089cdf223d077ae167b36d2ea5044))
+
+### Features
+
+- support where_eq_only directive ([b3546c7](https://github.com/anchan828/gen-graphql-schema/commit/b3546c796c7b76679685bfb736da94194169ce0b))
+
 ## [0.1.38](https://github.com/anchan828/gen-graphql-schema/compare/v0.1.37...v0.1.38) (2019-12-23)
 
 ### Bug Fixes
