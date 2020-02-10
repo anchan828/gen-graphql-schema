@@ -16,6 +16,8 @@ export interface GenWhereTypesOptions {
   whereDirective?: { name?: string };
   whereIgnoreDirective?: { name?: string };
 
+  whereNestedObjectDirective?: { name?: string };
+
   whereEqOnlyDirective?: { name?: string };
   whereType?: { prefix?: string; suffix?: string };
   whereArgument?: { name?: string };

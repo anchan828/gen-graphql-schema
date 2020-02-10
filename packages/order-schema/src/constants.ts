@@ -15,6 +15,7 @@ export const DESCRIPTIONS = {
 export const DEFAULT_OPTIONS: GenOrderTypesOptions = {
   orderByDirective: { name: "orderBy" },
   orderByIgnoreDirective: { name: "orderBy_ignore" },
+  orderByNestedObjectDirective: { name: "orderBy_nested" },
   orderType: { prefix: "", suffix: "Order" },
   orderByArgument: { name: "orderBy", isList: true },
   orderDirection: {

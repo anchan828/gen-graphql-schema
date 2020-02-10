@@ -1,6 +1,7 @@
 export interface GenOrderTypesOptions {
   orderByDirective?: { name?: string };
   orderByIgnoreDirective?: { name?: string };
+  orderByNestedObjectDirective?: { name: string };
   orderDirection?: { typeName?: string; ascName?: string; descName?: string };
   orderByArgument?: { name?: string; isList?: boolean };
   orderType?: {

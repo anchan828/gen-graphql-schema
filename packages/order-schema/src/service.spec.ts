@@ -252,8 +252,8 @@ describe("GenOrderTypesService", () => {
 type TestPosition {
   column: Int!
   line: Int!
-  prev: TestPosition
-  next: TestPosition
+  prev: TestPosition @orderBy_nested
+  next: TestPosition 
 }
 type TestSubPosition {
   column: Int!
@@ -261,7 +261,7 @@ type TestSubPosition {
 }         
 type Test {
   id: ID!
-  position: TestPosition!
+  position: TestPosition! @orderBy_nested
 }`,
               `type Query { tests: [Test] @orderBy}`,
             ].join(`\n`),
@@ -315,9 +315,6 @@ type Test {
     
       """Order TestPosition by prev"""
       prev: TestPositionOrder
-    
-      """Order TestPosition by next"""
-      next: TestPositionOrder
     }
     
     type TestSubPosition {

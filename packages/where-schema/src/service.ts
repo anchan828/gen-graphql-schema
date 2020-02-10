@@ -7,10 +7,12 @@ import {
   getFieldDefinitionsByDirective,
   getFieldTypeName,
   getObjectOrUnionTypeDefinition,
+  getObjectOrUnionTypeDefinitions,
   getObjectTypeDefinitionsFromUnion,
   hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
+  isObjectType,
   isUnionType,
   toConstanceCase,
 } from "@anchan828/gen-graphql-schema-common";
@@ -42,14 +44,31 @@ export class GenWhereTypesService {
       if (!whereType) {
         continue;
       }
-
       this.appendWhereArgumentToFieldNode(field, whereType);
-      this.removeWhereDirective(field);
-      this.removeWhereIgnoreDirective(field);
     }
 
     for (const operator of this.typeOperatorMap.values()) {
       appendDefinitionToDocumentNode(this.documentNode, operator.enumType, operator.inputObjectType);
+    }
+
+    const definitions: ObjectTypeDefinitionNode[] = [];
+    for (const definition of getObjectOrUnionTypeDefinitions(this.documentNode)) {
+      if (isUnionType(definition)) {
+        definitions.push(...getObjectTypeDefinitionsFromUnion(this.documentNode, definition));
+      } else if (isObjectType(definition)) {
+        definitions.push(definition);
+      }
+    }
+
+    for (const definition of definitions) {
+      for (const field of getFieldDefinitions(definition)) {
+        this.removeDirectives(field, [
+          this.options.whereDirective?.name,
+          this.options.whereIgnoreDirective?.name,
+          this.options.whereNestedObjectDirective?.name,
+          this.options.whereEqOnlyDirective?.name,
+        ]);
+      }
     }
 
     return this.documentNode;
@@ -293,16 +312,18 @@ export class GenWhereTypesService {
           Reflect.get(this.options.supportOperatorTypes!, name)
         )
       ) {
-        if (name !== definition.name.value) {
-          this.genWhereTypeDefinition(field);
+        if (this.hasDirective(field, this.options.whereNestedObjectDirective?.name)) {
+          if (name !== definition.name.value) {
+            this.genWhereTypeDefinition(field);
+          }
+          fieldNames.push({
+            name: field.name.value,
+            type: name,
+            isList,
+            isObject: true,
+            isEqOnly: this.hasDirective(field, this.options.whereEqOnlyDirective?.name),
+          });
         }
-        fieldNames.push({
-          name: field.name.value,
-          type: name,
-          isList,
-          isObject: true,
-          isEqOnly: this.hasDirective(field, this.options.whereEqOnlyDirective?.name),
-        });
         continue;
       }
 
@@ -340,34 +361,6 @@ export class GenWhereTypesService {
       "directives",
       getDirectives(field).filter(directive => !names.includes(directive.name.value)),
     );
-  }
-
-  private removeWhereDirective(field: FieldDefinitionNode): void {
-    const directives = getDirectives(field);
-    Reflect.set(
-      field,
-      "directives",
-      directives.filter(directive => directive.name.value !== this.options.whereDirective!.name),
-    );
-  }
-
-  private removeWhereIgnoreDirective(field: FieldDefinitionNode): void {
-    const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
-    if (!type) {
-      return;
-    }
-    const definitions: ObjectTypeDefinitionNode[] = [];
-
-    if (isUnionType(type)) {
-      definitions.push(...getObjectTypeDefinitionsFromUnion(this.documentNode, type));
-    } else {
-      definitions.push(type);
-    }
-    for (const definition of definitions) {
-      for (const f of getFieldDefinitions(definition)) {
-        this.removeDirectives(f, [this.options.whereIgnoreDirective?.name, this.options.whereEqOnlyDirective?.name]);
-      }
-    }
   }
 
   private readonly documentNode: DocumentNode;

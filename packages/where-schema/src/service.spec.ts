@@ -598,8 +598,8 @@ describe("GenWhereTypesService", () => {
 type TestPosition {
   column: Int!
   line: Int!
-  prev: TestPosition
-  next: TestPosition
+  prev: TestPosition @where_nested
+  next: TestPosition @where_nested
 }
 type TestSubPosition {
   column: Int!
@@ -607,7 +607,7 @@ type TestSubPosition {
 }         
 type Test {
   id: ID!
-  position: TestPosition!
+  position: TestPosition! @where_nested
 }`,
               `type Query { tests: [Test] @where}`,
             ].join(`\n`),

@@ -7,10 +7,12 @@ import {
   getFieldDefinitionsByDirective,
   getFieldTypeName,
   getObjectOrUnionTypeDefinition,
+  getObjectOrUnionTypeDefinitions,
   getObjectTypeDefinitionsFromUnion,
   hasDirectiveInDocumentNode,
   isBasicType,
   isEnumType,
+  isObjectType,
   isUnionType,
 } from "@anchan828/gen-graphql-schema-common";
 import * as deepmerge from "deepmerge";
@@ -42,12 +44,28 @@ export class GenOrderTypesService {
       }
 
       this.appendOrderByArgumentToFieldNode(field, orderByType);
-      this.removeOrderByDirective(field);
-      this.removeOrderByIgnoreDirective(field);
     }
 
     for (const operator of this.typeOperatorMap.values()) {
       appendDefinitionToDocumentNode(this.documentNode, operator);
+    }
+    const definitions: ObjectTypeDefinitionNode[] = [];
+    for (const definition of getObjectOrUnionTypeDefinitions(this.documentNode)) {
+      if (isUnionType(definition)) {
+        definitions.push(...getObjectTypeDefinitionsFromUnion(this.documentNode, definition));
+      } else if (isObjectType(definition)) {
+        definitions.push(definition);
+      }
+    }
+
+    for (const definition of definitions) {
+      for (const field of getFieldDefinitions(definition)) {
+        this.removeDirectives(field, [
+          this.options.orderByDirective?.name,
+          this.options.orderByIgnoreDirective?.name,
+          this.options.orderByNestedObjectDirective?.name,
+        ]);
+      }
     }
 
     return this.documentNode;
@@ -186,6 +204,7 @@ export class GenOrderTypesService {
     if (!this.typeOperatorMap.has(orderByTypeName)) {
       this.typeOperatorMap.set(orderByTypeName, orderByType);
     }
+    this.removeDirectives(field, [this.options.orderByNestedObjectDirective?.name]);
     return orderByType;
   }
 
@@ -218,15 +237,17 @@ export class GenOrderTypesService {
       }
       if (!this.options.supportOrderableTypes?.includes(name)) {
         if (!(isBasicType(name) || isEnumType(this.documentNode, name))) {
-          if (name !== definition.name.value) {
-            this.genOrderByTypeDefinitionByField(field);
-          }
+          if (this.hasDirective(field, this.options.orderByNestedObjectDirective?.name)) {
+            if (name !== definition.name.value) {
+              this.genOrderByTypeDefinitionByField(field);
+            }
 
-          fieldNames.push({
-            name: field.name.value,
-            type: name,
-            isObject: true,
-          });
+            fieldNames.push({
+              name: field.name.value,
+              type: name,
+              isObject: true,
+            });
+          }
           continue;
         }
       }
@@ -265,16 +286,7 @@ export class GenOrderTypesService {
     );
   }
 
-  private removeOrderByDirective(field: FieldDefinitionNode): void {
-    const directives = getDirectives(field);
-    Reflect.set(
-      field,
-      "directives",
-      directives.filter(directive => directive.name.value !== this.options.orderByDirective!.name),
-    );
-  }
-
-  private removeOrderByIgnoreDirective(field: FieldDefinitionNode): void {
+  private removeFieldDirectives(field: FieldDefinitionNode): void {
     const type = getObjectOrUnionTypeDefinition(this.documentNode, field);
     if (!type) {
       return;
@@ -288,7 +300,10 @@ export class GenOrderTypesService {
     }
     for (const definition of definitions) {
       for (const f of getFieldDefinitions(definition)) {
-        this.removeDirectives(f, [this.options.orderByIgnoreDirective?.name]);
+        this.removeDirectives(f, [
+          this.options.orderByIgnoreDirective?.name,
+          this.options.orderByNestedObjectDirective?.name,
+        ]);
       }
     }
   }

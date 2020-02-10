@@ -31,6 +31,7 @@ export const DESCRIPTIONS = {
 export const DEFAULT_OPTIONS: GenWhereTypesOptions = {
   whereDirective: { name: "where" },
   whereIgnoreDirective: { name: "where_ignore" },
+  whereNestedObjectDirective: { name: "where_nested" },
   whereEqOnlyDirective: { name: "where_eq_only" },
   whereType: { prefix: "", suffix: "Where" },
   whereArgument: { name: "where" },

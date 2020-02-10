@@ -47,6 +47,11 @@ export const isEnumType = (types: DocumentNode, typeName: string): boolean => {
 export const isUnionType = (definition: DefinitionNode): definition is UnionTypeDefinitionNode => {
   return definition && definition.kind === "UnionTypeDefinition";
 };
+
+export const isObjectType = (definition: DefinitionNode): definition is ObjectTypeDefinitionNode => {
+  return definition && definition.kind === "ObjectTypeDefinition";
+};
+
 const getListTypeName = (listType: TypeNode, isList: boolean): { name: string; isList: boolean } => {
   if (listType.kind === "ListType") {
     return getListTypeName(listType.type, isList);
