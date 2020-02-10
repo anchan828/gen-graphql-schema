@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/anchan828/gen-graphql-schema/compare/v0.1.40...v0.2.0) (2020-02-10)
+
+### Features
+
+- improve order structure ([e6b7746](https://github.com/anchan828/gen-graphql-schema/commit/e6b77467ab1aa09b047e77798d3e2e19b3881e0b))
+
 ## [0.1.39](https://github.com/anchan828/gen-graphql-schema/compare/v0.1.38...v0.1.39) (2020-02-07)
 
 ### Bug Fixes
