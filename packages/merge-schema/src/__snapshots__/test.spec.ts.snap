@@ -62,22 +62,13 @@ type Test {
 }
 
 type Test2 {
-  tests(orderBy: [TestOrder]): [Test]
+  tests(orderBy: TestOrder): [Test]
 }
 
 \\"\\"\\"Ordering options for Test\\"\\"\\"
 input TestOrder {
-  \\"\\"\\"The field to order Test by.\\"\\"\\"
-  field: TestOrderField
-
-  \\"\\"\\"The ordering direction.\\"\\"\\"
-  direction: OrderDirection
-}
-
-\\"\\"\\"Properties by which Test can be ordered.\\"\\"\\"
-enum TestOrderField {
   \\"\\"\\"Order Test by id\\"\\"\\"
-  id
+  id: OrderDirection
 }
 "
 `;
@@ -241,7 +232,7 @@ type Test2 implements Node {
 }
 
 type Test3 {
-  tests(orderBy: [TestOrder], where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
+  tests(orderBy: TestOrder, where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
 \\"\\"\\"The connection type for Test\\"\\"\\"
@@ -267,23 +258,14 @@ type TestEdge implements Edge {
 
 \\"\\"\\"Ordering options for Test\\"\\"\\"
 input TestOrder {
-  \\"\\"\\"The field to order Test by.\\"\\"\\"
-  field: TestOrderField
-
-  \\"\\"\\"The ordering direction.\\"\\"\\"
-  direction: OrderDirection
-}
-
-\\"\\"\\"Properties by which Test can be ordered.\\"\\"\\"
-enum TestOrderField {
   \\"\\"\\"Order Test by id\\"\\"\\"
-  id
+  id: OrderDirection
 
   \\"\\"\\"Order Test by name\\"\\"\\"
-  name
+  name: OrderDirection
 
   \\"\\"\\"Order Test by age\\"\\"\\"
-  age
+  age: OrderDirection
 }
 
 \\"\\"\\"Query of Test with using operators\\"\\"\\"
@@ -380,7 +362,7 @@ type Test implements Node {
 }
 
 type Test2 {
-  tests(orderBy: [TestOrder], where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
+  tests(orderBy: TestOrder, where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
 \\"\\"\\"The connection type for Test\\"\\"\\"
@@ -406,17 +388,8 @@ type TestEdge implements Edge {
 
 \\"\\"\\"Ordering options for Test\\"\\"\\"
 input TestOrder {
-  \\"\\"\\"The field to order Test by.\\"\\"\\"
-  field: TestOrderField
-
-  \\"\\"\\"The ordering direction.\\"\\"\\"
-  direction: OrderDirection
-}
-
-\\"\\"\\"Properties by which Test can be ordered.\\"\\"\\"
-enum TestOrderField {
   \\"\\"\\"Order Test by id\\"\\"\\"
-  id
+  id: OrderDirection
 }
 
 \\"\\"\\"Query of Test with using operators\\"\\"\\"

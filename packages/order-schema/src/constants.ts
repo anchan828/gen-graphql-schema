@@ -1,4 +1,4 @@
-import { GenOrderTypesOptions } from "./options";
+import { GenOrderTypesOptions } from "./interfaces";
 
 export const DESCRIPTIONS = {
   OEDER_DIRECTION: {
@@ -6,42 +6,21 @@ export const DESCRIPTIONS = {
     ASC: "Sort the results in ascending order",
     DESC: "Sort the results in descending order",
   },
-  ORDER: {
+  ORDER_TYPE: {
     TYPE: (typeName: string): string => `Ordering options for ${typeName}`,
-    FIELD: (typeName: string): string => `The field to order ${typeName} by.`,
-    DIRECTION: `The ordering direction.`,
-  },
-  ORDER_FIELD: {
-    ENUM: (typeName: string): string => `Properties by which ${typeName} can be ordered.`,
-    VALUE: (typeName: string, fieldName: string): string => `Order ${typeName} by ${fieldName}`,
+    FIELDS: (typeName: string, fieldName: string): string => `Order ${typeName} by ${fieldName}`,
   },
 };
 
 export const DEFAULT_OPTIONS: GenOrderTypesOptions = {
-  orderByDirective: {
-    name: "orderBy",
-  },
-  orderByIgnoreDirective: {
-    name: "orderBy_ignore",
-  },
+  orderByDirective: { name: "orderBy" },
+  orderByIgnoreDirective: { name: "orderBy_ignore" },
+  orderType: { prefix: "", suffix: "Order" },
+  orderByArgument: { name: "orderBy", isList: true },
   orderDirection: {
     typeName: `OrderDirection`,
     ascName: "ASC",
     descName: "DESC",
-  },
-  orderByArgument: {
-    name: "orderBy",
-    isList: true,
-  },
-  orderType: {
-    prefix: "",
-    suffix: "Order",
-    fieldName: "field",
-    directionName: "direction",
-  },
-  orderFieldEnum: {
-    prefix: "",
-    suffix: "OrderField",
   },
   supportOrderableTypes: [],
 };

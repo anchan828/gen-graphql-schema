@@ -6,9 +6,14 @@ export interface GenOrderTypesOptions {
   orderType?: {
     prefix?: string;
     suffix?: string;
-    fieldName?: string;
-    directionName?: string;
   };
   orderFieldEnum?: { prefix?: string; suffix?: string };
+
   supportOrderableTypes?: string[];
+}
+
+export interface OrderByFieldNameAndType {
+  name: string;
+  type: string;
+  isObject: boolean;
 }
