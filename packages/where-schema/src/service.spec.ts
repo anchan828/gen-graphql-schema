@@ -587,4 +587,147 @@ describe("GenWhereTypesService", () => {
       ),
     );
   });
+
+  it("should deep where", () => {
+    expect(
+      printSchema(
+        buildASTSchema(
+          new GenWhereTypesService(
+            [
+              `
+type TestPosition {
+  column: Int!
+  line: Int!
+  prev: TestPosition
+  next: TestPosition
+}
+type TestSubPosition {
+  column: Int!
+  line: Int!
+}         
+type Test {
+  id: ID!
+  position: TestPosition!
+}`,
+              `type Query { tests: [Test] @where}`,
+            ].join(`\n`),
+            {
+              supportOperatorTypes: {
+                Date: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte"],
+              },
+            },
+          ).genWhereTypes(),
+        ),
+      ),
+    ).toEqual(
+      printSchema(
+        buildASTSchema(
+          parse(`"""ID query with using operators"""
+    input IDWhereOperator {
+      """Query type of ID with using operators"""
+      type: IDWhereOperatorType!
+    
+      """Query value of ID"""
+      value: [ID]
+    }
+    
+    """Query type of ID with using operators"""
+    enum IDWhereOperatorType {
+      """Must match the given data exactly"""
+      EQ
+    
+      """Must be different from the given data"""
+      NOT_EQ
+    
+      """Must be an element of the array"""
+      IN
+    
+      """Must not be an element of the array"""
+      NOT_IN
+    }
+    
+    """Int query with using operators"""
+    input IntWhereOperator {
+      """Query type of Int with using operators"""
+      type: IntWhereOperatorType!
+    
+      """Query value of Int"""
+      value: [Int]
+    }
+    
+    """Query type of Int with using operators"""
+    enum IntWhereOperatorType {
+      """Must match the given data exactly"""
+      EQ
+    
+      """Must be different from the given data"""
+      NOT_EQ
+    
+      """Must be an element of the array"""
+      IN
+    
+      """Must not be an element of the array"""
+      NOT_IN
+    
+      """Must be less than given value"""
+      LT
+    
+      """Must be less than or equal to given value"""
+      LTE
+    
+      """Must be greater than given value"""
+      GT
+    
+      """Must be greater than or equal to given value"""
+      GTE
+    }
+    
+    type Query {
+      tests(where: TestWhere): [Test]
+    }
+    
+    type Test {
+      id: ID!
+      position: TestPosition!
+    }
+    
+    type TestPosition {
+      column: Int!
+      line: Int!
+      prev: TestPosition
+      next: TestPosition
+    }
+    
+    """Query of TestPosition with using operators"""
+    input TestPositionWhere {
+      """Query with using column field"""
+      column: [IntWhereOperator]
+    
+      """Query with using line field"""
+      line: [IntWhereOperator]
+    
+      """Query with using prev field"""
+      prev: TestPositionWhere
+    
+      """Query with using next field"""
+      next: TestPositionWhere
+    }
+    
+    type TestSubPosition {
+      column: Int!
+      line: Int!
+    }
+    
+    """Query of Test with using operators"""
+    input TestWhere {
+      """Query with using id field"""
+      id: [IDWhereOperator]
+    
+      """Query with using position field"""
+      position: TestPositionWhere
+    }`),
+        ),
+      ),
+    );
+  });
 });

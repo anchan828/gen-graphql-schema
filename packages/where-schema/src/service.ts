@@ -186,8 +186,8 @@ export class GenWhereTypesService {
 
     const fieldNameAndTypes = this.getWhereFieldNameAndTypes(fieldType);
     const fields: InputValueDefinitionNode[] = [];
-    for (const { name, type, isEqOnly } of fieldNameAndTypes) {
-      let fieldTypeNode: TypeNode;
+    for (const { name, type, isEqOnly, isObject } of fieldNameAndTypes) {
+      let fieldTypeNode: TypeNode | undefined;
 
       if (type === "Boolean" || isEqOnly) {
         fieldTypeNode = {
@@ -195,6 +195,15 @@ export class GenWhereTypesService {
           name: {
             kind: "Name",
             value: type,
+          },
+        };
+      } else if (isObject) {
+        this.genOperatorDefinitions(type);
+        fieldTypeNode = {
+          kind: "NamedType",
+          name: {
+            kind: "Name",
+            value: `${this.options.whereType!.prefix}${type}${this.options.whereType!.suffix}`,
           },
         };
       } else {
@@ -210,19 +219,21 @@ export class GenWhereTypesService {
           },
         };
       }
-      fields.push({
-        kind: "InputValueDefinition",
-        name: {
-          kind: "Name",
-          value: name,
-        },
-        description: {
-          kind: "StringValue",
-          value: DESCRIPTIONS.WHERE_TYPE.FIELDS(name),
-        },
-        type: fieldTypeNode,
-        directives: [],
-      });
+      if (fieldTypeNode) {
+        fields.push({
+          kind: "InputValueDefinition",
+          name: {
+            kind: "Name",
+            value: name,
+          },
+          description: {
+            kind: "StringValue",
+            value: DESCRIPTIONS.WHERE_TYPE.FIELDS(name),
+          },
+          type: fieldTypeNode,
+          directives: [],
+        });
+      }
     }
 
     const whereTypeOptions = this.options.whereType!;
@@ -248,6 +259,7 @@ export class GenWhereTypesService {
     return whereType;
   }
 
+  // TODO: ここを改善
   private getWhereFieldNameAndTypes(
     definition: ObjectTypeDefinitionNode | UnionTypeDefinitionNode,
   ): WhereFieldNameAndType[] {
@@ -262,22 +274,45 @@ export class GenWhereTypesService {
     } else {
       fields.push(...getFieldDefinitions(definition));
     }
+
     for (const field of fields) {
       const { name, isList } = getFieldTypeName(field);
+
+      if (fieldNames.findIndex(fn => fn.name === field.name.value) !== -1) {
+        continue;
+      }
+
+      if (this.hasDirective(field, this.options.whereIgnoreDirective?.name)) {
+        continue;
+      }
+
       if (
-        fieldNames.findIndex(fn => fn.name === field.name.value) === -1 &&
-        (isBasicType(name) ||
+        !(
+          isBasicType(name) ||
           isEnumType(this.documentNode, name) ||
-          Reflect.get(this.options.supportOperatorTypes!, name)) &&
-        !this.hasDirective(field, this.options.whereIgnoreDirective?.name)
+          Reflect.get(this.options.supportOperatorTypes!, name)
+        )
       ) {
+        if (name !== definition.name.value) {
+          this.genWhereTypeDefinition(field);
+        }
         fieldNames.push({
           name: field.name.value,
           type: name,
           isList,
+          isObject: true,
           isEqOnly: this.hasDirective(field, this.options.whereEqOnlyDirective?.name),
         });
+        continue;
       }
+
+      fieldNames.push({
+        name: field.name.value,
+        type: name,
+        isList,
+        isObject: false,
+        isEqOnly: this.hasDirective(field, this.options.whereEqOnlyDirective?.name),
+      });
     }
 
     return fieldNames;

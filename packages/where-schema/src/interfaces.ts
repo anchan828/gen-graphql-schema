@@ -35,5 +35,6 @@ export interface WhereFieldNameAndType {
   name: string;
   type: string;
   isList: boolean;
+  isObject: boolean;
   isEqOnly: boolean;
 }
