@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/anchan828/gen-graphql-schema/compare/v0.2.0...v0.2.1) (2020-02-10)
+
+### Features
+
+- add x_nested directive ([d6fda01](https://github.com/anchan828/gen-graphql-schema/commit/d6fda0101afa33549efc73fecaa29405cdffde62))
+
 # [0.2.0](https://github.com/anchan828/gen-graphql-schema/compare/v0.1.40...v0.2.0) (2020-02-10)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-schema-common
