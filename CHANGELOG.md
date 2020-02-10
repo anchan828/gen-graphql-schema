@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.40](https://github.com/anchan828/gen-graphql-schema/compare/v0.1.39...v0.1.40) (2020-02-10)
+
+### Features
+
+- support deep object ([ace6d04](https://github.com/anchan828/gen-graphql-schema/commit/ace6d04de03c54b6c0dd6a662c5a4f3202befa23))
+
 ## [0.1.39](https://github.com/anchan828/gen-graphql-schema/compare/v0.1.38...v0.1.39) (2020-02-07)
 
 ### Bug Fixes
