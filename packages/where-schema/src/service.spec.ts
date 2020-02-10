@@ -306,7 +306,7 @@ describe("GenWhereTypesService", () => {
               ].join(`\n`),
             ),
             {
-              whereArgment: {
+              whereArgument: {
                 name: "Hoge",
               },
               whereDirective: {

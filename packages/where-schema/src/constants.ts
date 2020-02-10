@@ -33,7 +33,7 @@ export const DEFAULT_OPTIONS: GenWhereTypesOptions = {
   whereIgnoreDirective: { name: "where_ignore" },
   whereEqOnlyDirective: { name: "where_eq_only" },
   whereType: { prefix: "", suffix: "Where" },
-  whereArgment: { name: "where" },
+  whereArgument: { name: "where" },
   whereOperatorType: {
     prefix: "",
     suffix: "WhereOperatorType",

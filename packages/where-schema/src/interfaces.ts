@@ -18,7 +18,7 @@ export interface GenWhereTypesOptions {
 
   whereEqOnlyDirective?: { name?: string };
   whereType?: { prefix?: string; suffix?: string };
-  whereArgment?: { name?: string };
+  whereArgument?: { name?: string };
   whereOperatorType?: { prefix?: string; suffix?: string };
   whereOperator?: { prefix?: string; suffix?: string };
   enumTypeOperator?: OperatorType[];

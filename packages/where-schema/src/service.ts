@@ -164,7 +164,7 @@ export class GenWhereTypesService {
         kind: "FieldDefinition",
         name: {
           kind: "Name",
-          value: this.options.whereArgment!.name!,
+          value: this.options.whereArgument!.name!,
         },
         type: {
           kind: "NamedType",
