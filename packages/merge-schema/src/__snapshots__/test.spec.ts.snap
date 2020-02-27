@@ -70,7 +70,7 @@ enum OrderDirection {
 
 exports[`mergeTypes should work orderBy, where, and relay directive 1`] = `
 "type Query
-type Test1 implements interface Node {
+type Test1 implements Node {
   id: ID
   name: String!
 }
@@ -79,7 +79,7 @@ interface Node {
   \\"ID of the object.\\"
   id: ID!
 }
-type Test2 implements interface Node {
+type Test2 implements Node {
   id: ID
   age: Int!
 }
@@ -181,7 +181,7 @@ enum IntWhereOperatorType {
   GTE
 }
 \\"The connection type for Test\\"
-type TestConnection implements interface Connection {
+type TestConnection implements Connection {
   \\"Identifies the total count of Test items in the connection.\\"
   totalCount: Int
   \\"A list of TestEdge.\\"
@@ -215,7 +215,7 @@ interface Edge {
   cursor: String
 }
 \\"An edge in a TestConnection.\\"
-type TestEdge implements interface Edge {
+type TestEdge implements Edge {
   \\"The item at the end of the edge.\\"
   node: Test!
   \\"A cursor for use in pagination.\\"
@@ -227,7 +227,7 @@ type TestEdge implements interface Edge {
 
 exports[`mergeTypes should work orderBy, where, and relay directive in union 1`] = `
 "type Query
-type Test implements interface Node {
+type Test implements Node {
   id: ID
 }
 \\"An object with an ID.\\"
@@ -274,7 +274,7 @@ enum IDWhereOperatorType {
   NOT_IN
 }
 \\"The connection type for Test\\"
-type TestConnection implements interface Connection {
+type TestConnection implements Connection {
   \\"Identifies the total count of Test items in the connection.\\"
   totalCount: Int
   \\"A list of TestEdge.\\"
@@ -308,7 +308,7 @@ interface Edge {
   cursor: String
 }
 \\"An edge in a TestConnection.\\"
-type TestEdge implements interface Edge {
+type TestEdge implements Edge {
   \\"The item at the end of the edge.\\"
   node: Test!
   \\"A cursor for use in pagination.\\"
@@ -320,7 +320,7 @@ type TestEdge implements interface Edge {
 
 exports[`mergeTypes should work relay directive 1`] = `
 "type Query
-type Test implements interface Node {
+type Test implements Node {
   id: ID
 }
 \\"An object with an ID.\\"
@@ -332,7 +332,7 @@ type Test2 {
   tests(before: String, after: String, first: Int, last: Int): TestConnection!
 }
 \\"The connection type for Test\\"
-type TestConnection implements interface Connection {
+type TestConnection implements Connection {
   \\"Identifies the total count of Test items in the connection.\\"
   totalCount: Int
   \\"A list of TestEdge.\\"
@@ -366,7 +366,7 @@ interface Edge {
   cursor: String
 }
 \\"An edge in a TestConnection.\\"
-type TestEdge implements interface Edge {
+type TestEdge implements Edge {
   \\"The item at the end of the edge.\\"
   node: Test!
   \\"A cursor for use in pagination.\\"
