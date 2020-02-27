@@ -17,11 +17,13 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "change-case": "^4.0.0",
-    "graphql": "14.6.0"
+    "change-case": "^4.0.0"
   },
   "devDependencies": {
     "@types/graphql": "14.2.3"
+  },
+  "peerDependencies": {
+    "graphql": "14.6.0"
   },
   "repository": {
     "type": "git",

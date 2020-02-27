@@ -44,7 +44,10 @@ describe("mergeTypes", () => {
   });
 
   it("should merge descriptions", () => {
-    const types = [`"""Test""" type Test {"""id descrip""" id: ID}`, `type Test { """name descrip""" name: ID}`];
+    const types = [
+      `"""Test\nNewLine""" type Test {"""id descrip""" id: ID}`,
+      `type Test { """name descrip""" name: ID}`,
+    ];
     expect(mergeTypes(types)).toMatchSnapshot();
   });
 });

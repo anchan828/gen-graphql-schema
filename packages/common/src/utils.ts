@@ -5,8 +5,13 @@ import {
   DocumentNode,
   EnumTypeDefinitionNode,
   FieldDefinitionNode,
+  GraphQLDirective,
+  GraphQLSchema,
+  isSpecifiedDirective,
+  isSpecifiedScalarType,
   NamedTypeNode,
   ObjectTypeDefinitionNode,
+  print,
   TypeNode,
   UnionTypeDefinitionNode,
 } from "graphql";
@@ -212,3 +217,18 @@ export const removeDefinitionByName = (documentNode: DocumentNode, name: string)
 };
 
 export const toConstanceCase = (str: string): string => changeCase.constantCase(str);
+
+export const printSchemaWithDirectives = (schema: GraphQLSchema): string => {
+  const str = Object.keys(schema.getTypeMap())
+    .filter(k => !k.match(/^__/))
+    .reduce((accum: string, name: string) => {
+      const type = schema.getType(name);
+      return type !== undefined && type !== null && !isSpecifiedScalarType(type as any) && type?.astNode
+        ? (accum += `${print(type.astNode)}\n`)
+        : accum;
+    }, "");
+
+  return schema.getDirectives().reduce((accum: string, d: GraphQLDirective) => {
+    return !isSpecifiedDirective(d) && d.astNode ? (accum += `${print(d.astNode)}\n`) : accum;
+  }, str + `\n`);
+};

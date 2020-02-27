@@ -1,517 +1,412 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`mergeTypes should have interface 1`] = `
-"interface Interface {
-  id: ID
-}
-
+"type Query
 interface Node {
   id: ID
 }
-
-type Query
-
 type Test implements Node & Interface {
   id: ID
 }
+interface Interface {
+  id: ID
+}
+
 "
 `;
 
 exports[`mergeTypes should merge descriptions 1`] = `
 "type Query
-
-\\"\\"\\"Test\\"\\"\\"
+\\"\\"\\"
+Test
+NewLine
+\\"\\"\\"
 type Test {
   \\"\\"\\"id descrip\\"\\"\\"
   id: ID
-
   \\"\\"\\"name descrip\\"\\"\\"
   name: ID
 }
+
 "
 `;
 
 exports[`mergeTypes should merge types 1`] = `
 "type Query
-
 \\"\\"\\"Test\\"\\"\\"
 type Test {
   id: ID
 }
-
 type Test2 {
   id: ID
 }
+
 "
 `;
 
 exports[`mergeTypes should work orderBy directive 1`] = `
-"\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
-enum OrderDirection {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
-  ASC
-
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
-  DESC
-}
-
-type Query
-
+"type Query
 type Test {
   id: ID
 }
-
 type Test2 {
   tests(orderBy: TestOrder): [Test]
 }
-
-\\"\\"\\"Ordering options for Test\\"\\"\\"
+\\"Ordering options for Test\\"
 input TestOrder {
-  \\"\\"\\"Order Test by id\\"\\"\\"
+  \\"Order Test by id\\"
   id: OrderDirection
 }
+\\"Sort the results in ascending or descending order\\"
+enum OrderDirection {
+  \\"Sort the results in ascending order\\"
+  ASC
+  \\"Sort the results in descending order\\"
+  DESC
+}
+
 "
 `;
 
 exports[`mergeTypes should work orderBy, where, and relay directive 1`] = `
-"\\"\\"\\"A connection for relay\\"\\"\\"
-interface Connection {
-  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
-  totalCount: Int
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
-  pageInfo: PageInfo!
-
-  \\"\\"\\"A list of edges.\\"\\"\\"
-  edges: [Edge]
-}
-
-\\"\\"\\"An edge in a connection.\\"\\"\\"
-interface Edge {
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
-  cursor: String
-}
-
-\\"\\"\\"ID query with using operators\\"\\"\\"
-input IDWhereOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: IDWhereOperatorType!
-
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
-}
-
-\\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum IDWhereOperatorType {
-  \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
-
-  \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
-
-  \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
-
-  \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
-
-\\"\\"\\"Int query with using operators\\"\\"\\"
-input IntWhereOperator {
-  \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-  type: IntWhereOperatorType!
-
-  \\"\\"\\"Query value of Int\\"\\"\\"
-  value: [Int]
-}
-
-\\"\\"\\"Query type of Int with using operators\\"\\"\\"
-enum IntWhereOperatorType {
-  \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
-
-  \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
-
-  \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
-
-  \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-
-  \\"\\"\\"Must be less than given value\\"\\"\\"
-  LT
-
-  \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
-  LTE
-
-  \\"\\"\\"Must be greater than given value\\"\\"\\"
-  GT
-
-  \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
-  GTE
-}
-
-\\"\\"\\"An object with an ID.\\"\\"\\"
-interface Node {
-  \\"\\"\\"ID of the object.\\"\\"\\"
-  id: ID!
-}
-
-\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
-enum OrderDirection {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
-  ASC
-
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
-  DESC
-}
-
-\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
-type PageInfo {
-  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
-  startCursor: String
-
-  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
-  endCursor: String
-
-  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
-  hasNextPage: Boolean
-
-  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
-  hasPreviousPage: Boolean
-}
-
-type Query
-
-\\"\\"\\"String query with using operators\\"\\"\\"
-input StringWhereOperator {
-  \\"\\"\\"Query type of String with using operators\\"\\"\\"
-  type: StringWhereOperatorType!
-
-  \\"\\"\\"Query value of String\\"\\"\\"
-  value: [String]
-}
-
-\\"\\"\\"Query type of String with using operators\\"\\"\\"
-enum StringWhereOperatorType {
-  \\"\\"\\"Must match the string starts with the given data exactly\\"\\"\\"
-  STARTS_WITH
-
-  \\"\\"\\"Must match the string ends with the given data exactly\\"\\"\\"
-  ENDS_WITH
-
-  \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
-
-  \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
-
-  \\"\\"\\"
-  Determines whether the given string may be found within another string.
-  \\"\\"\\"
-  CONTAINS
-
-  \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
-
-  \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
-
-union Test = Test1 | Test2
-
-type Test1 implements Node {
+"type Query
+type Test1 implements interface Node {
   id: ID
   name: String!
 }
-
-type Test2 implements Node {
+\\"An object with an ID.\\"
+interface Node {
+  \\"ID of the object.\\"
+  id: ID!
+}
+type Test2 implements interface Node {
   id: ID
   age: Int!
 }
-
+union Test = Test1 | Test2
 type Test3 {
   tests(orderBy: TestOrder, where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
-
-\\"\\"\\"The connection type for Test\\"\\"\\"
-type TestConnection implements Connection {
-  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+\\"Ordering options for Test\\"
+input TestOrder {
+  \\"Order Test by id\\"
+  id: OrderDirection
+  \\"Order Test by name\\"
+  name: OrderDirection
+  \\"Order Test by age\\"
+  age: OrderDirection
+}
+\\"Sort the results in ascending or descending order\\"
+enum OrderDirection {
+  \\"Sort the results in ascending order\\"
+  ASC
+  \\"Sort the results in descending order\\"
+  DESC
+}
+\\"Query of Test with using operators\\"
+input TestWhere {
+  \\"Query with using id field\\"
+  id: [IDWhereOperator]
+  \\"Query with using name field\\"
+  name: [StringWhereOperator]
+  \\"Query with using age field\\"
+  age: [IntWhereOperator]
+}
+\\"ID query with using operators\\"
+input IDWhereOperator {
+  \\"Query type of ID with using operators\\"
+  type: IDWhereOperatorType!
+  \\"Query value of ID\\"
+  value: [ID]
+}
+\\"Query type of ID with using operators\\"
+enum IDWhereOperatorType {
+  \\"Must match the given data exactly\\"
+  EQ
+  \\"Must be different from the given data\\"
+  NOT_EQ
+  \\"Must be an element of the array\\"
+  IN
+  \\"Must not be an element of the array\\"
+  NOT_IN
+}
+\\"String query with using operators\\"
+input StringWhereOperator {
+  \\"Query type of String with using operators\\"
+  type: StringWhereOperatorType!
+  \\"Query value of String\\"
+  value: [String]
+}
+\\"Query type of String with using operators\\"
+enum StringWhereOperatorType {
+  \\"Must match the string starts with the given data exactly\\"
+  STARTS_WITH
+  \\"Must match the string ends with the given data exactly\\"
+  ENDS_WITH
+  \\"Must match the given data exactly\\"
+  EQ
+  \\"Must be different from the given data\\"
+  NOT_EQ
+  \\"Determines whether the given string may be found within another string.\\"
+  CONTAINS
+  \\"Must be an element of the array\\"
+  IN
+  \\"Must not be an element of the array\\"
+  NOT_IN
+}
+\\"Int query with using operators\\"
+input IntWhereOperator {
+  \\"Query type of Int with using operators\\"
+  type: IntWhereOperatorType!
+  \\"Query value of Int\\"
+  value: [Int]
+}
+\\"Query type of Int with using operators\\"
+enum IntWhereOperatorType {
+  \\"Must match the given data exactly\\"
+  EQ
+  \\"Must be different from the given data\\"
+  NOT_EQ
+  \\"Must be an element of the array\\"
+  IN
+  \\"Must not be an element of the array\\"
+  NOT_IN
+  \\"Must be less than given value\\"
+  LT
+  \\"Must be less than or equal to given value\\"
+  LTE
+  \\"Must be greater than given value\\"
+  GT
+  \\"Must be greater than or equal to given value\\"
+  GTE
+}
+\\"The connection type for Test\\"
+type TestConnection implements interface Connection {
+  \\"Identifies the total count of Test items in the connection.\\"
   totalCount: Int
-
-  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  \\"A list of TestEdge.\\"
   edges: [TestEdge]
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  \\"Information to aid in pagination.\\"
   pageInfo: PageInfo!
 }
-
-\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
-type TestEdge implements Edge {
-  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
+\\"A connection for relay\\"
+interface Connection {
+  \\"Identifies the total count of items in the connection.\\"
+  totalCount: Int
+  \\"Information to aid in pagination.\\"
+  pageInfo: PageInfo!
+  \\"A list of edges.\\"
+  edges: [Edge]
+}
+\\"Information about pagination in a connection.\\"
+type PageInfo {
+  \\"When paginating backwards, the cursor to continue.\\"
+  startCursor: String
+  \\"When paginating forwards, the cursor to continue.\\"
+  endCursor: String
+  \\"When paginating forwards, are there more items?\\"
+  hasNextPage: Boolean
+  \\"When paginating backwards, are there more items?\\"
+  hasPreviousPage: Boolean
+}
+\\"An edge in a connection.\\"
+interface Edge {
+  \\"A cursor for use in pagination.\\"
+  cursor: String
+}
+\\"An edge in a TestConnection.\\"
+type TestEdge implements interface Edge {
+  \\"The item at the end of the edge.\\"
   node: Test!
-
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  \\"A cursor for use in pagination.\\"
   cursor: String
 }
 
-\\"\\"\\"Ordering options for Test\\"\\"\\"
-input TestOrder {
-  \\"\\"\\"Order Test by id\\"\\"\\"
-  id: OrderDirection
-
-  \\"\\"\\"Order Test by name\\"\\"\\"
-  name: OrderDirection
-
-  \\"\\"\\"Order Test by age\\"\\"\\"
-  age: OrderDirection
-}
-
-\\"\\"\\"Query of Test with using operators\\"\\"\\"
-input TestWhere {
-  \\"\\"\\"Query with using id field\\"\\"\\"
-  id: [IDWhereOperator]
-
-  \\"\\"\\"Query with using name field\\"\\"\\"
-  name: [StringWhereOperator]
-
-  \\"\\"\\"Query with using age field\\"\\"\\"
-  age: [IntWhereOperator]
-}
 "
 `;
 
 exports[`mergeTypes should work orderBy, where, and relay directive in union 1`] = `
-"\\"\\"\\"A connection for relay\\"\\"\\"
-interface Connection {
-  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
-  totalCount: Int
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
-  pageInfo: PageInfo!
-
-  \\"\\"\\"A list of edges.\\"\\"\\"
-  edges: [Edge]
-}
-
-\\"\\"\\"An edge in a connection.\\"\\"\\"
-interface Edge {
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
-  cursor: String
-}
-
-\\"\\"\\"ID query with using operators\\"\\"\\"
-input IDWhereOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: IDWhereOperatorType!
-
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
-}
-
-\\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum IDWhereOperatorType {
-  \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
-
-  \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
-
-  \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
-
-  \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
-
-\\"\\"\\"An object with an ID.\\"\\"\\"
-interface Node {
-  \\"\\"\\"ID of the object.\\"\\"\\"
-  id: ID!
-}
-
-\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
-enum OrderDirection {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
-  ASC
-
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
-  DESC
-}
-
-\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
-type PageInfo {
-  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
-  startCursor: String
-
-  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
-  endCursor: String
-
-  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
-  hasNextPage: Boolean
-
-  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
-  hasPreviousPage: Boolean
-}
-
-type Query
-
-type Test implements Node {
+"type Query
+type Test implements interface Node {
   id: ID
 }
-
+\\"An object with an ID.\\"
+interface Node {
+  \\"ID of the object.\\"
+  id: ID!
+}
 type Test2 {
   tests(orderBy: TestOrder, where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
-
-\\"\\"\\"The connection type for Test\\"\\"\\"
-type TestConnection implements Connection {
-  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+\\"Ordering options for Test\\"
+input TestOrder {
+  \\"Order Test by id\\"
+  id: OrderDirection
+}
+\\"Sort the results in ascending or descending order\\"
+enum OrderDirection {
+  \\"Sort the results in ascending order\\"
+  ASC
+  \\"Sort the results in descending order\\"
+  DESC
+}
+\\"Query of Test with using operators\\"
+input TestWhere {
+  \\"Query with using id field\\"
+  id: [IDWhereOperator]
+}
+\\"ID query with using operators\\"
+input IDWhereOperator {
+  \\"Query type of ID with using operators\\"
+  type: IDWhereOperatorType!
+  \\"Query value of ID\\"
+  value: [ID]
+}
+\\"Query type of ID with using operators\\"
+enum IDWhereOperatorType {
+  \\"Must match the given data exactly\\"
+  EQ
+  \\"Must be different from the given data\\"
+  NOT_EQ
+  \\"Must be an element of the array\\"
+  IN
+  \\"Must not be an element of the array\\"
+  NOT_IN
+}
+\\"The connection type for Test\\"
+type TestConnection implements interface Connection {
+  \\"Identifies the total count of Test items in the connection.\\"
   totalCount: Int
-
-  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  \\"A list of TestEdge.\\"
   edges: [TestEdge]
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  \\"Information to aid in pagination.\\"
   pageInfo: PageInfo!
 }
-
-\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
-type TestEdge implements Edge {
-  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
+\\"A connection for relay\\"
+interface Connection {
+  \\"Identifies the total count of items in the connection.\\"
+  totalCount: Int
+  \\"Information to aid in pagination.\\"
+  pageInfo: PageInfo!
+  \\"A list of edges.\\"
+  edges: [Edge]
+}
+\\"Information about pagination in a connection.\\"
+type PageInfo {
+  \\"When paginating backwards, the cursor to continue.\\"
+  startCursor: String
+  \\"When paginating forwards, the cursor to continue.\\"
+  endCursor: String
+  \\"When paginating forwards, are there more items?\\"
+  hasNextPage: Boolean
+  \\"When paginating backwards, are there more items?\\"
+  hasPreviousPage: Boolean
+}
+\\"An edge in a connection.\\"
+interface Edge {
+  \\"A cursor for use in pagination.\\"
+  cursor: String
+}
+\\"An edge in a TestConnection.\\"
+type TestEdge implements interface Edge {
+  \\"The item at the end of the edge.\\"
   node: Test!
-
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  \\"A cursor for use in pagination.\\"
   cursor: String
 }
 
-\\"\\"\\"Ordering options for Test\\"\\"\\"
-input TestOrder {
-  \\"\\"\\"Order Test by id\\"\\"\\"
-  id: OrderDirection
-}
-
-\\"\\"\\"Query of Test with using operators\\"\\"\\"
-input TestWhere {
-  \\"\\"\\"Query with using id field\\"\\"\\"
-  id: [IDWhereOperator]
-}
 "
 `;
 
 exports[`mergeTypes should work relay directive 1`] = `
-"\\"\\"\\"A connection for relay\\"\\"\\"
-interface Connection {
-  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
-  totalCount: Int
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
-  pageInfo: PageInfo!
-
-  \\"\\"\\"A list of edges.\\"\\"\\"
-  edges: [Edge]
-}
-
-\\"\\"\\"An edge in a connection.\\"\\"\\"
-interface Edge {
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
-  cursor: String
-}
-
-\\"\\"\\"An object with an ID.\\"\\"\\"
-interface Node {
-  \\"\\"\\"ID of the object.\\"\\"\\"
-  id: ID!
-}
-
-\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
-type PageInfo {
-  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
-  startCursor: String
-
-  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
-  endCursor: String
-
-  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
-  hasNextPage: Boolean
-
-  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
-  hasPreviousPage: Boolean
-}
-
-type Query
-
-type Test implements Node {
+"type Query
+type Test implements interface Node {
   id: ID
 }
-
+\\"An object with an ID.\\"
+interface Node {
+  \\"ID of the object.\\"
+  id: ID!
+}
 type Test2 {
   tests(before: String, after: String, first: Int, last: Int): TestConnection!
 }
-
-\\"\\"\\"The connection type for Test\\"\\"\\"
-type TestConnection implements Connection {
-  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+\\"The connection type for Test\\"
+type TestConnection implements interface Connection {
+  \\"Identifies the total count of Test items in the connection.\\"
   totalCount: Int
-
-  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  \\"A list of TestEdge.\\"
   edges: [TestEdge]
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  \\"Information to aid in pagination.\\"
   pageInfo: PageInfo!
 }
-
-\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
-type TestEdge implements Edge {
-  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
-  node: Test!
-
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+\\"A connection for relay\\"
+interface Connection {
+  \\"Identifies the total count of items in the connection.\\"
+  totalCount: Int
+  \\"Information to aid in pagination.\\"
+  pageInfo: PageInfo!
+  \\"A list of edges.\\"
+  edges: [Edge]
+}
+\\"Information about pagination in a connection.\\"
+type PageInfo {
+  \\"When paginating backwards, the cursor to continue.\\"
+  startCursor: String
+  \\"When paginating forwards, the cursor to continue.\\"
+  endCursor: String
+  \\"When paginating forwards, are there more items?\\"
+  hasNextPage: Boolean
+  \\"When paginating backwards, are there more items?\\"
+  hasPreviousPage: Boolean
+}
+\\"An edge in a connection.\\"
+interface Edge {
+  \\"A cursor for use in pagination.\\"
   cursor: String
 }
+\\"An edge in a TestConnection.\\"
+type TestEdge implements interface Edge {
+  \\"The item at the end of the edge.\\"
+  node: Test!
+  \\"A cursor for use in pagination.\\"
+  cursor: String
+}
+
 "
 `;
 
 exports[`mergeTypes should work where directive 1`] = `
-"\\"\\"\\"ID query with using operators\\"\\"\\"
-input IDWhereOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: IDWhereOperatorType!
-
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
-}
-
-\\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum IDWhereOperatorType {
-  \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
-
-  \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
-
-  \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
-
-  \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
-
-type Query
-
+"type Query
 type Test {
   id: ID
 }
-
 type Test2 {
   tests(where: TestWhere): [Test]
 }
-
-\\"\\"\\"Query of Test with using operators\\"\\"\\"
+\\"Query of Test with using operators\\"
 input TestWhere {
-  \\"\\"\\"Query with using id field\\"\\"\\"
+  \\"Query with using id field\\"
   id: [IDWhereOperator]
 }
+\\"ID query with using operators\\"
+input IDWhereOperator {
+  \\"Query type of ID with using operators\\"
+  type: IDWhereOperatorType!
+  \\"Query value of ID\\"
+  value: [ID]
+}
+\\"Query type of ID with using operators\\"
+enum IDWhereOperatorType {
+  \\"Must match the given data exactly\\"
+  EQ
+  \\"Must be different from the given data\\"
+  NOT_EQ
+  \\"Must be an element of the array\\"
+  IN
+  \\"Must not be an element of the array\\"
+  NOT_IN
+}
+
 "
 `;
