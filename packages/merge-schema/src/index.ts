@@ -5,7 +5,7 @@ import { genWhereTypes, GenWhereTypesOptions } from "@anchan828/gen-graphql-wher
 import * as deepmerge from "deepmerge";
 import { buildASTSchema, DocumentNode } from "graphql";
 import { mergeTypes as MergeTypesLib } from "merge-graphql-schemas";
-export { toConstanceCase } from "@anchan828/gen-graphql-schema-common";
+export { printSchemaWithDirectives, toConstanceCase } from "@anchan828/gen-graphql-schema-common";
 export const mergeTypes = (
   types: Array<string | DocumentNode>,
   options?: {
