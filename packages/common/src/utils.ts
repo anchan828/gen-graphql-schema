@@ -225,7 +225,9 @@ export const printSchemaWithDirectives = (schema: GraphQLSchema): string => {
       const type = schema.getType(name);
 
       if (type !== undefined && type !== null && !isSpecifiedScalarType(type as any)) {
-        const printAST = print(type.astNode as any).replace("implements interface", "implements");
+        const printAST = print(type.astNode as any)
+          .replace("implements interface", "implements")
+          .replace("& interface", "&");
 
         accum += `${printAST}\n`;
       }
