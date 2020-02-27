@@ -223,9 +223,13 @@ export const printSchemaWithDirectives = (schema: GraphQLSchema): string => {
     .filter(k => !k.match(/^__/))
     .reduce((accum: string, name: string) => {
       const type = schema.getType(name);
-      return type !== undefined && type !== null && !isSpecifiedScalarType(type as any) && type?.astNode
-        ? (accum += `${print(type.astNode)}\n`)
-        : accum;
+
+      if (type !== undefined && type !== null && !isSpecifiedScalarType(type as any)) {
+        const printAST = print(type.astNode as any).replace("implements interface", "implements");
+
+        accum += `${printAST}\n`;
+      }
+      return accum;
     }, "");
 
   return schema.getDirectives().reduce((accum: string, d: GraphQLDirective) => {
