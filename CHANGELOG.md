@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/anchan828/gen-graphql-schema/compare/v0.3.1...v0.3.2) (2020-02-27)
+
+### Bug Fixes
+
+- implements interface ([f9b89f6](https://github.com/anchan828/gen-graphql-schema/commit/f9b89f6684fa3a8b716808f9eb78cc793519d085))
+
+### Features
+
+- export printSchemaWithDirectives ([4a52404](https://github.com/anchan828/gen-graphql-schema/commit/4a52404478e5ac1cc921bc669ac83076fa244702))
+
 ## [0.3.1](https://github.com/anchan828/gen-graphql-schema/compare/v0.3.0...v0.3.1) (2020-02-27)
 
 ### Bug Fixes
