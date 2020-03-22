@@ -30,7 +30,7 @@ export class GenRelayTypesService {
     this.genRelayDifinitions();
 
     const fields = getFieldDefinitionsByDirective(this.documentNode, this.options.relayDirective!.name!).filter(
-      field => field.type.kind === "ListType",
+      (field) => field.type.kind === "ListType",
     );
 
     for (const field of fields) {
@@ -348,7 +348,7 @@ export class GenRelayTypesService {
     Reflect.set(
       field,
       "directives",
-      directives.filter(directive => directive.name.value !== this.options.relayDirective!.name!),
+      directives.filter((directive) => directive.name.value !== this.options.relayDirective!.name!),
     );
   }
 

@@ -99,7 +99,7 @@ export class GenWhereTypesService {
           value: DESCRIPTIONS.WHERE_OPERATOR_TYPE.TYPE(typeName),
         },
         values: operatorNames.map(
-          operatorName =>
+          (operatorName) =>
             ({
               kind: "EnumValueDefinition",
               name: {
@@ -297,7 +297,7 @@ export class GenWhereTypesService {
     for (const field of fields) {
       const { name, isList } = getFieldTypeName(field);
 
-      if (fieldNames.findIndex(fn => fn.name === field.name.value) !== -1) {
+      if (fieldNames.findIndex((fn) => fn.name === field.name.value) !== -1) {
         continue;
       }
 
@@ -359,7 +359,7 @@ export class GenWhereTypesService {
     Reflect.set(
       field,
       "directives",
-      getDirectives(field).filter(directive => !names.includes(directive.name.value)),
+      getDirectives(field).filter((directive) => !names.includes(directive.name.value)),
     );
   }
 
