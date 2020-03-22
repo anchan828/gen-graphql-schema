@@ -228,7 +228,7 @@ export class GenOrderTypesService {
 
     for (const field of fields) {
       const { name } = getFieldTypeName(field);
-      if (fieldNames.findIndex(fn => fn.name === field.name.value) !== -1) {
+      if (fieldNames.findIndex((fn) => fn.name === field.name.value) !== -1) {
         continue;
       }
 
@@ -282,7 +282,7 @@ export class GenOrderTypesService {
     Reflect.set(
       field,
       "directives",
-      getDirectives(field).filter(directive => !names.includes(directive.name.value)),
+      getDirectives(field).filter((directive) => !names.includes(directive.name.value)),
     );
   }
 

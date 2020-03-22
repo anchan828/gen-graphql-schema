@@ -146,11 +146,11 @@ describe("util", () => {
   });
 
   describe("isBasicType", () => {
-    it.each(["String", "Int", "Float", "Boolean", "ID"])("should return true when %s", typeName => {
+    it.each(["String", "Int", "Float", "Boolean", "ID"])("should return true when %s", (typeName) => {
       expect(isBasicType(typeName)).toBeTruthy();
     });
 
-    it.each(["Date", "Custom", "Value", "Hoge"])("should return false when %s", typeName => {
+    it.each(["Date", "Custom", "Value", "Hoge"])("should return false when %s", (typeName) => {
       expect(isBasicType(typeName)).toBeFalsy();
     });
   });

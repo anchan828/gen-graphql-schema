@@ -19,13 +19,13 @@ export const getObjectOrUnionTypeDefinitions = (
   documentNode: DocumentNode,
 ): Array<ObjectTypeDefinitionNode | UnionTypeDefinitionNode> => {
   return documentNode.definitions.filter(
-    definition => definition.kind === "ObjectTypeDefinition" || definition.kind === "UnionTypeDefinition",
+    (definition) => definition.kind === "ObjectTypeDefinition" || definition.kind === "UnionTypeDefinition",
   ) as ObjectTypeDefinitionNode[];
 };
 
 export const getEnumTypeDefinitions = (documentNode: DocumentNode): EnumTypeDefinitionNode[] => {
   return documentNode.definitions.filter(
-    definition => definition.kind === "EnumTypeDefinition",
+    (definition) => definition.kind === "EnumTypeDefinition",
   ) as EnumTypeDefinitionNode[];
 };
 
@@ -46,7 +46,7 @@ export const isBasicType = (typeName: string): boolean => {
 
 export const isEnumType = (types: DocumentNode, typeName: string): boolean => {
   const enumTypes = getEnumTypeDefinitions(types);
-  return enumTypes.findIndex(enumType => enumType.name.value === typeName) !== -1;
+  return enumTypes.findIndex((enumType) => enumType.name.value === typeName) !== -1;
 };
 
 export const isUnionType = (definition: DefinitionNode): definition is UnionTypeDefinitionNode => {
@@ -166,7 +166,7 @@ export const getObjectOrUnionTypeDefinition = (
 ): ObjectTypeDefinitionNode | UnionTypeDefinitionNode | undefined => {
   const { name } = getFieldTypeName(field);
 
-  return getObjectOrUnionTypeDefinitions(documentNode).find(definition => definition.name.value === name);
+  return getObjectOrUnionTypeDefinitions(documentNode).find((definition) => definition.name.value === name);
 };
 
 export const appendDefinitionToDocumentNode = (documentNode: DocumentNode, ...definitions: DefinitionNode[]): void => {
@@ -199,7 +199,7 @@ export const removeDefinitionByName = (documentNode: DocumentNode, name: string)
   Reflect.set(
     documentNode,
     "definitions",
-    documentNode.definitions.filter(definition => {
+    documentNode.definitions.filter((definition) => {
       if (
         !(
           definition.kind === "ObjectTypeDefinition" ||
@@ -220,7 +220,7 @@ export const toConstanceCase = (str: string): string => changeCase.constantCase(
 
 export const printSchemaWithDirectives = (schema: GraphQLSchema): string => {
   const str = Object.keys(schema.getTypeMap())
-    .filter(k => !k.match(/^__/))
+    .filter((k) => !k.match(/^__/))
     .reduce((accum: string, name: string) => {
       const type = schema.getType(name);
 
