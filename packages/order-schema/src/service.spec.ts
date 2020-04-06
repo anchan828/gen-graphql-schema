@@ -18,36 +18,7 @@ describe("GenOrderTypesService", () => {
           ).genOrderTypes(),
         ),
       ),
-    ).toEqual(
-      printSchema(
-        buildASTSchema(
-          parse(
-            `"""Sort the results in ascending or descending order"""
-    enum OrderDirection {
-      """Sort the results in ascending order"""
-      ASC
-    
-      """Sort the results in descending order"""
-      DESC
-    }
-    
-    type Query {
-      tests(orderBy: TestOrder): [Test]
-    }
-    
-    type Test {
-      id: ID
-    }
-    
-    """Ordering options for Test"""
-    input TestOrder {
-      """Order Test by id"""
-      id: OrderDirection
-    }`,
-          ),
-        ),
-      ),
-    );
+    ).toMatchSnapshot();
   });
 
   it("should return added Order enum when change options", () => {
@@ -79,41 +50,7 @@ describe("GenOrderTypesService", () => {
           ).genOrderTypes(),
         ),
       ),
-    ).toEqual(
-      printSchema(
-        buildASTSchema(
-          parse(`scalar Date
-    
-    """Sort the results in ascending or descending order"""
-    enum OrderDirection {
-      """Sort the results in ascending order"""
-      ASC
-    
-      """Sort the results in descending order"""
-      DESC
-    }
-    
-    type Query {
-      tests(arg: TestChanged): [Test]
-    }
-    
-    type Test {
-      id: ID
-      name: String
-      date: Date
-    }
-    
-    """Ordering options for Test"""
-    input TestChanged {
-      """Order Test by id"""
-      id: OrderDirection
-    
-      """Order Test by date"""
-      date: OrderDirection
-    }`),
-        ),
-      ),
-    );
+    ).toMatchSnapshot();
   });
 
   it("should return added Order enum", () => {
@@ -149,37 +86,7 @@ describe("GenOrderTypesService", () => {
           ).genOrderTypes(),
         ),
       ),
-    ).toEqual(
-      printSchema(
-        buildASTSchema(
-          parse(
-            `"""Sort the results in ascending or descending order"""
-    enum Position {
-      """Sort the results in ascending order"""
-      TOP
-    
-      """Sort the results in descending order"""
-      BOTTOM
-    }
-    
-    """Ordering options for Test"""
-    input PrefixTestChanged {
-      """Order Test by id"""
-      id: Position
-    }
-    
-    type Query {
-      tests(arg: PrefixTestChanged): [[Test!]]!
-    }
-    
-    type Test {
-      id: ID
-      name: String
-    }`,
-          ),
-        ),
-      ),
-    );
+    ).toMatchSnapshot();
   });
 
   it("should support union type", () => {
@@ -196,50 +103,7 @@ describe("GenOrderTypesService", () => {
           ).genOrderTypes(),
         ),
       ),
-    ).toEqual(
-      printSchema(
-        buildASTSchema(
-          parse(
-            `"""Sort the results in ascending or descending order"""
-    enum OrderDirection {
-      """Sort the results in ascending order"""
-      ASC
-    
-      """Sort the results in descending order"""
-      DESC
-    }
-    
-    type Query {
-      tests(orderBy: TestOrder): [Test]
-    }
-    
-    union Test = Test1 | Test2
-    
-    type Test1 {
-      id: ID
-      name: String!
-    }
-    
-    type Test2 {
-      id: ID
-      age: Int!
-    }
-    
-    """Ordering options for Test"""
-    input TestOrder {
-      """Order Test by id"""
-      id: OrderDirection
-    
-      """Order Test by name"""
-      name: OrderDirection
-    
-      """Order Test by age"""
-      age: OrderDirection
-    }`,
-          ),
-        ),
-      ),
-    );
+    ).toMatchSnapshot();
   });
 
   it("should deep where", () => {
@@ -268,61 +132,6 @@ type Test {
           ).genOrderTypes(),
         ),
       ),
-    ).toEqual(
-      printSchema(
-        buildASTSchema(
-          parse(`"""Sort the results in ascending or descending order"""
-    enum OrderDirection {
-      """Sort the results in ascending order"""
-      ASC
-    
-      """Sort the results in descending order"""
-      DESC
-    }
-    
-    type Query {
-      tests(orderBy: TestOrder): [Test]
-    }
-    
-    type Test {
-      id: ID!
-      position: TestPosition!
-    }
-    
-    """Ordering options for Test"""
-    input TestOrder {
-      """Order Test by id"""
-      id: OrderDirection
-    
-      """Order Test by position"""
-      position: TestPositionOrder
-    }
-    
-    type TestPosition {
-      column: Int!
-      line: Int!
-      prev: TestPosition
-      next: TestPosition
-    }
-    
-    """Ordering options for TestPosition"""
-    input TestPositionOrder {
-      """Order TestPosition by column"""
-      column: OrderDirection
-    
-      """Order TestPosition by line"""
-      line: OrderDirection
-    
-      """Order TestPosition by prev"""
-      prev: TestPositionOrder
-    }
-    
-    type TestSubPosition {
-      column: Int!
-      line: Int!
-    }`),
-        ),
-      ),
-    );
+    ).toMatchSnapshot();
   });
 });
