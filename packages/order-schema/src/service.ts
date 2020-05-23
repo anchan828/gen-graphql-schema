@@ -76,7 +76,7 @@ export class GenOrderTypesService {
       kind: "EnumTypeDefinition",
       name: {
         kind: "Name",
-        value: this.options.orderDirection?.typeName!,
+        value: this.options.orderDirection!.typeName!,
       },
       description: {
         kind: "StringValue",
@@ -87,7 +87,7 @@ export class GenOrderTypesService {
           kind: "EnumValueDefinition",
           name: {
             kind: "Name",
-            value: this.options.orderDirection?.ascName!,
+            value: this.options.orderDirection!.ascName!,
           },
           description: {
             kind: "StringValue",
@@ -98,7 +98,7 @@ export class GenOrderTypesService {
           kind: "EnumValueDefinition",
           name: {
             kind: "Name",
-            value: this.options.orderDirection?.descName!,
+            value: this.options.orderDirection!.descName!,
           },
           description: {
             kind: "StringValue",
@@ -158,7 +158,7 @@ export class GenOrderTypesService {
           kind: "NamedType",
           name: {
             kind: "Name",
-            value: this.options.orderDirection?.typeName!,
+            value: this.options.orderDirection!.typeName!,
           },
         };
       }
