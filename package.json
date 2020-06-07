@@ -37,7 +37,7 @@
     "ts-jest": "26.1.0",
     "ts-node": "8.10.2",
     "typescript": "3.9.5",
-    "graphql": "15.0.0"
+    "graphql": "15.1.0"
   },
   "repository": {
     "type": "git",
