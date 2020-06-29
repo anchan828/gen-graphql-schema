@@ -23,7 +23,7 @@
     "@types/graphql": "14.2.3"
   },
   "peerDependencies": {
-    "graphql": "15.1.0"
+    "graphql": "15.2.0"
   },
   "repository": {
     "type": "git",
