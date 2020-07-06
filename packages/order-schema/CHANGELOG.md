@@ -3,45 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## 0.3.8 (2020-07-05)
+# [0.4.0](https://github.com/anchan828/gen-graphql-schema/compare/v0.3.8...v0.4.0) (2020-07-06)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-order-schema
 
+## 0.3.8 (2020-07-05)
 
-
-
+**Note:** Version bump only for package @anchan828/gen-graphql-order-schema
 
 ## 0.3.7 (2020-06-28)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-order-schema
 
-
-
-
-
 ## 0.3.6 (2020-06-21)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-order-schema
-
-
-
-
 
 ## 0.3.5 (2020-06-14)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-order-schema
 
-
-
-
-
 ## 0.3.4 (2020-06-07)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-order-schema
-
-
-
-
 
 ## [0.3.3](https://github.com/anchan828/gen-graphql-schema/compare/v0.3.2...v0.3.3) (2020-04-06)
 
