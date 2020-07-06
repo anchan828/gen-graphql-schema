@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/anchan828/gen-graphql-schema/compare/v0.4.0...v0.5.0) (2020-07-06)
+
+### Features
+
+- add resolvers ([68fc4a1](https://github.com/anchan828/gen-graphql-schema/commit/68fc4a167798524a3cf777d877d144ee6002a437))
+
 # [0.4.0](https://github.com/anchan828/gen-graphql-schema/compare/v0.3.8...v0.4.0) (2020-07-06)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-order-schema
