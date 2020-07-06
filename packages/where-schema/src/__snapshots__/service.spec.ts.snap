@@ -13,34 +13,43 @@ type Query {
 \\"\\"\\"Query of Test with using operators\\"\\"\\"
 input TestWhere {
   \\"\\"\\"Query with using id field\\"\\"\\"
-  id: [IDWhereOperator]
+  id: IDWhereOperator
+
+  \\"\\"\\"Query with using name field\\"\\"\\"
+  OR: [TestWhere]
 
   \\"\\"\\"Query with using name field\\"\\"\\"
   name: String
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum IDWhereOperatorType {
+type IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: ID
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: ID
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [ID]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
+  not_in: [ID]
 
-\\"\\"\\"ID query with using operators\\"\\"\\"
-input IDWhereOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: IDWhereOperatorType!
+  \\"\\"\\"Must be less than given value\\"\\"\\"
+  lt: ID
 
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
+  \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
+  lte: ID
+
+  \\"\\"\\"Must be greater than given value\\"\\"\\"
+  gt: ID
+
+  \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
+  gte: ID
+
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [ID]
 }
 "
 `;
@@ -49,13 +58,9 @@ exports[`GenWhereTypesService should deep where 1`] = `
 "type TestPosition {
   column: Int!
   line: Int!
+  array: [Int!]
   prev: TestPosition
   next: TestPosition
-}
-
-type TestSubPosition {
-  column: Int!
-  line: Int!
 }
 
 type Test {
@@ -70,10 +75,16 @@ type Query {
 \\"\\"\\"Query of TestPosition with using operators\\"\\"\\"
 input TestPositionWhere {
   \\"\\"\\"Query with using column field\\"\\"\\"
-  column: [IntWhereOperator]
+  column: IntWhereOperator
+
+  \\"\\"\\"Query with using next field\\"\\"\\"
+  OR: [TestPositionWhere]
 
   \\"\\"\\"Query with using line field\\"\\"\\"
-  line: [IntWhereOperator]
+  line: IntWhereOperator
+
+  \\"\\"\\"Query with using array field\\"\\"\\"
+  array: IntWhereOperator
 
   \\"\\"\\"Query with using prev field\\"\\"\\"
   prev: TestPositionWhere
@@ -85,70 +96,73 @@ input TestPositionWhere {
 \\"\\"\\"Query of Test with using operators\\"\\"\\"
 input TestWhere {
   \\"\\"\\"Query with using id field\\"\\"\\"
-  id: [IDWhereOperator]
+  id: IDWhereOperator
+
+  \\"\\"\\"Query with using position field\\"\\"\\"
+  OR: [TestWhere]
 
   \\"\\"\\"Query with using position field\\"\\"\\"
   position: TestPositionWhere
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-enum IntWhereOperatorType {
+type IntWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: Int
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: Int
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [Int]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
+  not_in: [Int]
 
   \\"\\"\\"Must be less than given value\\"\\"\\"
-  LT
+  lt: Int
 
   \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
-  LTE
+  lte: Int
 
   \\"\\"\\"Must be greater than given value\\"\\"\\"
-  GT
+  gt: Int
 
   \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
-  GTE
-}
+  gte: Int
 
-\\"\\"\\"Int query with using operators\\"\\"\\"
-input IntWhereOperator {
-  \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-  type: IntWhereOperatorType!
-
-  \\"\\"\\"Query value of Int\\"\\"\\"
-  value: [Int]
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [Int]
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum IDWhereOperatorType {
+type IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: ID
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: ID
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [ID]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
+  not_in: [ID]
 
-\\"\\"\\"ID query with using operators\\"\\"\\"
-input IDWhereOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: IDWhereOperatorType!
+  \\"\\"\\"Must be less than given value\\"\\"\\"
+  lt: ID
 
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
+  \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
+  lte: ID
+
+  \\"\\"\\"Must be greater than given value\\"\\"\\"
+  gt: ID
+
+  \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
+  gte: ID
+
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [ID]
 }
 "
 `;
@@ -166,31 +180,40 @@ type Query {
 \\"\\"\\"Query of Test with using operators\\"\\"\\"
 input PreWhereTypeTestSufWhereType {
   \\"\\"\\"Query with using id field\\"\\"\\"
-  id: [PreOperatorIDSufOperator]
+  id: PreOperatorIDSufOperator
+
+  \\"\\"\\"Query with using id field\\"\\"\\"
+  OR: [PreWhereTypeTestSufWhereType]
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum PreOperatorTypeIDSufOperatorType {
+type PreOperatorIDSufOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: ID
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: ID
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [ID]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
+  not_in: [ID]
 
-\\"\\"\\"ID query with using operators\\"\\"\\"
-input PreOperatorIDSufOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: PreOperatorTypeIDSufOperatorType!
+  \\"\\"\\"Must be less than given value\\"\\"\\"
+  lt: ID
 
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
+  \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
+  lte: ID
+
+  \\"\\"\\"Must be greater than given value\\"\\"\\"
+  gt: ID
+
+  \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
+  gte: ID
+
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [ID]
 }
 "
 `;
@@ -215,108 +238,102 @@ type Query {
 \\"\\"\\"Query of Test with using operators\\"\\"\\"
 input TestWhere {
   \\"\\"\\"Query with using id field\\"\\"\\"
-  id: [IDWhereOperator]
-
-  \\"\\"\\"Query with using name field\\"\\"\\"
-  name: [StringWhereOperator]
+  id: IDWhereOperator
 
   \\"\\"\\"Query with using age field\\"\\"\\"
-  age: [IntWhereOperator]
+  OR: [TestWhere]
+
+  \\"\\"\\"Query with using name field\\"\\"\\"
+  name: StringWhereOperator
+
+  \\"\\"\\"Query with using age field\\"\\"\\"
+  age: IntWhereOperator
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum IDWhereOperatorType {
+type IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: ID
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: ID
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [ID]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
+  not_in: [ID]
 
-\\"\\"\\"ID query with using operators\\"\\"\\"
-input IDWhereOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: IDWhereOperatorType!
+  \\"\\"\\"Must be less than given value\\"\\"\\"
+  lt: ID
 
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
+  \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
+  lte: ID
+
+  \\"\\"\\"Must be greater than given value\\"\\"\\"
+  gt: ID
+
+  \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
+  gte: ID
+
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [ID]
 }
 
 \\"\\"\\"Query type of String with using operators\\"\\"\\"
-enum StringWhereOperatorType {
+type StringWhereOperator {
   \\"\\"\\"Must match the string starts with the given data exactly\\"\\"\\"
-  STARTS_WITH
+  starts_with: String
 
   \\"\\"\\"Must match the string ends with the given data exactly\\"\\"\\"
-  ENDS_WITH
+  ends_with: String
 
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: String
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: String
 
   \\"\\"\\"
   Determines whether the given string may be found within another string.
   \\"\\"\\"
-  CONTAINS
+  contains: String
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [String]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
-
-\\"\\"\\"String query with using operators\\"\\"\\"
-input StringWhereOperator {
-  \\"\\"\\"Query type of String with using operators\\"\\"\\"
-  type: StringWhereOperatorType!
-
-  \\"\\"\\"Query value of String\\"\\"\\"
-  value: [String]
+  not_in: [String]
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-enum IntWhereOperatorType {
+type IntWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: Int
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: Int
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [Int]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
+  not_in: [Int]
 
   \\"\\"\\"Must be less than given value\\"\\"\\"
-  LT
+  lt: Int
 
   \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
-  LTE
+  lte: Int
 
   \\"\\"\\"Must be greater than given value\\"\\"\\"
-  GT
+  gt: Int
 
   \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
-  GTE
-}
+  gte: Int
 
-\\"\\"\\"Int query with using operators\\"\\"\\"
-input IntWhereOperator {
-  \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-  type: IntWhereOperatorType!
-
-  \\"\\"\\"Query value of Int\\"\\"\\"
-  value: [Int]
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [Int]
 }
 "
 `;
@@ -349,222 +366,242 @@ type Query {
 \\"\\"\\"Query of Test with using operators\\"\\"\\"
 input TestWhere {
   \\"\\"\\"Query with using id field\\"\\"\\"
-  id: [IDWhereOperator]
+  id: IDWhereOperator
+
+  \\"\\"\\"Query with using test2 field\\"\\"\\"
+  OR: [TestWhere]
 
   \\"\\"\\"Query with using name field\\"\\"\\"
-  name: [StringWhereOperator]
+  name: StringWhereOperator
 
   \\"\\"\\"Query with using texts field\\"\\"\\"
-  texts: [StringWhereOperator]
+  texts: StringWhereOperator
 
   \\"\\"\\"Query with using age field\\"\\"\\"
-  age: [IntWhereOperator]
+  age: IntWhereOperator
 
   \\"\\"\\"Query with using created_At field\\"\\"\\"
-  created_At: [DateWhereOperator]
+  created_At: DateWhereOperator
 
   \\"\\"\\"Query with using range field\\"\\"\\"
-  range: [FloatWhereOperator]
+  range: FloatWhereOperator
 
   \\"\\"\\"Query with using published field\\"\\"\\"
   published: Boolean
 
   \\"\\"\\"Query with using test field\\"\\"\\"
-  test: [TestEnumWhereOperator]
+  test: TestEnumWhereOperator
 
   \\"\\"\\"Query with using test2 field\\"\\"\\"
-  test2: [TestEnumWhereOperator]
+  test2: TestEnumWhereOperator
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-enum IDWhereOperatorType {
+type IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: ID
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: ID
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [ID]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
+  not_in: [ID]
 
-\\"\\"\\"ID query with using operators\\"\\"\\"
-input IDWhereOperator {
-  \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-  type: IDWhereOperatorType!
+  \\"\\"\\"Must be less than given value\\"\\"\\"
+  lt: ID
 
-  \\"\\"\\"Query value of ID\\"\\"\\"
-  value: [ID]
+  \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
+  lte: ID
+
+  \\"\\"\\"Must be greater than given value\\"\\"\\"
+  gt: ID
+
+  \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
+  gte: ID
+
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [ID]
 }
 
 \\"\\"\\"Query type of String with using operators\\"\\"\\"
-enum StringWhereOperatorType {
+type StringWhereOperator {
   \\"\\"\\"Must match the string starts with the given data exactly\\"\\"\\"
-  STARTS_WITH
+  starts_with: String
 
   \\"\\"\\"Must match the string ends with the given data exactly\\"\\"\\"
-  ENDS_WITH
+  ends_with: String
 
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: String
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: String
 
   \\"\\"\\"
   Determines whether the given string may be found within another string.
   \\"\\"\\"
-  CONTAINS
+  contains: String
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [String]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
-}
-
-\\"\\"\\"String query with using operators\\"\\"\\"
-input StringWhereOperator {
-  \\"\\"\\"Query type of String with using operators\\"\\"\\"
-  type: StringWhereOperatorType!
-
-  \\"\\"\\"Query value of String\\"\\"\\"
-  value: [String]
+  not_in: [String]
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-enum IntWhereOperatorType {
+type IntWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: Int
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: Int
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [Int]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
+  not_in: [Int]
 
   \\"\\"\\"Must be less than given value\\"\\"\\"
-  LT
+  lt: Int
 
   \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
-  LTE
+  lte: Int
 
   \\"\\"\\"Must be greater than given value\\"\\"\\"
-  GT
+  gt: Int
 
   \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
-  GTE
-}
+  gte: Int
 
-\\"\\"\\"Int query with using operators\\"\\"\\"
-input IntWhereOperator {
-  \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-  type: IntWhereOperatorType!
-
-  \\"\\"\\"Query value of Int\\"\\"\\"
-  value: [Int]
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [Int]
 }
 
 \\"\\"\\"Query type of Date with using operators\\"\\"\\"
-enum DateWhereOperatorType {
+type DateWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: Date
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: Date
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [Date]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
+  not_in: [Date]
 
   \\"\\"\\"Must be less than given value\\"\\"\\"
-  LT
+  lt: Date
 
   \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
-  LTE
+  lte: Date
 
   \\"\\"\\"Must be greater than given value\\"\\"\\"
-  GT
+  gt: Date
 
   \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
-  GTE
-}
-
-\\"\\"\\"Date query with using operators\\"\\"\\"
-input DateWhereOperator {
-  \\"\\"\\"Query type of Date with using operators\\"\\"\\"
-  type: DateWhereOperatorType!
-
-  \\"\\"\\"Query value of Date\\"\\"\\"
-  value: [Date]
+  gte: Date
 }
 
 \\"\\"\\"Query type of Float with using operators\\"\\"\\"
-enum FloatWhereOperatorType {
+type FloatWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: Float
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: Float
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [Float]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
+  not_in: [Float]
 
   \\"\\"\\"Must be less than given value\\"\\"\\"
-  LT
+  lt: Float
 
   \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
-  LTE
+  lte: Float
 
   \\"\\"\\"Must be greater than given value\\"\\"\\"
-  GT
+  gt: Float
 
   \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
-  GTE
-}
+  gte: Float
 
-\\"\\"\\"Float query with using operators\\"\\"\\"
-input FloatWhereOperator {
-  \\"\\"\\"Query type of Float with using operators\\"\\"\\"
-  type: FloatWhereOperatorType!
-
-  \\"\\"\\"Query value of Float\\"\\"\\"
-  value: [Float]
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [Float]
 }
 
 \\"\\"\\"Query type of TestEnum with using operators\\"\\"\\"
-enum TestEnumWhereOperatorType {
+type TestEnumWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
-  EQ
+  eq: TestEnum
 
   \\"\\"\\"Must be different from the given data\\"\\"\\"
-  NOT_EQ
+  not_eq: TestEnum
 
   \\"\\"\\"Must be an element of the array\\"\\"\\"
-  IN
+  in: [TestEnum]
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
-  NOT_IN
+  not_in: [TestEnum]
+}
+"
+`;
+
+exports[`GenWhereTypesService should return basic where 1`] = `
+"type Test {
+  id: ID
 }
 
-\\"\\"\\"TestEnum query with using operators\\"\\"\\"
-input TestEnumWhereOperator {
-  \\"\\"\\"Query type of TestEnum with using operators\\"\\"\\"
-  type: TestEnumWhereOperatorType!
+type Query {
+  tests(where: TestWhere): [Test]
+}
 
-  \\"\\"\\"Query value of TestEnum\\"\\"\\"
-  value: [TestEnum]
+\\"\\"\\"Query of Test with using operators\\"\\"\\"
+input TestWhere {
+  \\"\\"\\"Query with using id field\\"\\"\\"
+  id: IDWhereOperator
+
+  \\"\\"\\"Query with using id field\\"\\"\\"
+  OR: [TestWhere]
+}
+
+\\"\\"\\"Query type of ID with using operators\\"\\"\\"
+type IDWhereOperator {
+  \\"\\"\\"Must match the given data exactly\\"\\"\\"
+  eq: ID
+
+  \\"\\"\\"Must be different from the given data\\"\\"\\"
+  not_eq: ID
+
+  \\"\\"\\"Must be an element of the array\\"\\"\\"
+  in: [ID]
+
+  \\"\\"\\"Must not be an element of the array\\"\\"\\"
+  not_in: [ID]
+
+  \\"\\"\\"Must be less than given value\\"\\"\\"
+  lt: ID
+
+  \\"\\"\\"Must be less than or equal to given value\\"\\"\\"
+  lte: ID
+
+  \\"\\"\\"Must be greater than given value\\"\\"\\"
+  gt: ID
+
+  \\"\\"\\"Must be greater than or equal to given value\\"\\"\\"
+  gte: ID
+
+  \\"\\"\\"Must be within the given range\\"\\"\\"
+  between: [ID]
 }
 "
 `;

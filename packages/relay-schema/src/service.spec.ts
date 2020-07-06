@@ -9,15 +9,6 @@ describe("GenRelayTypesService", () => {
   });
 
   it("should return added Where types when has where directive", () => {
-    console.log(
-      printSchema(
-        buildASTSchema(
-          new GenRelayTypesService(
-            [`type Test { id: ID! }`, `type Query { tests: [Test] @relay, tests2: [Test] @relay}`].join(`\n`),
-          ).genRelayTypes(),
-        ),
-      ),
-    );
     expect(
       printSchema(
         buildASTSchema(

@@ -11,7 +11,8 @@ export type OperatorType =
   | "gt"
   | "gte"
   | "regex"
-  | "glob";
+  | "glob"
+  | "between";
 export interface GenWhereTypesOptions {
   whereDirective?: { name?: string };
   whereIgnoreDirective?: { name?: string };
@@ -21,7 +22,6 @@ export interface GenWhereTypesOptions {
   whereEqOnlyDirective?: { name?: string };
   whereType?: { prefix?: string; suffix?: string };
   whereArgument?: { name?: string };
-  whereOperatorType?: { prefix?: string; suffix?: string };
   whereOperator?: { prefix?: string; suffix?: string };
   enumTypeOperator?: OperatorType[];
   supportOperatorTypes?: {
@@ -31,6 +31,8 @@ export interface GenWhereTypesOptions {
     ID?: OperatorType[];
     [key: string]: OperatorType[] | undefined;
   };
+  arrayOperators?: OperatorType[];
+  orOperatorName?: string;
 }
 
 export interface WhereFieldNameAndType {

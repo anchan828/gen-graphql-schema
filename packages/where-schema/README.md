@@ -23,29 +23,52 @@ type Query {
 `;
 
 printSchema(buildASTSchema(genWhereTypes(schema)));
-//=>  type IDWhereOperator {
-//      type: IDWhereOperatorType!
-//      value: [ID]!
-//    }
+//=> type Test {
+//   id: ID
+// }
 //
-//    enum IDWhereOperatorType {
-//      EQ
-//      NOT_EQ
-//      IN
-//      NOT_IN
-//    }
+// type Query {
+//   tests(where: TestWhere): [Test]
+// }
 //
-//    type Query {
-//      tests(where: TestWhere): [Test]
-//    }
+// """Query of Test with using operators"""
+// input TestWhere {
+//   """Query with using id field"""
+//   id: IDWhereOperator
 //
-//    type Test {
-//      id: ID
-//    }
+//   """Query with using id field"""
+//   OR: [TestWhere]
+// }
 //
-//    type TestWhere {
-//      id: [IDWhereOperator]
-//    }
+// """Query type of ID with using operators"""
+// type IDWhereOperator {
+//   """Must match the given data exactly"""
+//   eq: ID
+//
+//   """Must be different from the given data"""
+//   not_eq: ID
+//
+//   """Must be an element of the array"""
+//   in: [ID]
+//
+//   """Must not be an element of the array"""
+//   not_in: [ID]
+//
+//   """Must be less than given value"""
+//   lt: ID
+//
+//   """Must be less than or equal to given value"""
+//   lte: ID
+//
+//   """Must be greater than given value"""
+//   gt: ID
+//
+//   """Must be greater than or equal to given value"""
+//   gte: ID
+//
+//   """Must be within the given range"""
+//   between: [ID]
+// }
 ```
 
 ## Options

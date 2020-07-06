@@ -101,79 +101,72 @@ input TestOrder {
 \\"Query of Test with using operators\\"
 input TestWhere {
   \\"Query with using id field\\"
-  id: [IDWhereOperator]
-  \\"Query with using name field\\"
-  name: [StringWhereOperator]
+  id: IDWhereOperator
   \\"Query with using age field\\"
-  age: [IntWhereOperator]
+  OR: [TestWhere]
+  \\"Query with using name field\\"
+  name: StringWhereOperator
+  \\"Query with using age field\\"
+  age: IntWhereOperator
 }
 \\"Query type of ID with using operators\\"
-enum IDWhereOperatorType {
+type IDWhereOperator {
   \\"Must match the given data exactly\\"
-  EQ
+  eq: ID
   \\"Must be different from the given data\\"
-  NOT_EQ
+  not_eq: ID
   \\"Must be an element of the array\\"
-  IN
+  in: [ID]
   \\"Must not be an element of the array\\"
-  NOT_IN
-}
-\\"ID query with using operators\\"
-input IDWhereOperator {
-  \\"Query type of ID with using operators\\"
-  type: IDWhereOperatorType!
-  \\"Query value of ID\\"
-  value: [ID]
+  not_in: [ID]
+  \\"Must be less than given value\\"
+  lt: ID
+  \\"Must be less than or equal to given value\\"
+  lte: ID
+  \\"Must be greater than given value\\"
+  gt: ID
+  \\"Must be greater than or equal to given value\\"
+  gte: ID
+  \\"Must be within the given range\\"
+  between: [ID]
 }
 \\"Query type of String with using operators\\"
-enum StringWhereOperatorType {
+type StringWhereOperator {
   \\"Must match the string starts with the given data exactly\\"
-  STARTS_WITH
+  starts_with: String
   \\"Must match the string ends with the given data exactly\\"
-  ENDS_WITH
+  ends_with: String
   \\"Must match the given data exactly\\"
-  EQ
+  eq: String
   \\"Must be different from the given data\\"
-  NOT_EQ
+  not_eq: String
   \\"Determines whether the given string may be found within another string.\\"
-  CONTAINS
+  contains: String
   \\"Must be an element of the array\\"
-  IN
+  in: [String]
   \\"Must not be an element of the array\\"
-  NOT_IN
-}
-\\"String query with using operators\\"
-input StringWhereOperator {
-  \\"Query type of String with using operators\\"
-  type: StringWhereOperatorType!
-  \\"Query value of String\\"
-  value: [String]
+  not_in: [String]
 }
 \\"Query type of Int with using operators\\"
-enum IntWhereOperatorType {
+type IntWhereOperator {
   \\"Must match the given data exactly\\"
-  EQ
+  eq: Int
   \\"Must be different from the given data\\"
-  NOT_EQ
+  not_eq: Int
   \\"Must be an element of the array\\"
-  IN
+  in: [Int]
   \\"Must not be an element of the array\\"
-  NOT_IN
+  not_in: [Int]
   \\"Must be less than given value\\"
-  LT
+  lt: Int
   \\"Must be less than or equal to given value\\"
-  LTE
+  lte: Int
   \\"Must be greater than given value\\"
-  GT
+  gt: Int
   \\"Must be greater than or equal to given value\\"
-  GTE
-}
-\\"Int query with using operators\\"
-input IntWhereOperator {
-  \\"Query type of Int with using operators\\"
-  type: IntWhereOperatorType!
-  \\"Query value of Int\\"
-  value: [Int]
+  gte: Int
+  \\"Must be within the given range\\"
+  between: [Int]
 }
 \\"An object with an ID.\\"
 interface Node {
@@ -248,25 +241,30 @@ input TestOrder {
 \\"Query of Test with using operators\\"
 input TestWhere {
   \\"Query with using id field\\"
-  id: [IDWhereOperator]
+  id: IDWhereOperator
+  \\"Query with using id field\\"
+  OR: [TestWhere]
 }
 \\"Query type of ID with using operators\\"
-enum IDWhereOperatorType {
+type IDWhereOperator {
   \\"Must match the given data exactly\\"
-  EQ
+  eq: ID
   \\"Must be different from the given data\\"
-  NOT_EQ
+  not_eq: ID
   \\"Must be an element of the array\\"
-  IN
+  in: [ID]
   \\"Must not be an element of the array\\"
-  NOT_IN
-}
-\\"ID query with using operators\\"
-input IDWhereOperator {
-  \\"Query type of ID with using operators\\"
-  type: IDWhereOperatorType!
-  \\"Query value of ID\\"
-  value: [ID]
+  not_in: [ID]
+  \\"Must be less than given value\\"
+  lt: ID
+  \\"Must be less than or equal to given value\\"
+  lte: ID
+  \\"Must be greater than given value\\"
+  gt: ID
+  \\"Must be greater than or equal to given value\\"
+  gte: ID
+  \\"Must be within the given range\\"
+  between: [ID]
 }
 \\"An object with an ID.\\"
 interface Node {
@@ -387,25 +385,30 @@ type Query
 \\"Query of Test with using operators\\"
 input TestWhere {
   \\"Query with using id field\\"
-  id: [IDWhereOperator]
+  id: IDWhereOperator
+  \\"Query with using id field\\"
+  OR: [TestWhere]
 }
 \\"Query type of ID with using operators\\"
-enum IDWhereOperatorType {
+type IDWhereOperator {
   \\"Must match the given data exactly\\"
-  EQ
+  eq: ID
   \\"Must be different from the given data\\"
-  NOT_EQ
+  not_eq: ID
   \\"Must be an element of the array\\"
-  IN
+  in: [ID]
   \\"Must not be an element of the array\\"
-  NOT_IN
-}
-\\"ID query with using operators\\"
-input IDWhereOperator {
-  \\"Query type of ID with using operators\\"
-  type: IDWhereOperatorType!
-  \\"Query value of ID\\"
-  value: [ID]
+  not_in: [ID]
+  \\"Must be less than given value\\"
+  lt: ID
+  \\"Must be less than or equal to given value\\"
+  lte: ID
+  \\"Must be greater than given value\\"
+  gt: ID
+  \\"Must be greater than or equal to given value\\"
+  gte: ID
+  \\"Must be within the given range\\"
+  between: [ID]
 }
 
 "

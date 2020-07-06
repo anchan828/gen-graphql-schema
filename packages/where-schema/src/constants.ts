@@ -14,6 +14,7 @@ export const DESCRIPTIONS = {
       LTE: "Must be less than or equal to given value",
       GT: "Must be greater than given value",
       GTE: "Must be greater than or equal to given value",
+      BETWEEN: "Must be within the given range",
     },
   },
   WHERE_OPERATOR: {
@@ -35,10 +36,6 @@ export const DEFAULT_OPTIONS: GenWhereTypesOptions = {
   whereEqOnlyDirective: { name: "where_eq_only" },
   whereType: { prefix: "", suffix: "Where" },
   whereArgument: { name: "where" },
-  whereOperatorType: {
-    prefix: "",
-    suffix: "WhereOperatorType",
-  },
   whereOperator: {
     prefix: "",
     suffix: "WhereOperator",
@@ -46,8 +43,10 @@ export const DEFAULT_OPTIONS: GenWhereTypesOptions = {
   enumTypeOperator: ["eq", "not_eq", "in", "not_in"],
   supportOperatorTypes: {
     String: ["starts_with", "ends_with", "eq", "not_eq", "contains", "in", "not_in"],
-    Int: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte"],
-    Float: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte"],
-    ID: ["eq", "not_eq", "in", "not_in"],
+    Int: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between"],
+    Float: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between"],
+    ID: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between"],
   },
+  arrayOperators: ["in", "not_in", "between"],
+  orOperatorName: "OR",
 };

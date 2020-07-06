@@ -8,7 +8,21 @@ describe("GenWhereTypesService", () => {
       printSchema(buildASTSchema(parse(types))),
     );
   });
-
+  it("should return basic where", () => {
+    expect(
+      printSchema(
+        buildASTSchema(
+          new GenWhereTypesService(`type Test {
+            id: ID
+          }
+          
+          type Query {
+            tests: [Test] @where
+          }`).genWhereTypes(),
+        ),
+      ),
+    ).toMatchSnapshot();
+  });
   it("should return added Where types when has where directive", () => {
     expect(
       printSchema(
@@ -69,10 +83,6 @@ describe("GenWhereTypesService", () => {
               whereOperator: {
                 prefix: "PreOperator",
                 suffix: "SufOperator",
-              },
-              whereOperatorType: {
-                prefix: "PreOperatorType",
-                suffix: "SufOperatorType",
               },
               whereType: {
                 prefix: "PreWhereType",
@@ -140,13 +150,11 @@ describe("GenWhereTypesService", () => {
 type TestPosition {
   column: Int!
   line: Int!
+  array: [Int!]
   prev: TestPosition @where_nested
   next: TestPosition @where_nested
 }
-type TestSubPosition {
-  column: Int!
-  line: Int!
-}         
+       
 type Test {
   id: ID!
   position: TestPosition! @where_nested
