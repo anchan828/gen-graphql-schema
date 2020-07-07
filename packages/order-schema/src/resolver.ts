@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Identifier, orderBy as orderByFunction } from "natural-orderby";
 import * as objectPath from "object-path";
-
+type PrimitiveType = string | number | boolean;
 type OrderDirection = "ASC" | "DESC";
 
-type OrderByArgType = { [name: string]: OrderDirection | OrderByArgType };
+type OrderByArgType<T> = { [K in keyof T]?: T[K] extends PrimitiveType ? OrderDirection : OrderByArgType<T[K]> };
 
-function resolveOrder(
+function resolveOrder<T>(
   key: string,
-  order: OrderDirection | OrderByArgType,
+  order: OrderByArgType<T>,
   identifiers: Array<Identifier<any>>,
   orders: Array<OrderDirection>,
 ): void {
@@ -16,7 +16,7 @@ function resolveOrder(
     const operatorKeys = Object.keys(order);
 
     for (const operatorKey of operatorKeys) {
-      const nestOrderBy = order[operatorKey];
+      const nestOrderBy = Reflect.get(order, operatorKey);
       const nestKey = `${key}.${operatorKey}`;
       if (typeof nestOrderBy === "object") {
         resolveOrder(nestKey, nestOrderBy, identifiers, orders);
@@ -31,7 +31,7 @@ function resolveOrder(
   }
 }
 
-export function orderResolver<T>(items: T[], orderBy?: OrderByArgType): T[] {
+export function orderResolver<T>(items: T[], orderBy?: OrderByArgType<T>): T[] {
   if (!orderBy) {
     return items;
   }
@@ -39,7 +39,7 @@ export function orderResolver<T>(items: T[], orderBy?: OrderByArgType): T[] {
   const identifiers: Array<Identifier<T>> = [];
   const orders: Array<OrderDirection> = [];
   for (const key of Object.keys(orderBy)) {
-    resolveOrder(key, orderBy[key], identifiers, orders);
+    resolveOrder(key, Reflect.get(orderBy, key), identifiers, orders);
   }
 
   return orderByFunction(

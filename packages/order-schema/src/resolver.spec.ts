@@ -12,7 +12,7 @@ describe("orderResolver", () => {
     expect(orderResolver(items, undefined)).toEqual(items);
   });
 
-  it("should return same items if field is undefined", () => {
+  it("should return same items if field is undefined field", () => {
     interface Item {
       name: string;
     }
@@ -20,7 +20,7 @@ describe("orderResolver", () => {
     expect(
       orderResolver(items, {
         hoge: "ASC",
-      }),
+      } as any),
     ).toEqual(items);
   });
 
