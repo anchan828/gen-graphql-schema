@@ -3,11 +3,11 @@ import { notInOperator } from "./not-in";
 describe("notIn", () => {
   const shouldReturnTrueCases = [
     {
-      operatorValue: "B",
+      operatorValue: ["B"],
       value: "A",
     },
     {
-      operatorValue: 1234,
+      operatorValue: [1234],
       value: [123, 12, 12345],
     },
     {
@@ -38,7 +38,15 @@ describe("notIn", () => {
       value: 123,
     },
     {
-      operatorValue: "A",
+      operatorValue: ["A"],
+      value: "A",
+    },
+    {
+      operatorValue: [123],
+      value: 123,
+    },
+    {
+      operatorValue: ["A"],
       value: ["A", "B", "C"],
     },
     {
@@ -46,7 +54,7 @@ describe("notIn", () => {
       value: "A",
     },
     {
-      operatorValue: 1234,
+      operatorValue: [1234],
       value: [123, 12, 1234, 12345],
     },
     {},

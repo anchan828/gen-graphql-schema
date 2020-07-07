@@ -5,19 +5,15 @@ export const notInOperator = (value: ValueType, operatorValue: OperatorValueType
     return false;
   }
 
-  if (Array.isArray(value) && Array.isArray(operatorValue)) {
-    return (
-      value.findIndex((x: string | number) => operatorValue.findIndex((y: string | number) => x === y) !== -1) === -1
-    );
+  if (!Array.isArray(operatorValue)) {
+    return false;
   }
 
-  if (Array.isArray(value) && !Array.isArray(operatorValue)) {
-    return value.findIndex((x: string | number) => x === operatorValue) === -1;
+  // and
+  if (Array.isArray(value)) {
+    return operatorValue.every((x: string | number) => value.findIndex((y: string | number) => x === y) === -1);
   }
 
-  if (!Array.isArray(value) && Array.isArray(operatorValue)) {
-    return operatorValue.findIndex((x: string | number) => x === value) === -1;
-  }
-
-  return value !== operatorValue;
+  // or
+  return operatorValue.findIndex((x: string | number) => x === value) === -1;
 };
