@@ -7,7 +7,7 @@ export const eq = (value: ValueType, operatorValue: OperatorValueType): boolean 
 
   const ov = Array.isArray(operatorValue) ? operatorValue[0] : operatorValue;
 
-  if (!value && !ov) {
+  if ((value === null || value === undefined) && (ov === null || ov === undefined)) {
     return true;
   }
 

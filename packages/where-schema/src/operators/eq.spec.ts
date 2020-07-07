@@ -11,6 +11,10 @@ describe("eq", () => {
       value: "A",
     },
     {
+      operatorValue: "",
+      value: "",
+    },
+    {
       operatorValue: 123,
       value: 123,
     },
@@ -35,6 +39,10 @@ describe("eq", () => {
     {
       operatorValue: "B",
       value: "A",
+    },
+    {
+      operatorValue: "",
+      value: undefined,
     },
     {
       operatorValue: 1234,
