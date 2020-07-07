@@ -86,7 +86,7 @@ export class GenWhereTypesService {
 
     this.typeOperatorMap.set(typeName, {
       whereOperatorType: {
-        kind: "ObjectTypeDefinition",
+        kind: "InputObjectTypeDefinition",
         name: {
           kind: "Name",
           value: `${this.options.whereOperator!.prefix}${typeName}${this.options.whereOperator!.suffix}`,
@@ -117,11 +117,11 @@ export class GenWhereTypesService {
           };
 
           return {
-            kind: "FieldDefinition",
+            kind: "InputValueDefinition",
             type: isArrayOperator ? { kind: "ListType", type: typeNode } : typeNode,
             name: nameNode,
             description: descriptionNode,
-          } as FieldDefinitionNode;
+          } as InputValueDefinitionNode;
         }),
       },
     });
@@ -345,13 +345,13 @@ export class GenWhereTypesService {
   private typeOperatorMap: Map<
     string,
     {
-      whereOperatorType: ObjectTypeDefinitionNode;
+      whereOperatorType: InputObjectTypeDefinitionNode;
       // inputObjectType: InputObjectTypeDefinitionNode;
     }
   > = new Map<
     string,
     {
-      whereOperatorType: ObjectTypeDefinitionNode;
+      whereOperatorType: InputObjectTypeDefinitionNode;
       // inputObjectType: InputObjectTypeDefinitionNode;
     }
   >();

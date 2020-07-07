@@ -23,7 +23,7 @@ input TestWhere {
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: ID
 
@@ -106,7 +106,7 @@ input TestWhere {
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-type IntWhereOperator {
+input IntWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: Int
 
@@ -136,7 +136,7 @@ type IntWhereOperator {
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: ID
 
@@ -187,7 +187,7 @@ input PreWhereTypeTestSufWhereType {
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-type PreOperatorIDSufOperator {
+input PreOperatorIDSufOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: ID
 
@@ -251,7 +251,7 @@ input TestWhere {
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: ID
 
@@ -281,7 +281,7 @@ type IDWhereOperator {
 }
 
 \\"\\"\\"Query type of String with using operators\\"\\"\\"
-type StringWhereOperator {
+input StringWhereOperator {
   \\"\\"\\"Must match the string starts with the given data exactly\\"\\"\\"
   starts_with: String
 
@@ -307,7 +307,7 @@ type StringWhereOperator {
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-type IntWhereOperator {
+input IntWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: Int
 
@@ -397,7 +397,7 @@ input TestWhere {
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: ID
 
@@ -427,7 +427,7 @@ type IDWhereOperator {
 }
 
 \\"\\"\\"Query type of String with using operators\\"\\"\\"
-type StringWhereOperator {
+input StringWhereOperator {
   \\"\\"\\"Must match the string starts with the given data exactly\\"\\"\\"
   starts_with: String
 
@@ -453,7 +453,7 @@ type StringWhereOperator {
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
-type IntWhereOperator {
+input IntWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: Int
 
@@ -483,7 +483,7 @@ type IntWhereOperator {
 }
 
 \\"\\"\\"Query type of Date with using operators\\"\\"\\"
-type DateWhereOperator {
+input DateWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: Date
 
@@ -510,7 +510,7 @@ type DateWhereOperator {
 }
 
 \\"\\"\\"Query type of Float with using operators\\"\\"\\"
-type FloatWhereOperator {
+input FloatWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: Float
 
@@ -540,7 +540,7 @@ type FloatWhereOperator {
 }
 
 \\"\\"\\"Query type of TestEnum with using operators\\"\\"\\"
-type TestEnumWhereOperator {
+input TestEnumWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: TestEnum
 
@@ -575,7 +575,7 @@ input TestWhere {
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"\\"\\"Must match the given data exactly\\"\\"\\"
   eq: ID
 
