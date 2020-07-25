@@ -110,7 +110,7 @@ input TestWhere {
   age: IntWhereOperator
 }
 \\"Query type of ID with using operators\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"Must match the given data exactly\\"
   eq: ID
   \\"Must be different from the given data\\"
@@ -131,7 +131,7 @@ type IDWhereOperator {
   between: [ID]
 }
 \\"Query type of String with using operators\\"
-type StringWhereOperator {
+input StringWhereOperator {
   \\"Must match the string starts with the given data exactly\\"
   starts_with: String
   \\"Must match the string ends with the given data exactly\\"
@@ -148,7 +148,7 @@ type StringWhereOperator {
   not_in: [String]
 }
 \\"Query type of Int with using operators\\"
-type IntWhereOperator {
+input IntWhereOperator {
   \\"Must match the given data exactly\\"
   eq: Int
   \\"Must be different from the given data\\"
@@ -246,7 +246,7 @@ input TestWhere {
   OR: [TestWhere]
 }
 \\"Query type of ID with using operators\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"Must match the given data exactly\\"
   eq: ID
   \\"Must be different from the given data\\"
@@ -390,7 +390,7 @@ input TestWhere {
   OR: [TestWhere]
 }
 \\"Query type of ID with using operators\\"
-type IDWhereOperator {
+input IDWhereOperator {
   \\"Must match the given data exactly\\"
   eq: ID
   \\"Must be different from the given data\\"
