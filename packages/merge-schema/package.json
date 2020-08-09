@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-merge-schema",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "merge multiple schema. merge-graphql-schemas based.",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
@@ -17,10 +17,10 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "@anchan828/gen-graphql-order-schema": "^0.5.7",
-    "@anchan828/gen-graphql-relay-schema": "^0.5.7",
-    "@anchan828/gen-graphql-schema-common": "^0.5.7",
-    "@anchan828/gen-graphql-where-schema": "^0.5.7",
+    "@anchan828/gen-graphql-order-schema": "^0.5.8",
+    "@anchan828/gen-graphql-relay-schema": "^0.5.8",
+    "@anchan828/gen-graphql-schema-common": "^0.5.8",
+    "@anchan828/gen-graphql-where-schema": "^0.5.8",
     "deepmerge": "4.2.2",
     "merge-graphql-schemas": "1.7.8"
   },
