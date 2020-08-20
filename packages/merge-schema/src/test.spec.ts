@@ -19,8 +19,17 @@ describe("mergeTypes", () => {
     expect(mergeTypes(types)).toMatchSnapshot();
   });
 
-  it("should work custom directive", () => {
+  it("should work custom directive (query)", () => {
     const types = [`directive @custom on FIELD_DEFINITION`, `type Test {id: ID @custom}`];
+    expect(mergeTypes(types)).toMatchSnapshot();
+  });
+
+  it("should work custom directive (mutation)", () => {
+    const types = [
+      `directive @custom on INPUT_FIELD_DEFINITION`,
+      `input TestInput {id: ID @custom}`,
+      `type Mutation {test(input: TestInput!): Boolean!}`,
+    ];
     expect(mergeTypes(types)).toMatchSnapshot();
   });
   it("should work orderBy, where, and relay directive", () => {
