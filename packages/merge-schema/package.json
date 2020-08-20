@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-merge-schema",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "description": "merge multiple schema. merge-graphql-schemas based.",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
