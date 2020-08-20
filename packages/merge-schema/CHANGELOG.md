@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.11](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.10...v0.5.11) (2020-08-20)
+
+### Features
+
+- add mergeOptions ([c9aafc6](https://github.com/anchan828/gen-graphql-schema/commit/c9aafc61d43118fea39b2d209c6e7cf80f188fc6))
+
 ## [0.5.10](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.9...v0.5.10) (2020-08-20)
 
 ### Features
