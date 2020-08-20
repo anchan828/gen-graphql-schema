@@ -30,7 +30,7 @@ describe("mergeTypes", () => {
       `input TestInput {id: ID @custom}`,
       `type Mutation {test(input: TestInput!): Boolean!}`,
     ];
-    expect(mergeTypes(types)).toMatchSnapshot();
+    expect(mergeTypes(types, { mergeOptions: { sort: true } })).toMatchSnapshot();
   });
   it("should work orderBy, where, and relay directive", () => {
     const types = [

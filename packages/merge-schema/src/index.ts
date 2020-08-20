@@ -4,7 +4,7 @@ import { printSchemaWithDirectives } from "@anchan828/gen-graphql-schema-common"
 import { genWhereTypes, GenWhereTypesOptions } from "@anchan828/gen-graphql-where-schema";
 import { Config, mergeTypeDefs } from "@graphql-tools/merge";
 import * as deepmerge from "deepmerge";
-import { buildASTSchema, DocumentNode } from "graphql";
+import { buildASTSchema, DocumentNode, lexicographicSortSchema } from "graphql";
 
 export { printSchemaWithDirectives, toConstanceCase } from "@anchan828/gen-graphql-schema-common";
 export const mergeTypes = (
@@ -22,5 +22,9 @@ export const mergeTypes = (
 
   result = genWhereTypes(result, options.whereOptions);
   result = genRelayTypes(result, options.relayOptions);
-  return printSchemaWithDirectives(buildASTSchema(result));
+  let schema = buildASTSchema(result);
+  if (options.mergeOptions?.sort) {
+    schema = lexicographicSortSchema(schema);
+  }
+  return printSchemaWithDirectives(schema);
 };

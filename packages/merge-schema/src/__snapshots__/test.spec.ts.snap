@@ -45,13 +45,13 @@ type Query
 `;
 
 exports[`mergeTypes should work custom directive (mutation) 1`] = `
-"input TestInput {
-  id: ID @custom
-}
-type Mutation {
+"type Mutation {
   test(input: TestInput!): Boolean!
 }
 type Query
+input TestInput {
+  id: ID @custom
+}
 
 directive @custom on INPUT_FIELD_DEFINITION
 "
