@@ -44,6 +44,16 @@ type Query
 "
 `;
 
+exports[`mergeTypes should work custom directive 1`] = `
+"type Test {
+  id: ID @custom
+}
+type Query
+
+directive @custom on FIELD_DEFINITION
+"
+`;
+
 exports[`mergeTypes should work orderBy directive 1`] = `
 "type Test {
   id: ID

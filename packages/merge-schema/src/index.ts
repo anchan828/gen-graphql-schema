@@ -2,9 +2,10 @@ import { genOrderTypes, GenOrderTypesOptions } from "@anchan828/gen-graphql-orde
 import { genRelayTypes, GenRelayTypesOptions } from "@anchan828/gen-graphql-relay-schema";
 import { printSchemaWithDirectives } from "@anchan828/gen-graphql-schema-common";
 import { genWhereTypes, GenWhereTypesOptions } from "@anchan828/gen-graphql-where-schema";
+import { mergeTypeDefs } from "@graphql-tools/merge";
 import * as deepmerge from "deepmerge";
 import { buildASTSchema, DocumentNode } from "graphql";
-import { mergeTypes as MergeTypesLib } from "merge-graphql-schemas";
+
 export { printSchemaWithDirectives, toConstanceCase } from "@anchan828/gen-graphql-schema-common";
 export const mergeTypes = (
   types: Array<string | DocumentNode>,
@@ -16,12 +17,7 @@ export const mergeTypes = (
 ): string => {
   options = deepmerge({ orderOptions: {}, whereOptions: {}, relayOptions: {} }, options || {});
 
-  let result = genOrderTypes(
-    MergeTypesLib([...types, `type Query`], {
-      all: true,
-    }),
-    options.orderOptions,
-  );
+  let result = genOrderTypes(mergeTypeDefs([...types, `type Query`], {}), options.orderOptions);
 
   result = genWhereTypes(result, options.whereOptions);
   result = genRelayTypes(result, options.relayOptions);

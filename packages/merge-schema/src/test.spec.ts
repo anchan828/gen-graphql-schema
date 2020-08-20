@@ -18,6 +18,11 @@ describe("mergeTypes", () => {
 
     expect(mergeTypes(types)).toMatchSnapshot();
   });
+
+  it("should work custom directive", () => {
+    const types = [`directive @custom on FIELD_DEFINITION`, `type Test {id: ID @custom}`];
+    expect(mergeTypes(types)).toMatchSnapshot();
+  });
   it("should work orderBy, where, and relay directive", () => {
     const types = [
       `type Test1 { id: ID, name: String! }`,
