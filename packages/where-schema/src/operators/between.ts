@@ -14,7 +14,7 @@ export const between = (value: ValueType, operatorValue: OperatorValueType): boo
   }
 
   if (Array.isArray(value)) {
-    return value.every((v: ValueType) => v && v >= operatorValue[0] && v <= operatorValue[1]);
+    return (value as (string | number)[]).every((v: ValueType) => v && v >= operatorValue[0] && v <= operatorValue[1]);
   }
 
   return value >= operatorValue[0] && value <= operatorValue[1];

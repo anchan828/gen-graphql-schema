@@ -11,9 +11,11 @@ export const notInOperator = (value: ValueType, operatorValue: OperatorValueType
 
   // and
   if (Array.isArray(value)) {
-    return operatorValue.every((x: string | number) => value.findIndex((y: string | number) => x === y) === -1);
+    return (operatorValue as (string | number)[]).every((x: string | number) =>
+      (value as (string | number)[]).every((y: string | number) => x !== y),
+    );
   }
 
   // or
-  return operatorValue.findIndex((x: string | number) => x === value) === -1;
+  return (operatorValue as (string | number)[]).every((x: string | number) => x !== value);
 };
