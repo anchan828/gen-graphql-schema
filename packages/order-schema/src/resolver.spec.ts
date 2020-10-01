@@ -58,10 +58,6 @@ describe("orderResolver", () => {
   });
 
   it("should order items by age", () => {
-    interface Item {
-      name: string;
-      age?: number;
-    }
     expect(
       orderResolver([{ age: 2, name: "A" }, { name: "B" }, { name: "C" }, { age: 1, name: "D" }], {
         age: "DESC",
