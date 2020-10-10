@@ -20,7 +20,7 @@
     "@anchan828/gen-graphql-schema-common": "^0.5.19",
     "deepmerge": "4.2.2",
     "natural-orderby": "2.0.3",
-    "object-path": "0.11.4",
+    "object-path": "0.11.5",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
