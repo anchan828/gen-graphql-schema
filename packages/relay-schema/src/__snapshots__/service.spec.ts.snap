@@ -1,53 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GenRelayTypesService should return added Where types when has union type 1`] = `
-"\\"\\"\\"A connection for relay\\"\\"\\"
-interface Connection {
-  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
-  totalCount: Int
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
-  pageInfo: PageInfo!
-
-  \\"\\"\\"A list of edges.\\"\\"\\"
-  edges: [Edge]
-}
-
-\\"\\"\\"An edge in a connection.\\"\\"\\"
-interface Edge {
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
-  cursor: String
-}
-
-\\"\\"\\"An object with an ID.\\"\\"\\"
-interface Node {
-  \\"\\"\\"ID of the object.\\"\\"\\"
-  id: ID!
-}
-
-\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
-type PageInfo {
-  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
-  startCursor: String
-
-  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
-  endCursor: String
-
-  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
-  hasNextPage: Boolean
-
-  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
-  hasPreviousPage: Boolean
-}
-
-type Query {
-  tests(before: String, after: String, first: Int, last: Int): TestConnection!
-  tests2(before: String, after: String, first: Int, last: Int): TestConnection!
-}
-
-union Test = Test1 | Test2
-
-type Test1 implements Node {
+"type Test1 implements Node {
   id: ID!
   name: String!
 }
@@ -57,31 +11,26 @@ type Test2 implements Node {
   age: Int!
 }
 
-\\"\\"\\"The connection type for Test\\"\\"\\"
-type TestConnection implements Connection {
-  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
-  totalCount: Int
+union Test = Test1 | Test2
 
-  \\"\\"\\"A list of TestEdge.\\"\\"\\"
-  edges: [TestEdge]
-
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
-  pageInfo: PageInfo!
+type Query {
+  tests(before: String, after: String, first: Int, last: Int): TestConnection!
+  tests2(before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
-\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
-type TestEdge implements Edge {
-  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
-  node: Test!
+\\"\\"\\"An object with an ID.\\"\\"\\"
+interface Node {
+  \\"\\"\\"ID of the object.\\"\\"\\"
+  id: ID!
+}
 
+\\"\\"\\"An edge in a connection.\\"\\"\\"
+interface Edge {
   \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
   cursor: String
 }
-"
-`;
 
-exports[`GenRelayTypesService should return added Where types when has where directive 1`] = `
-"\\"\\"\\"A connection for relay\\"\\"\\"
+\\"\\"\\"A connection for relay\\"\\"\\"
 interface Connection {
   \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
   totalCount: Int
@@ -91,18 +40,6 @@ interface Connection {
 
   \\"\\"\\"A list of edges.\\"\\"\\"
   edges: [Edge]
-}
-
-\\"\\"\\"An edge in a connection.\\"\\"\\"
-interface Edge {
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
-  cursor: String
-}
-
-\\"\\"\\"An object with an ID.\\"\\"\\"
-interface Node {
-  \\"\\"\\"ID of the object.\\"\\"\\"
-  id: ID!
 }
 
 \\"\\"\\"Information about pagination in a connection.\\"\\"\\"
@@ -120,13 +57,13 @@ type PageInfo {
   hasPreviousPage: Boolean
 }
 
-type Query {
-  tests(before: String, after: String, first: Int, last: Int): TestConnection!
-  tests2(before: String, after: String, first: Int, last: Int): TestConnection!
-}
+\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
+type TestEdge implements Edge {
+  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
+  node: Test!
 
-type Test implements Node {
-  id: ID!
+  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  cursor: String
 }
 
 \\"\\"\\"The connection type for Test\\"\\"\\"
@@ -140,6 +77,57 @@ type TestConnection implements Connection {
   \\"\\"\\"Information to aid in pagination.\\"\\"\\"
   pageInfo: PageInfo!
 }
+"
+`;
+
+exports[`GenRelayTypesService should return added Where types when has where directive 1`] = `
+"type Test implements Node {
+  id: ID!
+}
+
+type Query {
+  tests(before: String, after: String, first: Int, last: Int): TestConnection!
+  tests2(before: String, after: String, first: Int, last: Int): TestConnection!
+}
+
+\\"\\"\\"An object with an ID.\\"\\"\\"
+interface Node {
+  \\"\\"\\"ID of the object.\\"\\"\\"
+  id: ID!
+}
+
+\\"\\"\\"An edge in a connection.\\"\\"\\"
+interface Edge {
+  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  cursor: String
+}
+
+\\"\\"\\"A connection for relay\\"\\"\\"
+interface Connection {
+  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
+  totalCount: Int
+
+  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  pageInfo: PageInfo!
+
+  \\"\\"\\"A list of edges.\\"\\"\\"
+  edges: [Edge]
+}
+
+\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
+type PageInfo {
+  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
+  startCursor: String
+
+  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
+  endCursor: String
+
+  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
+  hasNextPage: Boolean
+
+  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
+  hasPreviousPage: Boolean
+}
 
 \\"\\"\\"An edge in a TestConnection.\\"\\"\\"
 type TestEdge implements Edge {
@@ -148,6 +136,18 @@ type TestEdge implements Edge {
 
   \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
   cursor: String
+}
+
+\\"\\"\\"The connection type for Test\\"\\"\\"
+type TestConnection implements Connection {
+  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+  totalCount: Int
+
+  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  edges: [TestEdge]
+
+  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  pageInfo: PageInfo!
 }
 "
 `;
