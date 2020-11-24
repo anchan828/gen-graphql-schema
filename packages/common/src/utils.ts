@@ -33,7 +33,7 @@ export const getFieldDefinitions = (definition: ObjectTypeDefinitionNode): Field
   return definition.fields as FieldDefinitionNode[];
 };
 
-export const getDirectives = (field: FieldDefinitionNode): DirectiveNode[] => {
+export const getDirectives = (field: FieldDefinitionNode): readonly DirectiveNode[] => {
   if (!Array.isArray(field.directives)) {
     return [];
   }

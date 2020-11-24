@@ -15,6 +15,7 @@ import {
   FieldDefinitionNode,
   InputValueDefinitionNode,
   InterfaceTypeDefinitionNode,
+  NamedTypeNode,
   ObjectTypeDefinitionNode,
   parse,
   TypeDefinitionNode,
@@ -339,7 +340,7 @@ export class GenRelayTypesService {
   private hasInterface(definition: ObjectTypeDefinitionNode, interfaceName: string): boolean {
     return (
       Array.isArray(definition.interfaces) &&
-      definition.interfaces.find((i: InterfaceTypeDefinitionNode) => i.name.value === interfaceName)
+      definition.interfaces.some((i: NamedTypeNode) => i.name.value === interfaceName)
     );
   }
 
