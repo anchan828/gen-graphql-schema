@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.5.27 (2020-11-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @graphql-tools/merge to v6.2.6 ([f26be54](https://github.com/anchan828/gen-graphql-schema/commit/f26be54fa49f9981e418a644853f598c5cb5eaf1))
+
+
+
+
+
 ## 0.5.26 (2020-11-22)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-order-schema
