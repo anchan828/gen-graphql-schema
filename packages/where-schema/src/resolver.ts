@@ -12,6 +12,7 @@ import { lt } from "./operators/lt";
 import { lte } from "./operators/lte";
 import { notEq } from "./operators/not-eq";
 import { notInOperator } from "./operators/not-in";
+import { present } from "./operators/present";
 import { startsWith } from "./operators/starts-with";
 
 const operatorMap: Map<OperatorType, (value: ValueType, operatorValue: OperatorValueType) => boolean> = new Map([
@@ -27,6 +28,7 @@ const operatorMap: Map<OperatorType, (value: ValueType, operatorValue: OperatorV
   ["gt", gt],
   ["gte", gte],
   ["between", between],
+  ["present", present],
 ]);
 
 type PrimitiveType = string | number | boolean;
@@ -45,6 +47,7 @@ type WhereOperations<T> =
       gt?: T;
       gte?: T;
       between?: T[];
+      present?: boolean;
     }
   | PrimitiveType;
 

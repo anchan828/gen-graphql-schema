@@ -15,6 +15,7 @@ export const DESCRIPTIONS = {
       GT: "Must be greater than given value",
       GTE: "Must be greater than or equal to given value",
       BETWEEN: "Must be within the given range",
+      PRESENT: "Must be the object present",
     },
   },
   WHERE_OPERATOR: {
@@ -40,13 +41,13 @@ export const DEFAULT_OPTIONS: GenWhereTypesOptions = {
     prefix: "",
     suffix: "WhereOperator",
   },
-  enumTypeOperator: ["eq", "not_eq", "in", "not_in"],
+  enumTypeOperator: ["eq", "not_eq", "in", "not_in", "present"],
   supportOperatorTypes: {
-    String: ["starts_with", "ends_with", "eq", "not_eq", "contains", "in", "not_in"],
-    Int: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between"],
-    Float: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between"],
-    ID: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between"],
+    String: ["starts_with", "ends_with", "eq", "not_eq", "contains", "in", "not_in", "present"],
+    Int: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between", "present"],
+    Float: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between", "present"],
+    ID: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between", "present"],
   },
-  arrayOperators: ["in", "not_in", "between"],
+  arrayOperators: ["in", "not_in", "between", "present"],
   orOperatorName: "OR",
 };

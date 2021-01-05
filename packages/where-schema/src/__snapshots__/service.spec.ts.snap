@@ -50,6 +50,9 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [ID]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 "
 `;
@@ -133,6 +136,9 @@ input IntWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [Int]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
@@ -163,6 +169,9 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [ID]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 "
 `;
@@ -214,6 +223,9 @@ input PreOperatorIDSufOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [ID]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 "
 `;
@@ -278,6 +290,9 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [ID]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 
 \\"\\"\\"Query type of String with using operators\\"\\"\\"
@@ -304,6 +319,9 @@ input StringWhereOperator {
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
   not_in: [String]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
@@ -334,6 +352,9 @@ input IntWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [Int]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 "
 `;
@@ -424,6 +445,9 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [ID]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 
 \\"\\"\\"Query type of String with using operators\\"\\"\\"
@@ -450,6 +474,9 @@ input StringWhereOperator {
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
   not_in: [String]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 
 \\"\\"\\"Query type of Int with using operators\\"\\"\\"
@@ -480,6 +507,9 @@ input IntWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [Int]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 
 \\"\\"\\"Query type of Date with using operators\\"\\"\\"
@@ -537,6 +567,9 @@ input FloatWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [Float]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 
 \\"\\"\\"Query type of TestEnum with using operators\\"\\"\\"
@@ -552,6 +585,9 @@ input TestEnumWhereOperator {
 
   \\"\\"\\"Must not be an element of the array\\"\\"\\"
   not_in: [TestEnum]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 "
 `;
@@ -602,6 +638,9 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be within the given range\\"\\"\\"
   between: [ID]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  present: Boolean
 }
 "
 `;
