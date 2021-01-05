@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.31](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.30...v0.5.31) (2021-01-05)
+
+
+### Features
+
+* add present where operator ([e43b52b](https://github.com/anchan828/gen-graphql-schema/commit/e43b52ba6e81530cae87f2451f932bd0b6d6843a))
+
+
+
+
+
 ## 0.5.30 (2020-12-20)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-merge-schema
