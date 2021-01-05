@@ -112,13 +112,13 @@ export class GenWhereTypesService {
             kind: "NamedType",
             name: {
               kind: "Name",
-              value: typeName,
+              value: operatorName === "present" ? "Boolean" : typeName,
             },
           };
 
           return {
             kind: "InputValueDefinition",
-            type: isArrayOperator ? { kind: "ListType", type: typeNode } : typeNode,
+            type: isArrayOperator && operatorName !== "present" ? { kind: "ListType", type: typeNode } : typeNode,
             name: nameNode,
             description: descriptionNode,
           } as InputValueDefinitionNode;

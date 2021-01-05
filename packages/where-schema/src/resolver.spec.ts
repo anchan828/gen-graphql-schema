@@ -358,4 +358,34 @@ describe("whereResolver", () => {
       ]);
     });
   });
+
+  describe("PRESENT", () => {
+    it(`should expect { name: "A" }`, () => {
+      interface Item {
+        name?: string;
+        age?: number;
+        range?: string[];
+      }
+
+      const items = [{ name: "A" }, { age: 10 }, { age: 20 }, { name: "" }, { range: [] }] as Item[];
+
+      expect(whereResolver(items, { name: { present: true } })).toEqual([{ name: "A" }]);
+    });
+
+    it(`should expect { age: 10 }, { age: 20 }, { name: "" }, { range: [] }`, () => {
+      interface Item {
+        name?: string;
+        age?: number;
+      }
+
+      const items = [{ name: "A" }, { age: 10 }, { age: 20 }, { name: "" }, { range: [] }] as Item[];
+
+      expect(whereResolver(items, { name: { present: false } })).toEqual([
+        { age: 10 },
+        { age: 20 },
+        { name: "" },
+        { range: [] },
+      ]);
+    });
+  });
 });

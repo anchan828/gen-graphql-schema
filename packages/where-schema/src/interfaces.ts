@@ -10,7 +10,8 @@ export type OperatorType =
   | "lte"
   | "gt"
   | "gte"
-  | "between";
+  | "between"
+  | "present";
 export interface GenWhereTypesOptions {
   whereDirective?: { name?: string };
   whereIgnoreDirective?: { name?: string };

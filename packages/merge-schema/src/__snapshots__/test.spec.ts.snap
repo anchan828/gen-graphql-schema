@@ -152,6 +152,8 @@ input IDWhereOperator {
   gte: ID
   \\"Must be within the given range\\"
   between: [ID]
+  \\"Must be the object present\\"
+  present: Boolean
 }
 \\"Query type of String with using operators\\"
 input StringWhereOperator {
@@ -169,6 +171,8 @@ input StringWhereOperator {
   in: [String]
   \\"Must not be an element of the array\\"
   not_in: [String]
+  \\"Must be the object present\\"
+  present: Boolean
 }
 \\"Query type of Int with using operators\\"
 input IntWhereOperator {
@@ -190,6 +194,8 @@ input IntWhereOperator {
   gte: Int
   \\"Must be within the given range\\"
   between: [Int]
+  \\"Must be the object present\\"
+  present: Boolean
 }
 \\"An object with an ID.\\"
 interface Node {
@@ -288,6 +294,8 @@ input IDWhereOperator {
   gte: ID
   \\"Must be within the given range\\"
   between: [ID]
+  \\"Must be the object present\\"
+  present: Boolean
 }
 \\"An object with an ID.\\"
 interface Node {
@@ -432,6 +440,8 @@ input IDWhereOperator {
   gte: ID
   \\"Must be within the given range\\"
   between: [ID]
+  \\"Must be the object present\\"
+  present: Boolean
 }
 
 "
