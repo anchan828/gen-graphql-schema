@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.33](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.32...v0.5.33) (2021-01-05)
+
+
+### Features
+
+* support nested PRESENT operator ([83e8415](https://github.com/anchan828/gen-graphql-schema/commit/83e84151a45644cdd0e455a19cfeee0760f2872c))
+
+
+
+
+
 ## [0.5.32](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.31...v0.5.32) (2021-01-05)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-merge-schema
