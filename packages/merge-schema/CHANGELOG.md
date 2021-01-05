@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.32](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.31...v0.5.32) (2021-01-05)
+
+**Note:** Version bump only for package @anchan828/gen-graphql-merge-schema
+
+
+
+
+
 ## [0.5.31](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.30...v0.5.31) (2021-01-05)
 
 
