@@ -18,6 +18,9 @@ input TestWhere {
   \\"\\"\\"Query with using name field\\"\\"\\"
   OR: [TestWhere]
 
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  PRESENT: Boolean
+
   \\"\\"\\"Query with using name field\\"\\"\\"
   name: String
 }
@@ -83,6 +86,9 @@ input TestPositionWhere {
   \\"\\"\\"Query with using next field\\"\\"\\"
   OR: [TestPositionWhere]
 
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  PRESENT: Boolean
+
   \\"\\"\\"Query with using line field\\"\\"\\"
   line: IntWhereOperator
 
@@ -103,6 +109,9 @@ input TestWhere {
 
   \\"\\"\\"Query with using position field\\"\\"\\"
   OR: [TestWhere]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  PRESENT: Boolean
 
   \\"\\"\\"Query with using position field\\"\\"\\"
   position: TestPositionWhere
@@ -193,6 +202,9 @@ input PreWhereTypeTestSufWhereType {
 
   \\"\\"\\"Query with using id field\\"\\"\\"
   OR: [PreWhereTypeTestSufWhereType]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  PRESENT: Boolean
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"
@@ -254,6 +266,9 @@ input TestWhere {
 
   \\"\\"\\"Query with using age field\\"\\"\\"
   OR: [TestWhere]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  PRESENT: Boolean
 
   \\"\\"\\"Query with using name field\\"\\"\\"
   name: StringWhereOperator
@@ -391,6 +406,9 @@ input TestWhere {
 
   \\"\\"\\"Query with using test2 field\\"\\"\\"
   OR: [TestWhere]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  PRESENT: Boolean
 
   \\"\\"\\"Query with using name field\\"\\"\\"
   name: StringWhereOperator
@@ -608,6 +626,9 @@ input TestWhere {
 
   \\"\\"\\"Query with using id field\\"\\"\\"
   OR: [TestWhere]
+
+  \\"\\"\\"Must be the object present\\"\\"\\"
+  PRESENT: Boolean
 }
 
 \\"\\"\\"Query type of ID with using operators\\"\\"\\"

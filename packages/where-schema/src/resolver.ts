@@ -51,15 +51,23 @@ type WhereOperations<T> =
     }
   | PrimitiveType;
 
-type WhereOperationType<T> = T extends PrimitiveType
+type WhereOperationType<T> = T extends Array<infer U>
+  ? WhereOperationType<U>
+  : T extends PrimitiveType
   ? WhereOperations<T>
-  : { [key in keyof T]?: T[key] extends PrimitiveType ? WhereOperations<T[key]> : WhereOperationType<T[key]> };
+  : {
+      [key in keyof T]?: T[key] extends Array<infer V>
+        ? WhereOperationType<V>
+        : T[key] extends PrimitiveType
+        ? WhereOperations<T[key]>
+        : WhereOperationType<T[key]>;
+    } & { [`PRESENT`]?: boolean };
 
 type WhereFn<T> = (item: T) => boolean;
 
 export function whereResolver<T extends object>(
   items: T[],
-  where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[]; [`PRESENT`]?: boolean },
+  where: WhereOperationType<T> & { [`OR`]?: WhereOperationType<T>[] },
   objectPaths?: Record<keyof T, string>,
 ): T[] {
   const whereKeys = Object.keys(where);
@@ -86,7 +94,7 @@ export function whereResolver<T extends object>(
 }
 
 function andFilterFunctions<T extends object>(
-  where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[]; [`PRESENT`]?: boolean },
+  where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[] },
   objectPaths?: Record<keyof T, string>,
 ): WhereFn<T>[] {
   const andFns: WhereFn<T>[] = [];
@@ -120,7 +128,13 @@ function genAndFilterFunctions<T extends object>(
   const fns: WhereFn<T>[] = [];
   let propertyKey = key;
   if (typeof operators === "object" && !Array.isArray(operators)) {
-    const operatorKeys = Object.keys(operators) as OperatorType[];
+    const operatorKeys = Object.keys(operators).map((o) => {
+      if (o === "PRESENT") {
+        o = "present";
+      }
+      return o;
+    }) as OperatorType[];
+
     for (const operatorKey of operatorKeys) {
       if (!operatorMap.has(operatorKey)) {
         propertyKey = `${propertyKey}.${operatorKey}`;
@@ -152,7 +166,7 @@ function genAndFilterFunction<T extends object>(
   }
   return (item) => {
     return Object.keys(ops).every((operator: string) => {
-      return operatorMap.get(operator as OperatorType)?.(
+      return operatorMap.get(operator.toLowerCase() as OperatorType)?.(
         (objectPath.get(item, objectPathKey) as unknown) as ValueType<T>,
         Reflect.get(ops, operator),
       );

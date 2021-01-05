@@ -127,6 +127,8 @@ input TestWhere {
   id: IDWhereOperator
   \\"Query with using age field\\"
   OR: [TestWhere]
+  \\"Must be the object present\\"
+  PRESENT: Boolean
   \\"Query with using name field\\"
   name: StringWhereOperator
   \\"Query with using age field\\"
@@ -273,6 +275,8 @@ input TestWhere {
   id: IDWhereOperator
   \\"Query with using id field\\"
   OR: [TestWhere]
+  \\"Must be the object present\\"
+  PRESENT: Boolean
 }
 \\"Query type of ID with using operators\\"
 input IDWhereOperator {
@@ -419,6 +423,8 @@ input TestWhere {
   id: IDWhereOperator
   \\"Query with using id field\\"
   OR: [TestWhere]
+  \\"Must be the object present\\"
+  PRESENT: Boolean
 }
 \\"Query type of ID with using operators\\"
 input IDWhereOperator {
