@@ -54,7 +54,7 @@ describe("startsWith", () => {
       value: "ABC",
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

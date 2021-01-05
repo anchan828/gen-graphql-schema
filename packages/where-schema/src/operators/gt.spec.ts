@@ -12,7 +12,7 @@ describe("gt", () => {
       value: "2",
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnTrueCases) {
@@ -49,7 +49,7 @@ describe("gt", () => {
       operatorValue: 123,
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

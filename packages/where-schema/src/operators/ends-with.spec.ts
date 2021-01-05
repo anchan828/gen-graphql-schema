@@ -15,7 +15,7 @@ describe("endsWith", () => {
       value: "ABCD",
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnTrueCases) {
@@ -54,7 +54,7 @@ describe("endsWith", () => {
       value: 123,
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

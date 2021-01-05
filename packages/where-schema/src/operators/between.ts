@@ -1,6 +1,6 @@
 import { OperatorValueType, ValueType } from "./interfaces";
 
-export const between = (value: ValueType, operatorValue: OperatorValueType): boolean => {
+export const between = <T>(value: ValueType<T>, operatorValue: OperatorValueType): boolean => {
   if (!value || !operatorValue) {
     return false;
   }
@@ -14,7 +14,9 @@ export const between = (value: ValueType, operatorValue: OperatorValueType): boo
   }
 
   if (Array.isArray(value)) {
-    return (value as (string | number)[]).every((v: ValueType) => v && v >= operatorValue[0] && v <= operatorValue[1]);
+    return (value as (string | number)[]).every(
+      (v: ValueType<T>) => v && v >= operatorValue[0] && v <= operatorValue[1],
+    );
   }
 
   return value >= operatorValue[0] && value <= operatorValue[1];

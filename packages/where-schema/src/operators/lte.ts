@@ -1,6 +1,6 @@
 import { OperatorValueType, ValueType } from "./interfaces";
 
-export const lte = (value: ValueType, operatorValue: OperatorValueType): boolean => {
+export const lte = <T>(value: ValueType<T>, operatorValue: OperatorValueType): boolean => {
   if (Array.isArray(value)) {
     return false;
   }

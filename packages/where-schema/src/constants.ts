@@ -49,5 +49,4 @@ export const DEFAULT_OPTIONS: GenWhereTypesOptions = {
     ID: ["eq", "not_eq", "in", "not_in", "lt", "lte", "gt", "gte", "between", "present"],
   },
   arrayOperators: ["in", "not_in", "between", "present"],
-  orOperatorName: "OR",
 };

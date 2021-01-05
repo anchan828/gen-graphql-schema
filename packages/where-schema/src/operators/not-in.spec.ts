@@ -19,7 +19,7 @@ describe("notIn", () => {
       value: ["A", "B", "C", ""],
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnTrueCases) {
@@ -59,7 +59,7 @@ describe("notIn", () => {
     },
     {},
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

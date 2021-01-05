@@ -16,7 +16,7 @@ describe("lte", () => {
       value: "1",
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnTrueCases) {
@@ -49,7 +49,7 @@ describe("lte", () => {
       operatorValue: 123,
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

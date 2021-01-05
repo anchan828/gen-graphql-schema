@@ -212,11 +212,11 @@ export class GenWhereTypesService {
           directives: [],
         };
 
-        fields[this.options.orOperatorName!] = {
+        fields["OR"] = {
           kind: "InputValueDefinition",
           name: {
             kind: "Name",
-            value: this.options.orOperatorName!,
+            value: "OR",
           },
           description: {
             kind: "StringValue",
@@ -230,6 +230,26 @@ export class GenWhereTypesService {
                 kind: "Name",
                 value: whereTypeName,
               },
+            },
+          },
+          directives: [],
+        };
+
+        fields["PRESENT"] = {
+          kind: "InputValueDefinition",
+          name: {
+            kind: "Name",
+            value: "PRESENT",
+          },
+          description: {
+            kind: "StringValue",
+            value: DESCRIPTIONS.WHERE_OPERATOR_TYPE.OPERATORS.PRESENT,
+          },
+          type: {
+            kind: "NamedType",
+            name: {
+              kind: "Name",
+              value: "Boolean",
             },
           },
           directives: [],

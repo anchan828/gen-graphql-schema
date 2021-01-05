@@ -22,7 +22,7 @@ describe("eq", () => {
       operatorValue: null,
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnTrueCases) {
@@ -65,7 +65,7 @@ describe("eq", () => {
       value: 123,
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

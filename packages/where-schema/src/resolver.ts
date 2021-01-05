@@ -15,7 +15,7 @@ import { notInOperator } from "./operators/not-in";
 import { present } from "./operators/present";
 import { startsWith } from "./operators/starts-with";
 
-const operatorMap: Map<OperatorType, (value: ValueType, operatorValue: OperatorValueType) => boolean> = new Map([
+const operatorMap: Map<OperatorType, (value: ValueType<any>, operatorValue: OperatorValueType) => boolean> = new Map([
   ["starts_with", startsWith],
   ["ends_with", endsWith],
   ["eq", eq],
@@ -59,12 +59,20 @@ type WhereFn<T> = (item: T) => boolean;
 
 export function whereResolver<T extends object>(
   items: T[],
-  where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[] },
+  where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[]; [`PRESENT`]?: boolean },
   objectPaths?: Record<keyof T, string>,
 ): T[] {
+  const whereKeys = Object.keys(where);
   const andFns: WhereFn<T>[] = andFilterFunctions(where, objectPaths);
+
+  if (whereKeys.includes("PRESENT")) {
+    if (!present(items, Reflect.get(where, "PRESENT"))) {
+      return [];
+    }
+  }
+
   let results = items.filter((item) => andFns.every((fn) => fn(item)));
-  if (Object.keys(where).includes("OR")) {
+  if (whereKeys.includes("OR")) {
     const operators = Reflect.get(where, "OR") as WhereOperationType<T>[];
     const orFns: WhereFn<T>[][] = [];
     for (const operator of operators) {
@@ -78,17 +86,17 @@ export function whereResolver<T extends object>(
 }
 
 function andFilterFunctions<T extends object>(
-  where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[] },
+  where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[]; [`PRESENT`]?: boolean },
   objectPaths?: Record<keyof T, string>,
 ): WhereFn<T>[] {
   const andFns: WhereFn<T>[] = [];
-  const whereKeys = Object.keys(where) as Array<keyof T | "OR">;
+  const whereKeys = Object.keys(where) as Array<keyof T | "OR" | "PRESENT">;
   if (!Array.isArray(whereKeys) || whereKeys.length === 0) {
     return andFns;
   }
 
   for (const whereKey of whereKeys) {
-    if (whereKey === "OR") {
+    if (whereKey === "OR" || whereKey === "PRESENT") {
       continue;
     }
 
@@ -145,7 +153,7 @@ function genAndFilterFunction<T extends object>(
   return (item) => {
     return Object.keys(ops).every((operator: string) => {
       return operatorMap.get(operator as OperatorType)?.(
-        (objectPath.get(item, objectPathKey) as unknown) as ValueType,
+        (objectPath.get(item, objectPathKey) as unknown) as ValueType<T>,
         Reflect.get(ops, operator),
       );
     });

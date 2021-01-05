@@ -15,7 +15,7 @@ describe("contains", () => {
       value: [1, 3, 6, 9],
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: number[];
   }>;
   for (const testCase of shouldReturnTrueCases) {
@@ -81,7 +81,7 @@ describe("contains", () => {
       value: [null, undefined],
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

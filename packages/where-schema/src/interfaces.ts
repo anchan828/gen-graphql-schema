@@ -31,7 +31,6 @@ export interface GenWhereTypesOptions {
     [key: string]: OperatorType[] | undefined;
   };
   arrayOperators?: OperatorType[];
-  orOperatorName?: string;
 }
 
 export interface WhereFieldNameAndType {

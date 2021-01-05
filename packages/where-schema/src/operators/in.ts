@@ -1,6 +1,6 @@
 import { OperatorValueType, ValueType } from "./interfaces";
 
-export const inOperator = (value: ValueType, operatorValue: OperatorValueType): boolean => {
+export const inOperator = <T>(value: ValueType<T>, operatorValue: OperatorValueType): boolean => {
   if (!value && !operatorValue) {
     return false;
   }

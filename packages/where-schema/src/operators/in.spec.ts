@@ -27,7 +27,7 @@ describe("in", () => {
       value: [123, 12, 1234, 12345],
     },
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnTrueCases) {
@@ -67,7 +67,7 @@ describe("in", () => {
     },
     {},
   ] as Array<{
-    value: ValueType;
+    value: ValueType<any>;
     operatorValue: OperatorValueType;
   }>;
   for (const testCase of shouldReturnFalseCases) {

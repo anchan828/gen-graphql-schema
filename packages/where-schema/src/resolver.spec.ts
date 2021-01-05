@@ -360,6 +360,29 @@ describe("whereResolver", () => {
   });
 
   describe("PRESENT", () => {
+    it(`should expect [{ name: "A" }, { age: 10 }, { age: 20 }]`, () => {
+      interface Item {
+        name?: string;
+        age?: number;
+        range?: string[];
+      }
+
+      const items = [{ name: "A" }, { age: 10 }, { age: 20 }] as Item[];
+
+      expect(whereResolver(items, { PRESENT: true })).toEqual([{ name: "A" }, { age: 10 }, { age: 20 }]);
+    });
+    it(`should expect []`, () => {
+      interface Item {
+        name?: string;
+        age?: number;
+        range?: string[];
+      }
+
+      const items = [{ name: "A" }, { age: 10 }, { age: 20 }] as Item[];
+
+      expect(whereResolver(items, { PRESENT: false })).toEqual([]);
+    });
+
     it(`should expect { name: "A" }`, () => {
       interface Item {
         name?: string;
