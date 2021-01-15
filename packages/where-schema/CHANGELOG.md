@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.2](https://github.com/anchan828/gen-graphql-schema/compare/v0.6.1...v0.6.2) (2021-01-15)
+
+
+### Bug Fixes
+
+* **where-schema:** improve present ([c8aabeb](https://github.com/anchan828/gen-graphql-schema/commit/c8aabeb156b8e1c0301ace4632e4d46c211a47ba))
+* present operation ([313b122](https://github.com/anchan828/gen-graphql-schema/commit/313b1229a5c57a08d74777c0669e06e3454427a3))
+* **where-schema:** fix invalid property key ([fc40f9a](https://github.com/anchan828/gen-graphql-schema/commit/fc40f9adac4b626082e2a8222b644e94915c086a))
+* **where-schema:** fix present key ([334ba5d](https://github.com/anchan828/gen-graphql-schema/commit/334ba5dcf6fb692090e9056a056fb245e5d796e3))
+
+
+
+
+
 ## [0.6.1](https://github.com/anchan828/gen-graphql-schema/compare/v0.6.0...v0.6.1) (2021-01-15)
 
 
