@@ -539,7 +539,7 @@ describe("genObjectPaths", () => {
 
 describe("sortOperatorKey", () => {
   it("should be sorted", () => {
-    expect(sortOperatorKey(["A", "B", "present", "C", "PRESENT"])).toEqual(["PRESENT", "present", "A", "B", "C"]);
+    expect(sortOperatorKey(["A", "B", "present", "C", "PRESENT"])).toEqual(["A", "B", "C", "present", "PRESENT"]);
   });
 });
 

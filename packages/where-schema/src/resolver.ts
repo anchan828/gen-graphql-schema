@@ -206,13 +206,6 @@ export function genObjectPaths<T extends object>(item: T, objectPathKey: string)
 }
 
 export function sortOperatorKey(keys: string[]): string[] {
-  return keys.sort((a) => {
-    const presentKey = "present";
-
-    if (a === presentKey || a === presentKey.toUpperCase()) {
-      return -1;
-    }
-
-    return 0;
-  });
+  const presentKeys = ["present", "PRESENT"];
+  return [...keys.filter((k) => !presentKeys.includes(k)), ...keys.filter((k) => presentKeys.includes(k))];
 }
