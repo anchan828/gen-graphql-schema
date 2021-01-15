@@ -498,6 +498,10 @@ describe("genObjectPaths", () => {
   });
 
   it("should gen path", () => {
+    expect(genObjectPaths({ nested: [{ name: "A" }, { name: "B" }] }, "nested.PRESENT")).toEqual(["nested.PRESENT"]);
+  });
+
+  it("should gen path", () => {
     expect(
       genObjectPaths(
         {
@@ -557,6 +561,7 @@ describe("Complicated tests", () => {
       target?: string;
 
       approved: boolean;
+      language: "ja" | "ko";
     }
 
     interface Comment {
@@ -565,14 +570,21 @@ describe("Complicated tests", () => {
 
     const segments: Segment[] = [
       { source: "A" },
-      { source: "B", translations: [{ target: "BA", approved: false }] },
+      { source: "B", translations: [{ target: "BA", approved: false, language: "ja" }] },
       { source: "C", comments: [{ body: "BB" }] },
       { source: "D", translations: [], comments: [{ body: "BB" }] },
-      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
-      { source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] },
-      { source: "789", translations: [{ target: "BA3", approved: true }], comments: [] },
-      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
-      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+      { source: "123", translations: [{ target: "BA1", approved: false, language: "ja" }], comments: [{ body: "BB" }] },
+      {
+        source: "456",
+        translations: [
+          { target: "BA2", approved: true, language: "ja" },
+          { target: "BA2", approved: true, language: "ko" },
+        ],
+        comments: [{ body: "BB" }],
+      },
+      { source: "789", translations: [{ target: "BA3", approved: true, language: "ja" }], comments: [] },
+      { source: "345", translations: [{ target: "CA", approved: false, language: "ja" }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false, language: "ja" }], comments: [{ body: "DB" }] },
     ];
 
     // no filter
@@ -580,12 +592,19 @@ describe("Complicated tests", () => {
 
     // has translations
     expect(whereResolver(segments, { translations: { PRESENT: true } })).toEqual([
-      { source: "B", translations: [{ target: "BA", approved: false }] },
-      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
-      { source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] },
-      { source: "789", translations: [{ target: "BA3", approved: true }], comments: [] },
-      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
-      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+      { source: "B", translations: [{ target: "BA", approved: false, language: "ja" }] },
+      { source: "123", translations: [{ target: "BA1", approved: false, language: "ja" }], comments: [{ body: "BB" }] },
+      {
+        source: "456",
+        translations: [
+          { target: "BA2", approved: true, language: "ja" },
+          { target: "BA2", approved: true, language: "ko" },
+        ],
+        comments: [{ body: "BB" }],
+      },
+      { source: "789", translations: [{ target: "BA3", approved: true, language: "ja" }], comments: [] },
+      { source: "345", translations: [{ target: "CA", approved: false, language: "ja" }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false, language: "ja" }], comments: [{ body: "DB" }] },
     ]);
 
     // no translations
@@ -597,27 +616,46 @@ describe("Complicated tests", () => {
 
     // no approved translations
     expect(whereResolver(segments, { translations: { PRESENT: true, approved: false } })).toEqual([
-      { source: "B", translations: [{ target: "BA", approved: false }] },
-      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
-      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
-      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+      { source: "B", translations: [{ target: "BA", approved: false, language: "ja" }] },
+      { source: "123", translations: [{ target: "BA1", approved: false, language: "ja" }], comments: [{ body: "BB" }] },
+      { source: "345", translations: [{ target: "CA", approved: false, language: "ja" }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false, language: "ja" }], comments: [{ body: "DB" }] },
     ]);
 
     // approved translations
     expect(whereResolver(segments, { translations: { PRESENT: true, approved: true } })).toEqual([
-      { source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] },
-      { source: "789", translations: [{ target: "BA3", approved: true }], comments: [] },
+      {
+        source: "456",
+        translations: [
+          { target: "BA2", approved: true, language: "ja" },
+          { target: "BA2", approved: true, language: "ko" },
+        ],
+        comments: [{ body: "BB" }],
+      },
+      { source: "789", translations: [{ target: "BA3", approved: true, language: "ja" }], comments: [] },
     ]);
 
     // approved translations with comments
     expect(
-      whereResolver(segments, { translations: { PRESENT: true, approved: true }, comments: { PRESENT: true } }),
-    ).toEqual([{ source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] }]);
+      whereResolver(segments, {
+        translations: { PRESENT: true, approved: true, language: "ja" },
+        comments: { PRESENT: true },
+      }),
+    ).toEqual([
+      {
+        source: "456",
+        translations: [
+          { target: "BA2", approved: true, language: "ja" },
+          { target: "BA2", approved: true, language: "ko" },
+        ],
+        comments: [{ body: "BB" }],
+      },
+    ]);
 
     // approved translations without comments
     expect(
       whereResolver(segments, { translations: { PRESENT: true, approved: true }, comments: { PRESENT: false } }),
-    ).toEqual([{ source: "789", translations: [{ target: "BA3", approved: true }], comments: [] }]);
+    ).toEqual([{ source: "789", translations: [{ target: "BA3", approved: true, language: "ja" }], comments: [] }]);
 
     // no approved translations and search text
     expect(
@@ -626,10 +664,34 @@ describe("Complicated tests", () => {
         OR: [{ source: { contains: "A" } }, { translations: { target: { contains: "A" } } }],
       }),
     ).toEqual([
-      { source: "B", translations: [{ target: "BA", approved: false }] },
-      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
-      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
-      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+      { source: "B", translations: [{ target: "BA", approved: false, language: "ja" }] },
+      { source: "123", translations: [{ target: "BA1", approved: false, language: "ja" }], comments: [{ body: "BB" }] },
+      { source: "345", translations: [{ target: "CA", approved: false, language: "ja" }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false, language: "ja" }], comments: [{ body: "DB" }] },
+    ]);
+  });
+
+  it("test2", () => {
+    // no ko translation
+    expect(
+      whereResolver(
+        [
+          {
+            translations: [],
+          },
+          {
+            translations: [{ language: "ja" }],
+          },
+          {
+            translations: [{ language: "ja" }, { language: "ko" }],
+          },
+        ],
+        { translations: { PRESENT: false, language: { eq: "ko" } } },
+      ),
+    ).toEqual([
+      {
+        translations: [],
+      },
     ]);
   });
 });

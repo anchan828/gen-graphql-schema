@@ -96,7 +96,6 @@ function andFilterFunctions<T extends object>(
   if (!Array.isArray(whereKeys) || whereKeys.length === 0) {
     return andFns;
   }
-
   for (const whereKey of whereKeys) {
     if (whereKey === "OR" || whereKey === "PRESENT") {
       continue;
@@ -129,6 +128,10 @@ function genAndFilterFunctions<T extends object>(
       return o;
     }) as OperatorType[];
 
+    if (operators.PRESENT !== undefined && operators.PRESENT !== null && !operators.PRESENT) {
+      return [genAndFilterFunction(`${propertyKey}`, { PRESENT: operators["PRESENT"] } as any, objectPaths)];
+    }
+
     for (const operatorKey of operatorKeys) {
       if (!operatorMap.has(operatorKey)) {
         fns.push(
@@ -160,6 +163,7 @@ function genAndFilterFunction<T extends object>(
     objectPathKey = objectPaths[key];
   }
   let ops = operators;
+
   if (typeof ops !== "object") {
     ops = { eq: operators } as any;
   }
