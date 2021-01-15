@@ -73,12 +73,6 @@ export function whereResolver<T extends object>(
   const whereKeys = sortOperatorKey(Object.keys(where));
   const andFns: WhereFn<T>[] = andFilterFunctions(where, objectPaths);
 
-  if (whereKeys.includes("PRESENT")) {
-    if (!present(items, Reflect.get(where, "PRESENT"))) {
-      return [];
-    }
-  }
-
   let results = items.filter((item) => andFns.every((fn) => fn(item)));
   if (whereKeys.includes("OR")) {
     const operators = Reflect.get(where, "OR") as WhereOperationType<T>[];
@@ -186,6 +180,10 @@ function genAndFilterFunction<T extends object>(
 }
 
 export function genObjectPaths<T extends object>(item: T, objectPathKey: string): string[] {
+  if (objectPathKey.endsWith("PRESENT")) {
+    return [objectPathKey];
+  }
+
   if (objectPath.has(item, objectPathKey)) {
     return [objectPathKey];
   }
