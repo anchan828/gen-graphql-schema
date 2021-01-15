@@ -1,4 +1,5 @@
 import * as objectPath from "object-path";
+import "reflect-metadata";
 import { OperatorType } from "./interfaces";
 import { between } from "./operators/between";
 import { contains } from "./operators/contains";
@@ -14,7 +15,6 @@ import { notEq } from "./operators/not-eq";
 import { notInOperator } from "./operators/not-in";
 import { present } from "./operators/present";
 import { startsWith } from "./operators/starts-with";
-
 const operatorMap: Map<OperatorType, (value: ValueType<any>, operatorValue: OperatorValueType) => boolean> = new Map([
   ["starts_with", startsWith],
   ["ends_with", endsWith],
@@ -63,7 +63,23 @@ type WhereOperationType<T> = T extends Array<infer U>
         : WhereOperationType<T[key]>;
     } & { [`PRESENT`]?: boolean };
 
-type WhereFn<T> = (item: T) => boolean;
+type WhereFn<T> = (item: T, result?: boolean) => boolean;
+
+const PRESENT_FN_KEY = "PRESENT_FN_KEY";
+
+function doAndFilter<T extends object>(item: T, andFns: WhereFn<T>[][]) {
+  return andFns.every((fns) => {
+    const presentFn = fns.find((f) => Reflect.hasMetadata(PRESENT_FN_KEY, f));
+    const fn = fns.filter((f) => !Reflect.hasMetadata(PRESENT_FN_KEY, f));
+
+    let result = fn.every((f) => f(item));
+
+    if (presentFn) {
+      result = presentFn(item, result);
+    }
+    return result;
+  });
+}
 
 export function whereResolver<T extends object>(
   items: T[],
@@ -71,17 +87,16 @@ export function whereResolver<T extends object>(
   objectPaths?: Record<keyof T, string>,
 ): T[] {
   const whereKeys = sortOperatorKey(Object.keys(where));
-  const andFns: WhereFn<T>[] = andFilterFunctions(where, objectPaths);
-
-  let results = items.filter((item) => andFns.every((fn) => fn(item)));
+  const andFns: WhereFn<T>[][] = andFilterFunctions(where, objectPaths);
+  let results = items.filter((item) => doAndFilter(item, andFns));
   if (whereKeys.includes("OR")) {
     const operators = Reflect.get(where, "OR") as WhereOperationType<T>[];
-    const orFns: WhereFn<T>[][] = [];
+    const orFns: WhereFn<T>[][][] = [];
     for (const operator of operators) {
       orFns.push(andFilterFunctions(operator, objectPaths));
     }
 
-    results = results.filter((item) => orFns.some((andFns) => andFns.every((andFn) => andFn(item))));
+    results = results.filter((item) => orFns.some((andFnsArray) => doAndFilter(item, andFnsArray)));
   }
 
   return results;
@@ -90,8 +105,8 @@ export function whereResolver<T extends object>(
 function andFilterFunctions<T extends object>(
   where: WhereOperationType<T> | { [`OR`]?: WhereOperationType<T>[] },
   objectPaths?: Record<keyof T, string>,
-): WhereFn<T>[] {
-  const andFns: WhereFn<T>[] = [];
+): WhereFn<T>[][] {
+  const andFns: WhereFn<T>[][] = [];
   const whereKeys = sortOperatorKey(Object.keys(where)) as Array<keyof T | "OR" | "PRESENT">;
   if (!Array.isArray(whereKeys) || whereKeys.length === 0) {
     return andFns;
@@ -107,7 +122,7 @@ function andFilterFunctions<T extends object>(
       continue;
     }
 
-    andFns.push(...genAndFilterFunctions(`${whereKey}`, operators, objectPaths));
+    andFns.push(genAndFilterFunctions(`${whereKey}`, operators, objectPaths));
   }
 
   return andFns;
@@ -121,19 +136,14 @@ function genAndFilterFunctions<T extends object>(
   const fns: WhereFn<T>[] = [];
   const propertyKey = key;
   if (typeof operators === "object" && !Array.isArray(operators)) {
-    const operatorKeys = Object.keys(operators).map((o) => {
-      if (o === "PRESENT") {
-        o = "present";
-      }
-      return o;
-    }) as OperatorType[];
-
-    if (operators.PRESENT !== undefined && operators.PRESENT !== null && !operators.PRESENT) {
-      return [genAndFilterFunction(`${propertyKey}`, { PRESENT: operators["PRESENT"] } as any, objectPaths)];
-    }
+    const operatorKeys = Object.keys(operators);
 
     for (const operatorKey of operatorKeys) {
-      if (!operatorMap.has(operatorKey)) {
+      if (operatorKey === "PRESENT") {
+        const presentFn = genAndPresenterFilterFunction(propertyKey, operators["PRESENT"] as boolean, objectPaths);
+        Reflect.defineMetadata(PRESENT_FN_KEY, "PRESENT", presentFn);
+        fns.push(presentFn);
+      } else if (!operatorMap.has(operatorKey as OperatorType)) {
         fns.push(
           ...genAndFilterFunctions(
             `${propertyKey}.${operatorKey}`,
@@ -150,6 +160,37 @@ function genAndFilterFunctions<T extends object>(
   }
 
   return fns;
+}
+
+function genAndPresenterFilterFunction<T extends object>(
+  key: string,
+  presentValue: boolean,
+  objectPaths?: Record<string, string>,
+): WhereFn<T> {
+  let objectPathKey: string = key;
+
+  if (objectPaths && objectPaths[key]) {
+    objectPathKey = objectPaths[key];
+  }
+
+  return (item, result): boolean => {
+    let res = result;
+    const presentValue2 = genObjectPaths(item, objectPathKey).some((opk) =>
+      present((objectPath.get(item, opk) as unknown) as ValueType<T>, presentValue),
+    );
+
+    if (result && !presentValue && presentValue2) {
+      res = true;
+    } else if (result && presentValue && !presentValue2) {
+      res = false;
+    } else if (!result && !presentValue) {
+      res = true;
+    } else if (result && !presentValue) {
+      res = false;
+    }
+
+    return res as boolean;
+  };
 }
 
 function genAndFilterFunction<T extends object>(

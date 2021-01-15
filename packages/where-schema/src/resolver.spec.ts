@@ -1,5 +1,4 @@
 import { genObjectPaths, sortOperatorKey, whereResolver } from "./resolver";
-
 describe("whereResolver", () => {
   it("should be defined", () => {
     expect(whereResolver).toBeDefined();
@@ -551,15 +550,12 @@ describe("Complicated tests", () => {
   it(`test`, () => {
     interface Segment {
       source?: string;
-
       translations?: Tranlation[];
-
       comments?: Comment[];
     }
 
     interface Tranlation {
       target?: string;
-
       approved: boolean;
       language: "ja" | "ko";
     }
@@ -677,21 +673,17 @@ describe("Complicated tests", () => {
       whereResolver(
         [
           {
+            source: "A",
             translations: [],
           },
-          {
-            translations: [{ language: "ja" }],
-          },
-          {
-            translations: [{ language: "ja" }, { language: "ko" }],
-          },
+          { source: "A", translations: [{ language: "ja" }] },
+          { source: "A", translations: [{ language: "ja" }, { language: "ko" }] },
         ],
-        { translations: { PRESENT: false, language: { eq: "ko" } } },
+        { source: "A", translations: { PRESENT: false, language: { eq: "ko" } } },
       ),
     ).toEqual([
-      {
-        translations: [],
-      },
+      { source: "A", translations: [] },
+      { source: "A", translations: [{ language: "ja" }] },
     ]);
   });
 });
