@@ -126,7 +126,7 @@ function genAndFilterFunctions<T extends object>(
   objectPaths?: Record<keyof T, string>,
 ): WhereFn<T>[] {
   const fns: WhereFn<T>[] = [];
-  let propertyKey = key;
+  const propertyKey = key;
   if (typeof operators === "object" && !Array.isArray(operators)) {
     const operatorKeys = Object.keys(operators).map((o) => {
       if (o === "PRESENT") {
@@ -137,8 +137,13 @@ function genAndFilterFunctions<T extends object>(
 
     for (const operatorKey of operatorKeys) {
       if (!operatorMap.has(operatorKey)) {
-        propertyKey = `${propertyKey}.${operatorKey}`;
-        fns.push(...genAndFilterFunctions(propertyKey, (operators as any)[operatorKey as any], objectPaths));
+        fns.push(
+          ...genAndFilterFunctions(
+            `${propertyKey}.${operatorKey}`,
+            (operators as any)[operatorKey as any],
+            objectPaths,
+          ),
+        );
       } else {
         fns.push(genAndFilterFunction(key, operators, objectPaths));
       }
