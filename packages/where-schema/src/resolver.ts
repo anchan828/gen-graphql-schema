@@ -70,7 +70,7 @@ export function whereResolver<T extends object>(
   where: WhereOperationType<T> & { [`OR`]?: WhereOperationType<T>[] },
   objectPaths?: Record<keyof T, string>,
 ): T[] {
-  const whereKeys = Object.keys(where);
+  const whereKeys = sortOperatorKey(Object.keys(where));
   const andFns: WhereFn<T>[] = andFilterFunctions(where, objectPaths);
 
   if (whereKeys.includes("PRESENT")) {
@@ -98,7 +98,7 @@ function andFilterFunctions<T extends object>(
   objectPaths?: Record<keyof T, string>,
 ): WhereFn<T>[] {
   const andFns: WhereFn<T>[] = [];
-  const whereKeys = Object.keys(where) as Array<keyof T | "OR" | "PRESENT">;
+  const whereKeys = sortOperatorKey(Object.keys(where)) as Array<keyof T | "OR" | "PRESENT">;
   if (!Array.isArray(whereKeys) || whereKeys.length === 0) {
     return andFns;
   }
@@ -164,12 +164,55 @@ function genAndFilterFunction<T extends object>(
   if (typeof ops !== "object") {
     ops = { eq: operators } as any;
   }
+
   return (item) => {
-    return Object.keys(ops).every((operator: string) => {
-      return operatorMap.get(operator.toLowerCase() as OperatorType)?.(
-        (objectPath.get(item, objectPathKey) as unknown) as ValueType<T>,
-        Reflect.get(ops, operator),
+    return Object.keys(ops).some((operator: string) => {
+      const operatorFn = operatorMap.get(operator.toLowerCase() as OperatorType);
+
+      if (!operatorFn) {
+        return;
+      }
+
+      return genObjectPaths(item, objectPathKey).some((opk) =>
+        operatorFn((objectPath.get(item, opk) as unknown) as ValueType<T>, Reflect.get(ops, operator)),
       );
     });
   };
+}
+
+export function genObjectPaths<T extends object>(item: T, objectPathKey: string): string[] {
+  if (objectPath.has(item, objectPathKey)) {
+    return [objectPathKey];
+  }
+
+  const keys = objectPathKey.split(".");
+  const data = objectPath.get(item, keys[0]);
+
+  if (!data) {
+    return [objectPathKey];
+  }
+
+  const results = [];
+
+  if (Array.isArray(data)) {
+    for (let i = 0; i < data.length; i++) {
+      for (const nestedKey of genObjectPaths(data[i], keys.slice(1).join("."))) {
+        results.push(`${keys[0]}.${i}.${nestedKey}`);
+      }
+    }
+  }
+
+  return results;
+}
+
+export function sortOperatorKey(keys: string[]): string[] {
+  return keys.sort((a) => {
+    const presentKey = "present";
+
+    if (a === presentKey || a === presentKey.toUpperCase()) {
+      return -1;
+    }
+
+    return 0;
+  });
 }

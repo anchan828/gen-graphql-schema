@@ -1,4 +1,4 @@
-import { whereResolver } from "./resolver";
+import { genObjectPaths, sortOperatorKey, whereResolver } from "./resolver";
 
 describe("whereResolver", () => {
   it("should be defined", () => {
@@ -414,5 +414,222 @@ describe("whereResolver", () => {
         { range: [] },
       ]);
     });
+
+    it(`should expect { name: "C", items1: [{ name: "CA" }] }`, () => {
+      interface Root {
+        name?: string;
+
+        items1: Item1[];
+
+        items2: Item2[];
+      }
+
+      interface Item1 {
+        name?: string;
+      }
+
+      interface Item2 {
+        name?: string;
+      }
+
+      const items = [
+        { name: "A" },
+        { name: "B", items1: [{ name: "BA" }] },
+        { name: "C", items1: [{ name: "CA" }] },
+      ] as Root[];
+
+      expect(whereResolver(items, { items1: { PRESENT: true, name: { contains: "C" } } })).toEqual([
+        { name: "C", items1: [{ name: "CA" }] },
+      ]);
+    });
+
+    it(`should expect { name: "B", nested: [{ name: "C" }] }`, () => {
+      interface Item {
+        name?: string;
+        age?: number;
+
+        nested: Item[];
+      }
+
+      const items = [{ name: "A" }, { name: "B", nested: [{ name: "C" }] }, { name: "D", nested: [] }] as Item[];
+
+      expect(whereResolver(items, { nested: { name: { in: ["C"] } } })).toEqual([
+        { name: "B", nested: [{ name: "C" }] },
+      ]);
+    });
+
+    it(`should expect { name: "B", nested: [{ name: "C", obj: { name: "D" } }] }`, () => {
+      interface Item {
+        name?: string;
+        age?: number;
+
+        nested: Item[];
+
+        obj: Item;
+      }
+
+      const items = [
+        { name: "A" },
+        { name: "B", nested: [{ name: "C", obj: { name: "D" } }] },
+        { name: "D", nested: [] },
+      ] as Item[];
+
+      expect(whereResolver(items, { nested: { obj: { name: { eq: "D" } } } })).toEqual([
+        { name: "B", nested: [{ name: "C", obj: { name: "D" } }] },
+      ]);
+    });
+  });
+});
+
+describe("genObjectPaths", () => {
+  it("should gen path", () => {
+    expect(genObjectPaths({ name: "A" }, "name")).toEqual(["name"]);
+  });
+
+  it("should gen path", () => {
+    expect(genObjectPaths({ nested: { name: "A" } }, "nested.name")).toEqual(["nested.name"]);
+  });
+
+  it("should gen path", () => {
+    expect(genObjectPaths({ nested: [{ name: "A" }, { name: "B" }] }, "nested.name")).toEqual([
+      "nested.0.name",
+      "nested.1.name",
+    ]);
+  });
+
+  it("should gen path", () => {
+    expect(
+      genObjectPaths(
+        {
+          nested: [
+            { name: "A", nested2: [{ name: "B" }, { name: "C" }] },
+            { name: "D", nested2: [{ name: "E" }, { name: "F" }] },
+          ],
+        },
+        "nested.nested2.name",
+      ),
+    ).toEqual([
+      "nested.0.nested2.0.name",
+      "nested.0.nested2.1.name",
+      "nested.1.nested2.0.name",
+      "nested.1.nested2.1.name",
+    ]);
+  });
+
+  it("should gen path", () => {
+    expect(
+      genObjectPaths(
+        {
+          nested: [
+            { name: "A", nested2: [{ name: "B", nested3: [{ name: "AA" }] }, { name: "C" }] },
+            { name: "D", nested2: [{ name: "E", nested3: [{ name: "BB" }, { name: "CC" }] }, { name: "F" }] },
+          ],
+        },
+        "nested.nested2.nested3.name",
+      ),
+    ).toEqual([
+      "nested.0.nested2.0.nested3.0.name",
+      "nested.0.nested2.1.nested3.name",
+      "nested.1.nested2.0.nested3.0.name",
+      "nested.1.nested2.0.nested3.1.name",
+      "nested.1.nested2.1.nested3.name",
+    ]);
+  });
+});
+
+describe("sortOperatorKey", () => {
+  it("should be sorted", () => {
+    expect(sortOperatorKey(["A", "B", "present", "C", "PRESENT"])).toEqual(["PRESENT", "present", "A", "B", "C"]);
+  });
+});
+
+describe("Complicated tests", () => {
+  it(`test`, () => {
+    interface Segment {
+      source?: string;
+
+      translations?: Tranlation[];
+
+      comments?: Comment[];
+    }
+
+    interface Tranlation {
+      target?: string;
+
+      approved: boolean;
+    }
+
+    interface Comment {
+      body?: string;
+    }
+
+    const segments: Segment[] = [
+      { source: "A" },
+      { source: "B", translations: [{ target: "BA", approved: false }] },
+      { source: "C", comments: [{ body: "BB" }] },
+      { source: "D", translations: [], comments: [{ body: "BB" }] },
+      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
+      { source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] },
+      { source: "789", translations: [{ target: "BA3", approved: true }], comments: [] },
+      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+    ];
+
+    // no filter
+    expect(whereResolver(segments, {})).toEqual(segments);
+
+    // has translations
+    expect(whereResolver(segments, { translations: { PRESENT: true } })).toEqual([
+      { source: "B", translations: [{ target: "BA", approved: false }] },
+      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
+      { source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] },
+      { source: "789", translations: [{ target: "BA3", approved: true }], comments: [] },
+      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+    ]);
+
+    // no translations
+    expect(whereResolver(segments, { translations: { PRESENT: false } })).toEqual([
+      { source: "A" },
+      { source: "C", comments: [{ body: "BB" }] },
+      { source: "D", translations: [], comments: [{ body: "BB" }] },
+    ]);
+
+    // no approved translations
+    expect(whereResolver(segments, { translations: { PRESENT: true, approved: false } })).toEqual([
+      { source: "B", translations: [{ target: "BA", approved: false }] },
+      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
+      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+    ]);
+
+    // approved translations
+    expect(whereResolver(segments, { translations: { PRESENT: true, approved: true } })).toEqual([
+      { source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] },
+      { source: "789", translations: [{ target: "BA3", approved: true }], comments: [] },
+    ]);
+
+    // approved translations with comments
+    expect(
+      whereResolver(segments, { translations: { PRESENT: true, approved: true }, comments: { PRESENT: true } }),
+    ).toEqual([{ source: "456", translations: [{ target: "BA2", approved: true }], comments: [{ body: "BB" }] }]);
+
+    // approved translations without comments
+    expect(
+      whereResolver(segments, { translations: { PRESENT: true, approved: true }, comments: { PRESENT: false } }),
+    ).toEqual([{ source: "789", translations: [{ target: "BA3", approved: true }], comments: [] }]);
+
+    // no approved translations and search text
+    expect(
+      whereResolver(segments, {
+        translations: { PRESENT: true, approved: false },
+        OR: [{ source: { contains: "A" } }, { translations: { target: { contains: "A" } } }],
+      }),
+    ).toEqual([
+      { source: "B", translations: [{ target: "BA", approved: false }] },
+      { source: "123", translations: [{ target: "BA1", approved: false }], comments: [{ body: "BB" }] },
+      { source: "345", translations: [{ target: "CA", approved: false }], comments: [] },
+      { source: "345", translations: [{ target: "DA", approved: false }], comments: [{ body: "DB" }] },
+    ]);
   });
 });
