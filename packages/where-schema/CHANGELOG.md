@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.33...v0.6.0) (2021-01-15)
+
+
+### Features
+
+* **where-schema:** improve present resolver ([9c8f026](https://github.com/anchan828/gen-graphql-schema/commit/9c8f026b2403a1a343f2b3307c0146b7690a8df1))
+
+
+
+
+
 ## [0.5.33](https://github.com/anchan828/gen-graphql-schema/compare/v0.5.32...v0.5.33) (2021-01-05)
 
 
