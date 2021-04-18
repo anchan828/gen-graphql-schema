@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.6.9 (2021-04-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @graphql-tools/merge to v6.2.13 ([0699b2f](https://github.com/anchan828/gen-graphql-schema/commit/0699b2feae192ba48cc1974d6adc7bd27bee6097))
+
+
+
+
+
 ## 0.6.8 (2021-04-11)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-relay-schema
