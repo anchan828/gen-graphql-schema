@@ -17,7 +17,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "change-case": "^4.0.0"
+    "change-case": "^4.1.1"
   },
   "devDependencies": {
     "@types/graphql": "14.2.3"
