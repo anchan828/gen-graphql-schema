@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-order-schema",
-  "version": "0.6.9",
+  "version": "0.6.10",
   "description": "Auto generation for order type",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "@anchan828/gen-graphql-schema-common": "^0.6.9",
+    "@anchan828/gen-graphql-schema-common": "^0.6.10",
     "deepmerge": "4.2.2",
     "natural-orderby": "2.0.3",
     "object-path": "0.11.5",
