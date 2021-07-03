@@ -176,7 +176,7 @@ function genAndPresenterFilterFunction<T extends object>(
   return (item, result): boolean => {
     let res = result;
     const presentValue2 = genObjectPaths(item, objectPathKey).some((opk) =>
-      present((objectPath.get(item, opk) as unknown) as ValueType<T>, presentValue),
+      present(objectPath.get(item, opk) as unknown as ValueType<T>, presentValue),
     );
 
     if (result && !presentValue && presentValue2) {
@@ -218,7 +218,7 @@ function genAndFilterFunction<T extends object>(
       }
 
       return genObjectPaths(item, objectPathKey).some((opk) =>
-        operatorFn((objectPath.get(item, opk) as unknown) as ValueType<T>, Reflect.get(ops, operator)),
+        operatorFn(objectPath.get(item, opk) as unknown as ValueType<T>, Reflect.get(ops, operator)),
       );
     });
   };
