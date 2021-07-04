@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.6.20 (2021-07-04)
+
+
+### Bug Fixes
+
+* merge-coverage script ([fcfeacd](https://github.com/anchan828/gen-graphql-schema/commit/fcfeacd35970c2b1bdceb9c766ca6207012f9630))
+
+
+
+
+
 ## 0.6.19 (2021-06-27)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-schema-common
