@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.6.29 (2021-09-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @graphql-tools/merge to v8.1.1 ([f37f54d](https://github.com/anchan828/gen-graphql-schema/commit/f37f54d24acb891b0ec9d2e312880ea9c5569339))
+
+
+
+
+
 ## 0.6.28 (2021-08-29)
 
 
