@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.6.31 (2021-09-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency object-path to v0.11.8 ([5a0a244](https://github.com/anchan828/gen-graphql-schema/commit/5a0a24464d79b9cd58d3d85a242ff5eabb662f84))
+
+
+
+
+
 ## 0.6.30 (2021-09-12)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-schema-common
