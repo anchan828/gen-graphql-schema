@@ -26,7 +26,7 @@
     "@types/object-path": "0.11.1"
   },
   "peerDependencies": {
-    "graphql": "15.6.0"
+    "graphql": "15.6.1"
   },
   "repository": {
     "type": "git",
