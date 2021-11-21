@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-where-schema",
-  "version": "0.6.39",
+  "version": "0.6.40",
   "description": "coAuto generation for where type",
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "test:watch": "npm run test -- --watch"
   },
   "dependencies": {
-    "@anchan828/gen-graphql-schema-common": "^0.6.39",
+    "@anchan828/gen-graphql-schema-common": "^0.6.40",
     "deepmerge": "4.2.2",
     "object-path": "0.11.8",
     "reflect-metadata": "0.1.13"
