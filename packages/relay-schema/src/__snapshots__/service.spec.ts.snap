@@ -76,8 +76,7 @@ type TestConnection implements Connection {
 
   \\"\\"\\"Information to aid in pagination.\\"\\"\\"
   pageInfo: PageInfo!
-}
-"
+}"
 `;
 
 exports[`GenRelayTypesService should return added Where types when has where directive 1`] = `
@@ -148,6 +147,5 @@ type TestConnection implements Connection {
 
   \\"\\"\\"Information to aid in pagination.\\"\\"\\"
   pageInfo: PageInfo!
-}
-"
+}"
 `;

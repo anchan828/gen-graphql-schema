@@ -56,8 +56,7 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be the object present\\"\\"\\"
   present: Boolean
-}
-"
+}"
 `;
 
 exports[`GenWhereTypesService should deep where 1`] = `
@@ -181,8 +180,7 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be the object present\\"\\"\\"
   present: Boolean
-}
-"
+}"
 `;
 
 exports[`GenWhereTypesService should return added Where types when has custom directive 1`] = `
@@ -238,8 +236,7 @@ input PreOperatorIDSufOperator {
 
   \\"\\"\\"Must be the object present\\"\\"\\"
   present: Boolean
-}
-"
+}"
 `;
 
 exports[`GenWhereTypesService should return added Where types when has union type and where directive 1`] = `
@@ -370,8 +367,7 @@ input IntWhereOperator {
 
   \\"\\"\\"Must be the object present\\"\\"\\"
   present: Boolean
-}
-"
+}"
 `;
 
 exports[`GenWhereTypesService should return added Where types when has where directive 1`] = `
@@ -606,8 +602,7 @@ input TestEnumWhereOperator {
 
   \\"\\"\\"Must be the object present\\"\\"\\"
   present: Boolean
-}
-"
+}"
 `;
 
 exports[`GenWhereTypesService should return basic where 1`] = `
@@ -662,6 +657,5 @@ input IDWhereOperator {
 
   \\"\\"\\"Must be the object present\\"\\"\\"
   present: Boolean
-}
-"
+}"
 `;

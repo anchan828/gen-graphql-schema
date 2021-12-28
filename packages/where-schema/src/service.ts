@@ -23,6 +23,7 @@ import {
   FieldDefinitionNode,
   InputObjectTypeDefinitionNode,
   InputValueDefinitionNode,
+  Kind,
   ObjectTypeDefinitionNode,
   parse,
   TypeNode,
@@ -86,39 +87,39 @@ export class GenWhereTypesService {
 
     this.typeOperatorMap.set(typeName, {
       whereOperatorType: {
-        kind: "InputObjectTypeDefinition",
+        kind: Kind.INPUT_OBJECT_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: `${this.options.whereOperator!.prefix}${typeName}${this.options.whereOperator!.suffix}`,
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.WHERE_OPERATOR_TYPE.TYPE(typeName),
         },
         fields: operatorNames.map((operatorName: OperatorType) => {
           const isArrayOperator = this.options.arrayOperators!.includes(operatorName);
 
           const nameNode = {
-            kind: "Name",
+            kind: Kind.NAME,
             value: operatorName,
           };
 
           const descriptionNode = {
-            kind: "StringValue",
+            kind: Kind.STRING,
             value: Reflect.get(DESCRIPTIONS.WHERE_OPERATOR_TYPE.OPERATORS, toConstanceCase(operatorName)),
           };
 
           const typeNode = {
-            kind: "NamedType",
+            kind: Kind.NAMED_TYPE,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: operatorName === "present" ? "Boolean" : typeName,
             },
           };
 
           return {
-            kind: "InputValueDefinition",
-            type: isArrayOperator && operatorName !== "present" ? { kind: "ListType", type: typeNode } : typeNode,
+            kind: Kind.INPUT_VALUE_DEFINITION,
+            type: isArrayOperator && operatorName !== "present" ? { kind: Kind.LIST_TYPE, type: typeNode } : typeNode,
             name: nameNode,
             description: descriptionNode,
           } as InputValueDefinitionNode;
@@ -134,15 +135,15 @@ export class GenWhereTypesService {
     Reflect.set(field, "arguments", [
       ...(field.arguments || []),
       {
-        kind: "FieldDefinition",
+        kind: Kind.FIELD_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.whereArgument!.name!,
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: whereTypeDefinition.name.value,
           },
         },
@@ -171,27 +172,27 @@ export class GenWhereTypesService {
 
       if (type === "Boolean" || isEqOnly) {
         fieldTypeNode = {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: type,
           },
         };
       } else if (isObject) {
         this.genOperatorDefinitions(type);
         fieldTypeNode = {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: `${this.options.whereType!.prefix}${type}${this.options.whereType!.suffix}`,
           },
         };
       } else {
         this.genOperatorDefinitions(type);
         fieldTypeNode = {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: `${this.options.whereOperator!.prefix}${type}${this.options.whereOperator!.suffix}`,
           },
         };
@@ -199,13 +200,13 @@ export class GenWhereTypesService {
 
       if (fieldTypeNode) {
         fields[name] = {
-          kind: "InputValueDefinition",
+          kind: Kind.INPUT_VALUE_DEFINITION,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: name,
           },
           description: {
-            kind: "StringValue",
+            kind: Kind.STRING,
             value: DESCRIPTIONS.WHERE_TYPE.FIELDS(name),
           },
           type: fieldTypeNode,
@@ -213,21 +214,21 @@ export class GenWhereTypesService {
         };
 
         fields["OR"] = {
-          kind: "InputValueDefinition",
+          kind: Kind.INPUT_VALUE_DEFINITION,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "OR",
           },
           description: {
-            kind: "StringValue",
+            kind: Kind.STRING,
             value: DESCRIPTIONS.WHERE_TYPE.FIELDS(name),
           },
           type: {
-            kind: "ListType",
+            kind: Kind.LIST_TYPE,
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
-                kind: "Name",
+                kind: Kind.NAME,
                 value: whereTypeName,
               },
             },
@@ -236,19 +237,19 @@ export class GenWhereTypesService {
         };
 
         fields["PRESENT"] = {
-          kind: "InputValueDefinition",
+          kind: Kind.INPUT_VALUE_DEFINITION,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "PRESENT",
           },
           description: {
-            kind: "StringValue",
+            kind: Kind.STRING,
             value: DESCRIPTIONS.WHERE_OPERATOR_TYPE.OPERATORS.PRESENT,
           },
           type: {
-            kind: "NamedType",
+            kind: Kind.NAMED_TYPE,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "Boolean",
             },
           },
@@ -258,13 +259,13 @@ export class GenWhereTypesService {
     }
 
     whereType = {
-      kind: "InputObjectTypeDefinition",
+      kind: Kind.INPUT_OBJECT_TYPE_DEFINITION,
       name: {
-        kind: "Name",
+        kind: Kind.NAME,
         value: whereTypeName,
       },
       description: {
-        kind: "StringValue",
+        kind: Kind.STRING,
         value: DESCRIPTIONS.WHERE_TYPE.TYPE(getFieldTypeName(field).name),
       },
       directives: [],

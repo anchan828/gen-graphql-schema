@@ -1,4 +1,4 @@
-import { buildASTSchema, FieldDefinitionNode, ObjectTypeDefinitionNode, parse, printSchema } from "graphql";
+import { buildASTSchema, FieldDefinitionNode, Kind, ObjectTypeDefinitionNode, parse, printSchema } from "graphql";
 import {
   appendDefinitionToDocumentNode,
   getDefinitionByName,
@@ -25,7 +25,7 @@ describe("util", () => {
       }`),
           {
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
                 value: "test",
               },
@@ -297,9 +297,9 @@ describe("util", () => {
       const documentNode = parse(`type Test { id: ID }`);
 
       appendDefinitionToDocumentNode(documentNode, {
-        kind: "ObjectTypeDefinition",
+        kind: Kind.OBJECT_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "Test2",
         },
       } as ObjectTypeDefinitionNode);

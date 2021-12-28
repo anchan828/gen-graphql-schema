@@ -15,6 +15,7 @@ import {
   FieldDefinitionNode,
   InputValueDefinitionNode,
   InterfaceTypeDefinitionNode,
+  Kind,
   NamedTypeNode,
   ObjectTypeDefinitionNode,
   parse,
@@ -77,11 +78,11 @@ export class GenRelayTypesService {
 
   private replaceConnectionType(fieldTypeName: string, field: FieldDefinitionNode): void {
     Reflect.set(field, "type", {
-      kind: "NonNullType",
+      kind: Kind.NON_NULL_TYPE,
       type: {
-        kind: "NamedType",
+        kind: Kind.NAMED_TYPE,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.getConnectionTypeName(fieldTypeName),
         },
       },
@@ -90,57 +91,57 @@ export class GenRelayTypesService {
     Reflect.set(field, "arguments", [
       ...(field.arguments || []),
       {
-        kind: "InputValueDefinition",
+        kind: Kind.INPUT_VALUE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "before",
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "String",
           },
         },
       },
       {
-        kind: "InputValueDefinition",
+        kind: Kind.INPUT_VALUE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "after",
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "String",
           },
         },
       },
       {
-        kind: "InputValueDefinition",
+        kind: Kind.INPUT_VALUE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "first",
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "Int",
           },
         },
       },
       {
-        kind: "InputValueDefinition",
+        kind: Kind.INPUT_VALUE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "last",
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "Int",
           },
         },
@@ -153,53 +154,52 @@ export class GenRelayTypesService {
       return;
     }
     const edgeDefinition = {
-      kind: "ObjectTypeDefinition",
+      kind: Kind.OBJECT_TYPE_DEFINITION,
       name: {
-        kind: "Name",
+        kind: Kind.NAME,
         value: this.getEdgeTypeName(fieldTypeName),
       },
       description: {
-        kind: "StringValue",
+        kind: Kind.STRING,
         value: DESCRIPTIONS.EDGE_TYPE.TYPE(this.getConnectionTypeName(fieldTypeName)),
       },
     } as ObjectTypeDefinitionNode;
     Reflect.set(edgeDefinition, "fields", [
       {
-        kind: "FieldDefinition",
-
+        kind: Kind.FIELD_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "node",
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.EDGE_TYPE.NODE,
         },
         type: {
-          kind: "NonNullType",
+          kind: Kind.NON_NULL_TYPE,
           type: {
-            kind: "NamedType",
+            kind: Kind.NAMED_TYPE,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: fieldTypeName,
             },
           },
         },
       },
       {
-        kind: "FieldDefinition",
+        kind: Kind.FIELD_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "cursor",
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.EDGE_INTERFACE.CURSOR,
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "String",
           },
         },
@@ -207,9 +207,9 @@ export class GenRelayTypesService {
     ] as FieldDefinitionNode[]);
     Reflect.set(edgeDefinition, "interfaces", [
       {
-        kind: "InterfaceTypeDefinition",
+        kind: Kind.INTERFACE_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.relayEdgeInterface!.name!,
         },
       },
@@ -222,77 +222,73 @@ export class GenRelayTypesService {
       return;
     }
     const connectionDefinition = {
-      kind: "ObjectTypeDefinition",
-
+      kind: Kind.OBJECT_TYPE_DEFINITION,
       name: {
-        kind: "Name",
+        kind: Kind.NAME,
         value: this.getConnectionTypeName(fieldTypeName),
       },
       description: {
-        kind: "StringValue",
+        kind: Kind.STRING,
         value: DESCRIPTIONS.CONNECTION_TYPE.TYPE(fieldTypeName),
       },
     } as ObjectTypeDefinitionNode;
 
     Reflect.set(connectionDefinition, "fields", [
       {
-        kind: "FieldDefinition",
-
+        kind: Kind.FIELD_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "totalCount",
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.CONNECTION_TYPE.TOTAL_COUNT(fieldTypeName),
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: this.options.relayCnnectionInterface!.totalCountType,
           },
         },
       },
       {
-        kind: "FieldDefinition",
-
+        kind: Kind.FIELD_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "edges",
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.CONNECTION_TYPE.EDGES(this.getEdgeTypeName(fieldTypeName)),
         },
         type: {
-          kind: "ListType",
+          kind: Kind.LIST_TYPE,
           type: {
-            kind: "NamedType",
+            kind: Kind.NAMED_TYPE,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: this.getEdgeTypeName(fieldTypeName),
             },
           },
         },
       },
       {
-        kind: "FieldDefinition",
-
+        kind: Kind.FIELD_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: "pageInfo",
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.CONNECTION_INTERFACE.PAGE_INFO,
         },
         type: {
-          kind: "NonNullType",
+          kind: Kind.NON_NULL_TYPE,
           type: {
-            kind: "NamedType",
+            kind: Kind.NAMED_TYPE,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: this.options.relayPageInfoType!.name!,
             },
           },
@@ -301,9 +297,9 @@ export class GenRelayTypesService {
     ] as FieldDefinitionNode[]);
     Reflect.set(connectionDefinition, "interfaces", [
       {
-        kind: "InterfaceTypeDefinition",
+        kind: Kind.INTERFACE_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.relayCnnectionInterface!.name!,
         },
       },
@@ -327,9 +323,9 @@ export class GenRelayTypesService {
       Reflect.set(fieldType, "interfaces", [
         ...(fieldType.interfaces || []),
         {
-          kind: "InterfaceTypeDefinition",
+          kind: Kind.INTERFACE_TYPE_DEFINITION,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: "Node",
           },
         } as InterfaceTypeDefinitionNode,
@@ -357,32 +353,32 @@ export class GenRelayTypesService {
     const difinitions: TypeDefinitionNode[] = [];
     if (!getDefinitionByName(this.documentNode, this.options.relayNodeInterface!.name!)) {
       difinitions.push({
-        kind: "InterfaceTypeDefinition",
+        kind: Kind.INTERFACE_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.relayNodeInterface!.name,
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.NODE_INTERFACE.INTERFACE,
         },
         fields: [
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: this.options.relayNodeInterface!.idFieldName,
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.NODE_INTERFACE.ID,
             },
             type: {
-              kind: "NonNullType",
+              kind: Kind.NON_NULL_TYPE,
               type: {
-                kind: "NamedType",
+                kind: Kind.NAMED_TYPE,
                 name: {
-                  kind: "Name",
+                  kind: Kind.NAME,
                   value: "ID",
                 },
               },
@@ -393,30 +389,30 @@ export class GenRelayTypesService {
     }
     if (!getDefinitionByName(this.documentNode, this.options.relayEdgeInterface!.name!)) {
       difinitions.push({
-        kind: "InterfaceTypeDefinition",
+        kind: Kind.INTERFACE_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.relayEdgeInterface!.name,
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.EDGE_INTERFACE.INTERFACE,
         },
         fields: [
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "cursor",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.EDGE_INTERFACE.CURSOR,
             },
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
-                kind: "Name",
+                kind: Kind.NAME,
                 value: "String",
               },
             },
@@ -426,71 +422,71 @@ export class GenRelayTypesService {
     }
     if (!getDefinitionByName(this.documentNode, this.options.relayCnnectionInterface!.name!)) {
       difinitions.push({
-        kind: "InterfaceTypeDefinition",
+        kind: Kind.INTERFACE_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.relayCnnectionInterface!.name!,
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.CONNECTION_INTERFACE.INTERFACE,
         },
         fields: [
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "totalCount",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.CONNECTION_INTERFACE.TOTAL_COUNT,
             },
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
-                kind: "Name",
+                kind: Kind.NAME,
                 value: this.options.relayCnnectionInterface!.totalCountType,
               },
             },
           },
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "pageInfo",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.CONNECTION_INTERFACE.PAGE_INFO,
             },
             type: {
-              kind: "NonNullType",
+              kind: Kind.NON_NULL_TYPE,
               type: {
-                kind: "NamedType",
+                kind: Kind.NAMED_TYPE,
                 name: {
-                  kind: "Name",
+                  kind: Kind.NAME,
                   value: this.options.relayPageInfoType!.name!,
                 },
               },
             },
           },
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "edges",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.CONNECTION_INTERFACE.EDGES,
             },
             type: {
-              kind: "ListType",
+              kind: Kind.LIST_TYPE,
               type: {
-                kind: "NamedType",
+                kind: Kind.NAMED_TYPE,
                 name: {
-                  kind: "Name",
+                  kind: Kind.NAME,
                   value: this.options.relayEdgeInterface!.name!,
                 },
               },
@@ -501,84 +497,84 @@ export class GenRelayTypesService {
     }
     if (!getDefinitionByName(this.documentNode, this.options.relayPageInfoType!.name!)) {
       difinitions.push({
-        kind: "ObjectTypeDefinition",
+        kind: Kind.OBJECT_TYPE_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.relayPageInfoType!.name!,
         },
         description: {
-          kind: "StringValue",
+          kind: Kind.STRING,
           value: DESCRIPTIONS.PAGE_INFO_TYPE.TYPE,
         },
         fields: [
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "startCursor",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.PAGE_INFO_TYPE.START_CURSOR,
             },
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
-                kind: "Name",
+                kind: Kind.NAME,
                 value: "String",
               },
             },
           },
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "endCursor",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.PAGE_INFO_TYPE.END_CURSOR,
             },
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
-                kind: "Name",
+                kind: Kind.NAME,
                 value: "String",
               },
             },
           },
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "hasNextPage",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.PAGE_INFO_TYPE.HAS_NEXT_PAGE,
             },
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
-                kind: "Name",
+                kind: Kind.NAME,
                 value: "Boolean",
               },
             },
           },
           {
-            kind: "FieldDefinition",
+            kind: Kind.FIELD_DEFINITION,
             name: {
-              kind: "Name",
+              kind: Kind.NAME,
               value: "hasPreviousPage",
             },
             description: {
-              kind: "StringValue",
+              kind: Kind.STRING,
               value: DESCRIPTIONS.PAGE_INFO_TYPE.HAS_PREVIOUS_PAGE,
             },
             type: {
-              kind: "NamedType",
+              kind: Kind.NAMED_TYPE,
               name: {
-                kind: "Name",
+                kind: Kind.NAME,
                 value: "Boolean",
               },
             },
