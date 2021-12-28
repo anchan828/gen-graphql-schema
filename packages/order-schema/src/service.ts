@@ -22,6 +22,7 @@ import {
   FieldDefinitionNode,
   InputObjectTypeDefinitionNode,
   InputValueDefinitionNode,
+  Kind,
   ObjectTypeDefinitionNode,
   parse,
   TypeNode,
@@ -73,35 +74,35 @@ export class GenOrderTypesService {
 
   private genOrderDirectionEnum(): void {
     appendDefinitionToDocumentNode(this.documentNode, {
-      kind: "EnumTypeDefinition",
+      kind: Kind.ENUM_TYPE_DEFINITION,
       name: {
-        kind: "Name",
+        kind: Kind.NAME,
         value: this.options.orderDirection!.typeName!,
       },
       description: {
-        kind: "StringValue",
+        kind: Kind.STRING,
         value: DESCRIPTIONS.OEDER_DIRECTION.TYPE,
       },
       values: [
         {
-          kind: "EnumValueDefinition",
+          kind: Kind.ENUM_VALUE_DEFINITION,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: this.options.orderDirection!.ascName!,
           },
           description: {
-            kind: "StringValue",
+            kind: Kind.STRING,
             value: DESCRIPTIONS.OEDER_DIRECTION.ASC,
           },
         },
         {
-          kind: "EnumValueDefinition",
+          kind: Kind.ENUM_VALUE_DEFINITION,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: this.options.orderDirection!.descName!,
           },
           description: {
-            kind: "StringValue",
+            kind: Kind.STRING,
             value: DESCRIPTIONS.OEDER_DIRECTION.DESC,
           },
         },
@@ -116,15 +117,15 @@ export class GenOrderTypesService {
     Reflect.set(field, "arguments", [
       ...(field.arguments || []),
       {
-        kind: "FieldDefinition",
+        kind: Kind.FIELD_DEFINITION,
         name: {
-          kind: "Name",
+          kind: Kind.NAME,
           value: this.options.orderByArgument!.name!,
         },
         type: {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: orderByTypeDefinition.name.value,
           },
         },
@@ -147,30 +148,30 @@ export class GenOrderTypesService {
 
       if (isObject) {
         fieldTypeNode = {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: `${this.options.orderType!.prefix}${type}${this.options.orderType!.suffix}`,
           },
         };
       } else {
         fieldTypeNode = {
-          kind: "NamedType",
+          kind: Kind.NAMED_TYPE,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: this.options.orderDirection!.typeName!,
           },
         };
       }
       if (fieldTypeNode) {
         fields.push({
-          kind: "InputValueDefinition",
+          kind: Kind.INPUT_VALUE_DEFINITION,
           name: {
-            kind: "Name",
+            kind: Kind.NAME,
             value: name,
           },
           description: {
-            kind: "StringValue",
+            kind: Kind.STRING,
             value: DESCRIPTIONS.ORDER_TYPE.FIELDS(fieldType.name.value, name),
           },
           type: fieldTypeNode,
@@ -188,13 +189,13 @@ export class GenOrderTypesService {
       return orderByType;
     }
     orderByType = {
-      kind: "InputObjectTypeDefinition",
+      kind: Kind.INPUT_OBJECT_TYPE_DEFINITION,
       name: {
-        kind: "Name",
+        kind: Kind.NAME,
         value: orderByTypeName,
       },
       description: {
-        kind: "StringValue",
+        kind: Kind.STRING,
         value: DESCRIPTIONS.ORDER_TYPE.TYPE(getFieldTypeName(field).name),
       },
       directives: [],

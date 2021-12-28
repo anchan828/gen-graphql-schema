@@ -50,8 +50,7 @@ input TestOrder {
 
   \\"\\"\\"Order Test by position\\"\\"\\"
   position: TestPositionOrder
-}
-"
+}"
 `;
 
 exports[`GenOrderTypesService should return added Order enum 1`] = `
@@ -77,8 +76,7 @@ enum Position {
 input PrefixTestChanged {
   \\"\\"\\"Order Test by id\\"\\"\\"
   id: Position
-}
-"
+}"
 `;
 
 exports[`GenOrderTypesService should return added Order enum when change options 1`] = `
@@ -110,8 +108,7 @@ input TestChanged {
 
   \\"\\"\\"Order Test by date\\"\\"\\"
   date: OrderDirection
-}
-"
+}"
 `;
 
 exports[`GenOrderTypesService should return added Order enum when has orderBy directive 1`] = `
@@ -136,8 +133,7 @@ enum OrderDirection {
 input TestOrder {
   \\"\\"\\"Order Test by id\\"\\"\\"
   id: OrderDirection
-}
-"
+}"
 `;
 
 exports[`GenOrderTypesService should support union type 1`] = `
@@ -176,6 +172,5 @@ input TestOrder {
 
   \\"\\"\\"Order Test by age\\"\\"\\"
   age: OrderDirection
-}
-"
+}"
 `;
