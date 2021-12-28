@@ -19,11 +19,8 @@
   "dependencies": {
     "@anchan828/gen-graphql-schema-common": "^0.6.43",
     "deepmerge": "4.2.2",
-    "graphql-relay": "0.9.0",
+    "graphql-relay": "0.10.0",
     "reflect-metadata": "0.1.13"
-  },
-  "devDependencies": {
-    "@types/graphql-relay": "0.6.0"
   },
   "peerDependencies": {
     "graphql": "16.2.0"
