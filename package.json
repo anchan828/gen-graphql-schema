@@ -6,18 +6,20 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "postinstall": "husky install && npm run bootstrap && npm run build",
-    "bootstrap": "lerna bootstrap",
-    "build": "lerna run build",
+    "postinstall": "husky install",
+    "build": "turbo run build",
     "format": "prettier --write '**/*.{js,json,yml,yaml,md,graphql}'",
-    "lint": "lerna run --parallel lint",
-    "lint:fix": "lerna run --parallel lint:fix",
-    "watch": "lerna run --parallel watch",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "watch": "turbo run watch",
     "publish": "lerna publish --yes patch",
     "publish:minor": "lerna publish --yes minor",
     "publish:major": "lerna publish --yes major",
-    "test": "lerna run test && npx @anchan828/merge-coverage"
+    "test": "turbo run test && npx @anchan828/merge-coverage"
   },
   "devDependencies": {
     "@commitlint/cli": "16.2.3",
@@ -32,7 +34,8 @@
     "graphql": "16.3.0",
     "husky": "7.0.4",
     "jest": "27.5.1",
-    "lerna": "4.0.0",
+    "@lerna-lite/cli": "1.0.5",
+    "turbo": "1.2.4",
     "lint-staged": "12.3.8",
     "prettier": "2.6.2",
     "ts-jest": "27.1.4",
@@ -46,5 +49,8 @@
   "bugs": {
     "url": "https://github.com/anchan828/gen-graphql-schema/issues"
   },
-  "homepage": "https://github.com/anchan828/gen-graphql-schema#readme"
+  "homepage": "https://github.com/anchan828/gen-graphql-schema#readme",
+  "volta": {
+    "node": "16.14.2"
+  }
 }
