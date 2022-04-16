@@ -49,8 +49,5 @@
   "bugs": {
     "url": "https://github.com/anchan828/gen-graphql-schema/issues"
   },
-  "homepage": "https://github.com/anchan828/gen-graphql-schema#readme",
-  "volta": {
-    "node": "16.14.2"
-  }
+  "homepage": "https://github.com/anchan828/gen-graphql-schema#readme"
 }
