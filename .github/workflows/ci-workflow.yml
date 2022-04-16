@@ -24,5 +24,3 @@ jobs:
         run: npm test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
-        with:
-          files: ./packages/common/coverage/coverage-final.json,./packages/merge-schema/coverage/coverage-final.json,./packages/order-schema/coverage/coverage-final.json,./packages/relay-schema/coverage/coverage-final.json,./packages/where-schema/coverage/coverage-final.json
