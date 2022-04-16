@@ -21,10 +21,6 @@ jobs:
       - name: Lint
         run: npm run lint
       - name: Test monorepo packages
-        if: github.repository != 'anchan828/nest-lerna-template'
-        uses: paambaati/codeclimate-action@v3.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: npm test
-          debug: true
+        run: npm test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
