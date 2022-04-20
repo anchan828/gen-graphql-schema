@@ -2,19 +2,27 @@
   "name": "@anchan828/gen-graphql-relay-schema",
   "version": "0.7.16",
   "description": "Auto generation for relay type",
-  "author": "anchan828 <anchan828@gmail.com>",
+  "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/relay-schema#readme",
+  "bugs": {
+    "url": "https://github.com/anchan828/gen-graphql-schema/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anchan828/gen-graphql-schema.git"
+  },
   "license": "MIT",
+  "author": "anchan828 <anchan828@gmail.com>",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
-    "copy:license": "cp ../../LICENSE ./",
     "build": "tsc -p tsconfig.build.json",
+    "copy:license": "cp ../../LICENSE ./",
     "lint": "eslint --ignore-path ../../.eslintignore '**/*.ts'",
     "lint:fix": "npm run lint -- --fix",
-    "watch": "tsc --watch",
+    "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
     "test": "jest --coverage",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "@anchan828/gen-graphql-schema-common": "^0.7.16",
@@ -24,13 +32,5 @@
   },
   "peerDependencies": {
     "graphql": "16.3.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anchan828/gen-graphql-schema.git"
-  },
-  "bugs": {
-    "url": "https://github.com/anchan828/gen-graphql-schema/issues"
-  },
-  "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/relay-schema#readme"
+  }
 }
