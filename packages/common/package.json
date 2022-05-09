@@ -28,6 +28,6 @@
     "change-case": "4.1.2"
   },
   "peerDependencies": {
-    "graphql": "16.4.0"
+    "graphql": "16.5.0"
   }
 }
