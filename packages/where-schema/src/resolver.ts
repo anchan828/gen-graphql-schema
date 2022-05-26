@@ -122,7 +122,7 @@ function andFilterFunctions<T extends object>(
       continue;
     }
 
-    andFns.push(genAndFilterFunctions(`${whereKey}`, operators, objectPaths));
+    andFns.push(genAndFilterFunctions(String(whereKey), operators, objectPaths));
   }
 
   return andFns;
