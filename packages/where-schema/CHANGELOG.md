@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.7.33 (2022-08-14)
+
+### Bug Fixes
+
+* **deps:** update dependency @graphql-tools/merge to v8.3.3 ([77352a8](https://github.com/anchan828/gen-graphql-schema/commit/77352a8e33751aff4372e8783b7f80eade982408))
+
 ## 0.7.32 (2022-08-07)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-where-schema
