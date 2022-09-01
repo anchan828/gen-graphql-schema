@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "@anchan828/gen-graphql-schema-common": "^0.7.35",
-    "deepmerge": "4.2.2",
-    "natural-orderby": "2.0.3",
-    "object-path": "0.11.8",
-    "reflect-metadata": "0.1.13"
+    "deepmerge": "^4.2.2",
+    "natural-orderby": "^2.0.3",
+    "object-path": "^0.11.8",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@types/object-path": "0.11.1"
+    "@types/object-path": "^0.11.1"
   },
   "peerDependencies": {
     "graphql": "16.6.0"
