@@ -18,63 +18,63 @@ type Query {
   tests2(before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
-\\"\\"\\"An object with an ID.\\"\\"\\"
+"""An object with an ID."""
 interface Node {
-  \\"\\"\\"ID of the object.\\"\\"\\"
+  """ID of the object."""
   id: ID!
 }
 
-\\"\\"\\"An edge in a connection.\\"\\"\\"
+"""An edge in a connection."""
 interface Edge {
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  """A cursor for use in pagination."""
   cursor: String
 }
 
-\\"\\"\\"A connection for relay\\"\\"\\"
+"""A connection for relay"""
 interface Connection {
-  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
+  """Identifies the total count of items in the connection."""
   totalCount: Int
 
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  \\"\\"\\"A list of edges.\\"\\"\\"
+  """A list of edges."""
   edges: [Edge]
 }
 
-\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
+"""Information about pagination in a connection."""
 type PageInfo {
-  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
+  """When paginating backwards, the cursor to continue."""
   startCursor: String
 
-  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
+  """When paginating forwards, the cursor to continue."""
   endCursor: String
 
-  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
+  """When paginating forwards, are there more items?"""
   hasNextPage: Boolean
 
-  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
+  """When paginating backwards, are there more items?"""
   hasPreviousPage: Boolean
 }
 
-\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
+"""An edge in a TestConnection."""
 type TestEdge implements Edge {
-  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
+  """The item at the end of the edge."""
   node: Test!
 
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  """A cursor for use in pagination."""
   cursor: String
 }
 
-\\"\\"\\"The connection type for Test\\"\\"\\"
+"""The connection type for Test"""
 type TestConnection implements Connection {
-  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+  """Identifies the total count of Test items in the connection."""
   totalCount: Int
 
-  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  """A list of TestEdge."""
   edges: [TestEdge]
 
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 }"
 `;
@@ -89,63 +89,63 @@ type Query {
   tests2(before: String, after: String, first: Int, last: Int): TestConnection!
 }
 
-\\"\\"\\"An object with an ID.\\"\\"\\"
+"""An object with an ID."""
 interface Node {
-  \\"\\"\\"ID of the object.\\"\\"\\"
+  """ID of the object."""
   id: ID!
 }
 
-\\"\\"\\"An edge in a connection.\\"\\"\\"
+"""An edge in a connection."""
 interface Edge {
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  """A cursor for use in pagination."""
   cursor: String
 }
 
-\\"\\"\\"A connection for relay\\"\\"\\"
+"""A connection for relay"""
 interface Connection {
-  \\"\\"\\"Identifies the total count of items in the connection.\\"\\"\\"
+  """Identifies the total count of items in the connection."""
   totalCount: Int
 
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  \\"\\"\\"A list of edges.\\"\\"\\"
+  """A list of edges."""
   edges: [Edge]
 }
 
-\\"\\"\\"Information about pagination in a connection.\\"\\"\\"
+"""Information about pagination in a connection."""
 type PageInfo {
-  \\"\\"\\"When paginating backwards, the cursor to continue.\\"\\"\\"
+  """When paginating backwards, the cursor to continue."""
   startCursor: String
 
-  \\"\\"\\"When paginating forwards, the cursor to continue.\\"\\"\\"
+  """When paginating forwards, the cursor to continue."""
   endCursor: String
 
-  \\"\\"\\"When paginating forwards, are there more items?\\"\\"\\"
+  """When paginating forwards, are there more items?"""
   hasNextPage: Boolean
 
-  \\"\\"\\"When paginating backwards, are there more items?\\"\\"\\"
+  """When paginating backwards, are there more items?"""
   hasPreviousPage: Boolean
 }
 
-\\"\\"\\"An edge in a TestConnection.\\"\\"\\"
+"""An edge in a TestConnection."""
 type TestEdge implements Edge {
-  \\"\\"\\"The item at the end of the edge.\\"\\"\\"
+  """The item at the end of the edge."""
   node: Test!
 
-  \\"\\"\\"A cursor for use in pagination.\\"\\"\\"
+  """A cursor for use in pagination."""
   cursor: String
 }
 
-\\"\\"\\"The connection type for Test\\"\\"\\"
+"""The connection type for Test"""
 type TestConnection implements Connection {
-  \\"\\"\\"Identifies the total count of Test items in the connection.\\"\\"\\"
+  """Identifies the total count of Test items in the connection."""
   totalCount: Int
 
-  \\"\\"\\"A list of TestEdge.\\"\\"\\"
+  """A list of TestEdge."""
   edges: [TestEdge]
 
-  \\"\\"\\"Information to aid in pagination.\\"\\"\\"
+  """Information to aid in pagination."""
   pageInfo: PageInfo!
 }"
 `;

@@ -16,14 +16,14 @@ type Query
 `;
 
 exports[`mergeTypes should merge descriptions 1`] = `
-"\\"\\"\\"
+""""
 Test
 NewLine
-\\"\\"\\"
+"""
 type Test {
-  \\"\\"\\"id descrip\\"\\"\\"
+  """id descrip"""
   id: ID
-  \\"\\"\\"name descrip\\"\\"\\"
+  """name descrip"""
   name: ID
 }
 type Query
@@ -32,7 +32,7 @@ type Query
 `;
 
 exports[`mergeTypes should merge types 1`] = `
-"\\"\\"\\"Test\\"\\"\\"
+""""Test"""
 type Test {
   id: ID
 }
@@ -75,16 +75,16 @@ type Test2 {
   tests(orderBy: TestOrder): [Test]
 }
 type Query
-\\"Sort the results in ascending or descending order\\"
+"Sort the results in ascending or descending order"
 enum OrderDirection {
-  \\"Sort the results in ascending order\\"
+  "Sort the results in ascending order"
   ASC
-  \\"Sort the results in descending order\\"
+  "Sort the results in descending order"
   DESC
 }
-\\"Ordering options for Test\\"
+"Ordering options for Test"
 input TestOrder {
-  \\"Order Test by id\\"
+  "Order Test by id"
   id: OrderDirection
 }
 
@@ -105,144 +105,144 @@ type Test3 {
   tests(orderBy: TestOrder, where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
 type Query
-\\"Sort the results in ascending or descending order\\"
+"Sort the results in ascending or descending order"
 enum OrderDirection {
-  \\"Sort the results in ascending order\\"
+  "Sort the results in ascending order"
   ASC
-  \\"Sort the results in descending order\\"
+  "Sort the results in descending order"
   DESC
 }
-\\"Ordering options for Test\\"
+"Ordering options for Test"
 input TestOrder {
-  \\"Order Test by id\\"
+  "Order Test by id"
   id: OrderDirection
-  \\"Order Test by name\\"
+  "Order Test by name"
   name: OrderDirection
-  \\"Order Test by age\\"
+  "Order Test by age"
   age: OrderDirection
 }
-\\"Query of Test with using operators\\"
+"Query of Test with using operators"
 input TestWhere {
-  \\"Query with using id field\\"
+  "Query with using id field"
   id: IDWhereOperator
-  \\"Query with using age field\\"
+  "Query with using age field"
   OR: [TestWhere]
-  \\"Must be the object present\\"
+  "Must be the object present"
   PRESENT: Boolean
-  \\"Query with using name field\\"
+  "Query with using name field"
   name: StringWhereOperator
-  \\"Query with using age field\\"
+  "Query with using age field"
   age: IntWhereOperator
 }
-\\"Query type of ID with using operators\\"
+"Query type of ID with using operators"
 input IDWhereOperator {
-  \\"Must match the given data exactly\\"
+  "Must match the given data exactly"
   eq: ID
-  \\"Must be different from the given data\\"
+  "Must be different from the given data"
   not_eq: ID
-  \\"Must be an element of the array\\"
+  "Must be an element of the array"
   in: [ID]
-  \\"Must not be an element of the array\\"
+  "Must not be an element of the array"
   not_in: [ID]
-  \\"Must be less than given value\\"
+  "Must be less than given value"
   lt: ID
-  \\"Must be less than or equal to given value\\"
+  "Must be less than or equal to given value"
   lte: ID
-  \\"Must be greater than given value\\"
+  "Must be greater than given value"
   gt: ID
-  \\"Must be greater than or equal to given value\\"
+  "Must be greater than or equal to given value"
   gte: ID
-  \\"Must be within the given range\\"
+  "Must be within the given range"
   between: [ID]
-  \\"Must be the object present\\"
+  "Must be the object present"
   present: Boolean
 }
-\\"Query type of String with using operators\\"
+"Query type of String with using operators"
 input StringWhereOperator {
-  \\"Must match the string starts with the given data exactly\\"
+  "Must match the string starts with the given data exactly"
   starts_with: String
-  \\"Must match the string ends with the given data exactly\\"
+  "Must match the string ends with the given data exactly"
   ends_with: String
-  \\"Must match the given data exactly\\"
+  "Must match the given data exactly"
   eq: String
-  \\"Must be different from the given data\\"
+  "Must be different from the given data"
   not_eq: String
-  \\"Determines whether the given string may be found within another string.\\"
+  "Determines whether the given string may be found within another string."
   contains: String
-  \\"Must be an element of the array\\"
+  "Must be an element of the array"
   in: [String]
-  \\"Must not be an element of the array\\"
+  "Must not be an element of the array"
   not_in: [String]
-  \\"Must be the object present\\"
+  "Must be the object present"
   present: Boolean
 }
-\\"Query type of Int with using operators\\"
+"Query type of Int with using operators"
 input IntWhereOperator {
-  \\"Must match the given data exactly\\"
+  "Must match the given data exactly"
   eq: Int
-  \\"Must be different from the given data\\"
+  "Must be different from the given data"
   not_eq: Int
-  \\"Must be an element of the array\\"
+  "Must be an element of the array"
   in: [Int]
-  \\"Must not be an element of the array\\"
+  "Must not be an element of the array"
   not_in: [Int]
-  \\"Must be less than given value\\"
+  "Must be less than given value"
   lt: Int
-  \\"Must be less than or equal to given value\\"
+  "Must be less than or equal to given value"
   lte: Int
-  \\"Must be greater than given value\\"
+  "Must be greater than given value"
   gt: Int
-  \\"Must be greater than or equal to given value\\"
+  "Must be greater than or equal to given value"
   gte: Int
-  \\"Must be within the given range\\"
+  "Must be within the given range"
   between: [Int]
-  \\"Must be the object present\\"
+  "Must be the object present"
   present: Boolean
 }
-\\"An object with an ID.\\"
+"An object with an ID."
 interface Node {
-  \\"ID of the object.\\"
+  "ID of the object."
   id: ID!
 }
-\\"An edge in a connection.\\"
+"An edge in a connection."
 interface Edge {
-  \\"A cursor for use in pagination.\\"
+  "A cursor for use in pagination."
   cursor: String
 }
-\\"A connection for relay\\"
+"A connection for relay"
 interface Connection {
-  \\"Identifies the total count of items in the connection.\\"
+  "Identifies the total count of items in the connection."
   totalCount: Int
-  \\"Information to aid in pagination.\\"
+  "Information to aid in pagination."
   pageInfo: PageInfo!
-  \\"A list of edges.\\"
+  "A list of edges."
   edges: [Edge]
 }
-\\"Information about pagination in a connection.\\"
+"Information about pagination in a connection."
 type PageInfo {
-  \\"When paginating backwards, the cursor to continue.\\"
+  "When paginating backwards, the cursor to continue."
   startCursor: String
-  \\"When paginating forwards, the cursor to continue.\\"
+  "When paginating forwards, the cursor to continue."
   endCursor: String
-  \\"When paginating forwards, are there more items?\\"
+  "When paginating forwards, are there more items?"
   hasNextPage: Boolean
-  \\"When paginating backwards, are there more items?\\"
+  "When paginating backwards, are there more items?"
   hasPreviousPage: Boolean
 }
-\\"An edge in a TestConnection.\\"
+"An edge in a TestConnection."
 type TestEdge implements Edge {
-  \\"The item at the end of the edge.\\"
+  "The item at the end of the edge."
   node: Test!
-  \\"A cursor for use in pagination.\\"
+  "A cursor for use in pagination."
   cursor: String
 }
-\\"The connection type for Test\\"
+"The connection type for Test"
 type TestConnection implements Connection {
-  \\"Identifies the total count of Test items in the connection.\\"
+  "Identifies the total count of Test items in the connection."
   totalCount: Int
-  \\"A list of TestEdge.\\"
+  "A list of TestEdge."
   edges: [TestEdge]
-  \\"Information to aid in pagination.\\"
+  "Information to aid in pagination."
   pageInfo: PageInfo!
 }
 
@@ -257,94 +257,94 @@ type Test2 {
   tests(orderBy: TestOrder, where: TestWhere, before: String, after: String, first: Int, last: Int): TestConnection!
 }
 type Query
-\\"Sort the results in ascending or descending order\\"
+"Sort the results in ascending or descending order"
 enum OrderDirection {
-  \\"Sort the results in ascending order\\"
+  "Sort the results in ascending order"
   ASC
-  \\"Sort the results in descending order\\"
+  "Sort the results in descending order"
   DESC
 }
-\\"Ordering options for Test\\"
+"Ordering options for Test"
 input TestOrder {
-  \\"Order Test by id\\"
+  "Order Test by id"
   id: OrderDirection
 }
-\\"Query of Test with using operators\\"
+"Query of Test with using operators"
 input TestWhere {
-  \\"Query with using id field\\"
+  "Query with using id field"
   id: IDWhereOperator
-  \\"Query with using id field\\"
+  "Query with using id field"
   OR: [TestWhere]
-  \\"Must be the object present\\"
+  "Must be the object present"
   PRESENT: Boolean
 }
-\\"Query type of ID with using operators\\"
+"Query type of ID with using operators"
 input IDWhereOperator {
-  \\"Must match the given data exactly\\"
+  "Must match the given data exactly"
   eq: ID
-  \\"Must be different from the given data\\"
+  "Must be different from the given data"
   not_eq: ID
-  \\"Must be an element of the array\\"
+  "Must be an element of the array"
   in: [ID]
-  \\"Must not be an element of the array\\"
+  "Must not be an element of the array"
   not_in: [ID]
-  \\"Must be less than given value\\"
+  "Must be less than given value"
   lt: ID
-  \\"Must be less than or equal to given value\\"
+  "Must be less than or equal to given value"
   lte: ID
-  \\"Must be greater than given value\\"
+  "Must be greater than given value"
   gt: ID
-  \\"Must be greater than or equal to given value\\"
+  "Must be greater than or equal to given value"
   gte: ID
-  \\"Must be within the given range\\"
+  "Must be within the given range"
   between: [ID]
-  \\"Must be the object present\\"
+  "Must be the object present"
   present: Boolean
 }
-\\"An object with an ID.\\"
+"An object with an ID."
 interface Node {
-  \\"ID of the object.\\"
+  "ID of the object."
   id: ID!
 }
-\\"An edge in a connection.\\"
+"An edge in a connection."
 interface Edge {
-  \\"A cursor for use in pagination.\\"
+  "A cursor for use in pagination."
   cursor: String
 }
-\\"A connection for relay\\"
+"A connection for relay"
 interface Connection {
-  \\"Identifies the total count of items in the connection.\\"
+  "Identifies the total count of items in the connection."
   totalCount: Int
-  \\"Information to aid in pagination.\\"
+  "Information to aid in pagination."
   pageInfo: PageInfo!
-  \\"A list of edges.\\"
+  "A list of edges."
   edges: [Edge]
 }
-\\"Information about pagination in a connection.\\"
+"Information about pagination in a connection."
 type PageInfo {
-  \\"When paginating backwards, the cursor to continue.\\"
+  "When paginating backwards, the cursor to continue."
   startCursor: String
-  \\"When paginating forwards, the cursor to continue.\\"
+  "When paginating forwards, the cursor to continue."
   endCursor: String
-  \\"When paginating forwards, are there more items?\\"
+  "When paginating forwards, are there more items?"
   hasNextPage: Boolean
-  \\"When paginating backwards, are there more items?\\"
+  "When paginating backwards, are there more items?"
   hasPreviousPage: Boolean
 }
-\\"An edge in a TestConnection.\\"
+"An edge in a TestConnection."
 type TestEdge implements Edge {
-  \\"The item at the end of the edge.\\"
+  "The item at the end of the edge."
   node: Test!
-  \\"A cursor for use in pagination.\\"
+  "A cursor for use in pagination."
   cursor: String
 }
-\\"The connection type for Test\\"
+"The connection type for Test"
 type TestConnection implements Connection {
-  \\"Identifies the total count of Test items in the connection.\\"
+  "Identifies the total count of Test items in the connection."
   totalCount: Int
-  \\"A list of TestEdge.\\"
+  "A list of TestEdge."
   edges: [TestEdge]
-  \\"Information to aid in pagination.\\"
+  "Information to aid in pagination."
   pageInfo: PageInfo!
 }
 
@@ -359,50 +359,50 @@ type Test2 {
   tests(before: String, after: String, first: Int, last: Int): TestConnection!
 }
 type Query
-\\"An object with an ID.\\"
+"An object with an ID."
 interface Node {
-  \\"ID of the object.\\"
+  "ID of the object."
   id: ID!
 }
-\\"An edge in a connection.\\"
+"An edge in a connection."
 interface Edge {
-  \\"A cursor for use in pagination.\\"
+  "A cursor for use in pagination."
   cursor: String
 }
-\\"A connection for relay\\"
+"A connection for relay"
 interface Connection {
-  \\"Identifies the total count of items in the connection.\\"
+  "Identifies the total count of items in the connection."
   totalCount: Int
-  \\"Information to aid in pagination.\\"
+  "Information to aid in pagination."
   pageInfo: PageInfo!
-  \\"A list of edges.\\"
+  "A list of edges."
   edges: [Edge]
 }
-\\"Information about pagination in a connection.\\"
+"Information about pagination in a connection."
 type PageInfo {
-  \\"When paginating backwards, the cursor to continue.\\"
+  "When paginating backwards, the cursor to continue."
   startCursor: String
-  \\"When paginating forwards, the cursor to continue.\\"
+  "When paginating forwards, the cursor to continue."
   endCursor: String
-  \\"When paginating forwards, are there more items?\\"
+  "When paginating forwards, are there more items?"
   hasNextPage: Boolean
-  \\"When paginating backwards, are there more items?\\"
+  "When paginating backwards, are there more items?"
   hasPreviousPage: Boolean
 }
-\\"An edge in a TestConnection.\\"
+"An edge in a TestConnection."
 type TestEdge implements Edge {
-  \\"The item at the end of the edge.\\"
+  "The item at the end of the edge."
   node: Test!
-  \\"A cursor for use in pagination.\\"
+  "A cursor for use in pagination."
   cursor: String
 }
-\\"The connection type for Test\\"
+"The connection type for Test"
 type TestConnection implements Connection {
-  \\"Identifies the total count of Test items in the connection.\\"
+  "Identifies the total count of Test items in the connection."
   totalCount: Int
-  \\"A list of TestEdge.\\"
+  "A list of TestEdge."
   edges: [TestEdge]
-  \\"Information to aid in pagination.\\"
+  "Information to aid in pagination."
   pageInfo: PageInfo!
 }
 
@@ -417,36 +417,36 @@ type Test2 {
   tests(where: TestWhere): [Test]
 }
 type Query
-\\"Query of Test with using operators\\"
+"Query of Test with using operators"
 input TestWhere {
-  \\"Query with using id field\\"
+  "Query with using id field"
   id: IDWhereOperator
-  \\"Query with using id field\\"
+  "Query with using id field"
   OR: [TestWhere]
-  \\"Must be the object present\\"
+  "Must be the object present"
   PRESENT: Boolean
 }
-\\"Query type of ID with using operators\\"
+"Query type of ID with using operators"
 input IDWhereOperator {
-  \\"Must match the given data exactly\\"
+  "Must match the given data exactly"
   eq: ID
-  \\"Must be different from the given data\\"
+  "Must be different from the given data"
   not_eq: ID
-  \\"Must be an element of the array\\"
+  "Must be an element of the array"
   in: [ID]
-  \\"Must not be an element of the array\\"
+  "Must not be an element of the array"
   not_in: [ID]
-  \\"Must be less than given value\\"
+  "Must be less than given value"
   lt: ID
-  \\"Must be less than or equal to given value\\"
+  "Must be less than or equal to given value"
   lte: ID
-  \\"Must be greater than given value\\"
+  "Must be greater than given value"
   gt: ID
-  \\"Must be greater than or equal to given value\\"
+  "Must be greater than or equal to given value"
   gte: ID
-  \\"Must be within the given range\\"
+  "Must be within the given range"
   between: [ID]
-  \\"Must be the object present\\"
+  "Must be the object present"
   present: Boolean
 }
 
