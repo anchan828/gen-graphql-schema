@@ -22,33 +22,33 @@ type Query {
   tests(orderBy: TestOrder): [Test]
 }
 
-\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
+"""Sort the results in ascending or descending order"""
 enum OrderDirection {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
+  """Sort the results in ascending order"""
   ASC
 
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
+  """Sort the results in descending order"""
   DESC
 }
 
-\\"\\"\\"Ordering options for TestPosition\\"\\"\\"
+"""Ordering options for TestPosition"""
 input TestPositionOrder {
-  \\"\\"\\"Order TestPosition by column\\"\\"\\"
+  """Order TestPosition by column"""
   column: OrderDirection
 
-  \\"\\"\\"Order TestPosition by line\\"\\"\\"
+  """Order TestPosition by line"""
   line: OrderDirection
 
-  \\"\\"\\"Order TestPosition by prev\\"\\"\\"
+  """Order TestPosition by prev"""
   prev: TestPositionOrder
 }
 
-\\"\\"\\"Ordering options for Test\\"\\"\\"
+"""Ordering options for Test"""
 input TestOrder {
-  \\"\\"\\"Order Test by id\\"\\"\\"
+  """Order Test by id"""
   id: OrderDirection
 
-  \\"\\"\\"Order Test by position\\"\\"\\"
+  """Order Test by position"""
   position: TestPositionOrder
 }"
 `;
@@ -63,18 +63,18 @@ type Query {
   tests(arg: PrefixTestChanged): [[Test!]]!
 }
 
-\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
+"""Sort the results in ascending or descending order"""
 enum Position {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
+  """Sort the results in ascending order"""
   TOP
 
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
+  """Sort the results in descending order"""
   BOTTOM
 }
 
-\\"\\"\\"Ordering options for Test\\"\\"\\"
+"""Ordering options for Test"""
 input PrefixTestChanged {
-  \\"\\"\\"Order Test by id\\"\\"\\"
+  """Order Test by id"""
   id: Position
 }"
 `;
@@ -92,21 +92,21 @@ type Query {
   tests(arg: TestChanged): [Test]
 }
 
-\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
+"""Sort the results in ascending or descending order"""
 enum OrderDirection {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
+  """Sort the results in ascending order"""
   ASC
 
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
+  """Sort the results in descending order"""
   DESC
 }
 
-\\"\\"\\"Ordering options for Test\\"\\"\\"
+"""Ordering options for Test"""
 input TestChanged {
-  \\"\\"\\"Order Test by id\\"\\"\\"
+  """Order Test by id"""
   id: OrderDirection
 
-  \\"\\"\\"Order Test by date\\"\\"\\"
+  """Order Test by date"""
   date: OrderDirection
 }"
 `;
@@ -120,18 +120,18 @@ type Query {
   tests(orderBy: TestOrder): [Test]
 }
 
-\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
+"""Sort the results in ascending or descending order"""
 enum OrderDirection {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
+  """Sort the results in ascending order"""
   ASC
 
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
+  """Sort the results in descending order"""
   DESC
 }
 
-\\"\\"\\"Ordering options for Test\\"\\"\\"
+"""Ordering options for Test"""
 input TestOrder {
-  \\"\\"\\"Order Test by id\\"\\"\\"
+  """Order Test by id"""
   id: OrderDirection
 }"
 `;
@@ -153,24 +153,24 @@ type Query {
   tests(orderBy: TestOrder): [Test]
 }
 
-\\"\\"\\"Sort the results in ascending or descending order\\"\\"\\"
+"""Sort the results in ascending or descending order"""
 enum OrderDirection {
-  \\"\\"\\"Sort the results in ascending order\\"\\"\\"
+  """Sort the results in ascending order"""
   ASC
 
-  \\"\\"\\"Sort the results in descending order\\"\\"\\"
+  """Sort the results in descending order"""
   DESC
 }
 
-\\"\\"\\"Ordering options for Test\\"\\"\\"
+"""Ordering options for Test"""
 input TestOrder {
-  \\"\\"\\"Order Test by id\\"\\"\\"
+  """Order Test by id"""
   id: OrderDirection
 
-  \\"\\"\\"Order Test by name\\"\\"\\"
+  """Order Test by name"""
   name: OrderDirection
 
-  \\"\\"\\"Order Test by age\\"\\"\\"
+  """Order Test by age"""
   age: OrderDirection
 }"
 `;
