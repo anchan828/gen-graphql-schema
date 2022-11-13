@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-merge-schema",
-  "version": "0.7.45",
+  "version": "0.7.46",
   "description": "merge multiple schema. merge-graphql-schemas based.",
   "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/merge-schema#readme",
   "bugs": {
@@ -25,10 +25,10 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@anchan828/gen-graphql-order-schema": "^0.7.45",
-    "@anchan828/gen-graphql-relay-schema": "^0.7.45",
-    "@anchan828/gen-graphql-schema-common": "^0.7.45",
-    "@anchan828/gen-graphql-where-schema": "^0.7.45",
+    "@anchan828/gen-graphql-order-schema": "^0.7.46",
+    "@anchan828/gen-graphql-relay-schema": "^0.7.46",
+    "@anchan828/gen-graphql-schema-common": "^0.7.46",
+    "@anchan828/gen-graphql-where-schema": "^0.7.46",
     "@graphql-tools/merge": "^8.3.11",
     "deepmerge": "^4.2.2"
   },
