@@ -22,7 +22,7 @@ function resolveOrder<T>(
         resolveOrder(nestKey, nestOrderBy, identifiers, orders);
       } else {
         identifiers.push((x: any) => objectPath.get(x, nestKey));
-        orders.push(nestOrderBy);
+        orders.push(nestOrderBy!);
       }
     }
   } else {
@@ -39,7 +39,7 @@ export function orderResolver<T>(items: T[], orderBy?: OrderByArgType<T>): T[] {
   const identifiers: Array<Identifier<T>> = [];
   const orders: Array<OrderDirection> = [];
   for (const key of Object.keys(orderBy)) {
-    resolveOrder(key, Reflect.get(orderBy, key), identifiers, orders);
+    resolveOrder(key, Reflect.get(orderBy, key)!, identifiers, orders);
   }
 
   return orderByFunction(

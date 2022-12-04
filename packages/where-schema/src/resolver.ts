@@ -116,7 +116,7 @@ function andFilterFunctions<T extends object>(
       continue;
     }
 
-    const operators = Reflect.get(where, whereKey);
+    const operators = getOperators(where, whereKey as string);
 
     if (operators === undefined) {
       continue;
@@ -218,7 +218,10 @@ function genAndFilterFunction<T extends object>(
       }
 
       return genObjectPaths(item, objectPathKey).some((opk) =>
-        operatorFn(objectPath.get(item, opk) as unknown as ValueType<T>, Reflect.get(ops, operator)),
+        operatorFn(
+          objectPath.get(item, opk) as unknown as ValueType<T>,
+          getOperators(ops, operator) as OperatorValueType,
+        ),
       );
     });
   };
@@ -256,4 +259,15 @@ export function genObjectPaths<T extends object>(item: T, objectPathKey: string)
 export function sortOperatorKey(keys: string[]): string[] {
   const presentKeys = ["present", "PRESENT"];
   return [...keys.filter((k) => !presentKeys.includes(k)), ...keys.filter((k) => presentKeys.includes(k))];
+}
+
+function getOperators<T extends object>(
+  ops:
+    | WhereOperationType<T>
+    | {
+        OR?: WhereOperationType<T>[];
+      },
+  operator: string,
+): WhereOperationType<T> {
+  return Reflect.get(ops as any, operator);
 }
