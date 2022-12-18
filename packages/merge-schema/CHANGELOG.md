@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.7.51 (2022-12-18)
+
+**Note:** Version bump only for package @anchan828/gen-graphql-merge-schema
+
 ## 0.7.50 (2022-12-11)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-merge-schema
