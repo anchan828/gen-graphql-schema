@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-order-schema",
-  "version": "0.7.59",
+  "version": "0.7.60",
   "description": "Auto generation for order type",
   "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/order-schema#readme",
   "bugs": {
@@ -25,7 +25,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@anchan828/gen-graphql-schema-common": "^0.7.59",
+    "@anchan828/gen-graphql-schema-common": "^0.7.60",
     "deepmerge": "^4.3.0",
     "natural-orderby": "^3.0.1",
     "object-path": "^0.11.8",
