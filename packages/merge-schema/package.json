@@ -30,7 +30,7 @@
     "@anchan828/gen-graphql-schema-common": "^0.7.63",
     "@anchan828/gen-graphql-where-schema": "^0.7.63",
     "@graphql-tools/merge": "^8.4.0",
-    "deepmerge": "^4.3.0"
+    "deepmerge": "^4.3.1"
   },
   "peerDependencies": {
     "graphql": "16.6.0"
