@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.7.64 (2023-03-19)
+
+### Bug Fixes
+
+* **deps:** update dependency deepmerge to ^4.3.1 ([b7b4aad](https://github.com/anchan828/gen-graphql-schema/commit/b7b4aad52609c2d0e3c4e718905d8456d050f52e))
+
 ## 0.7.63 (2023-03-12)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-merge-schema
