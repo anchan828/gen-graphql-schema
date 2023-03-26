@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/gen-graphql-schema-common",
-  "version": "0.7.64",
+  "version": "0.7.65",
   "description": "common",
   "homepage": "https://github.com/anchan828/gen-graphql-schema/tree/master/packages/common#readme",
   "bugs": {
