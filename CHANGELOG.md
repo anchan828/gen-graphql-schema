@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.7.67 (2023-04-09)
+
+**Note:** Version bump only for package @anchan828/gen-graphql-schema-packages
+
 ## 0.7.66 (2023-04-02)
 
 **Note:** Version bump only for package @anchan828/gen-graphql-schema-packages
