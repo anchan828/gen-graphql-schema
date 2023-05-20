@@ -29,7 +29,7 @@
     "@anchan828/gen-graphql-relay-schema": "^0.7.68",
     "@anchan828/gen-graphql-schema-common": "^0.7.68",
     "@anchan828/gen-graphql-where-schema": "^0.7.68",
-    "@graphql-tools/merge": "^8.4.2",
+    "@graphql-tools/merge": "^9.0.0",
     "deepmerge": "^4.3.1"
   },
   "peerDependencies": {
