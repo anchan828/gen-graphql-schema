@@ -117,7 +117,6 @@ describe("orderResolver", () => {
           { age: 40, name: "C" },
           { age: 20, name: "C" },
         ] as Item[],
-        // eslint-disable-next-line prettier/prettier
         { age: "ASC", name: "ASC" },
       ),
     ).toEqual([
