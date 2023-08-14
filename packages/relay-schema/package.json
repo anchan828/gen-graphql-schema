@@ -31,6 +31,6 @@
     "reflect-metadata": "^0.1.13"
   },
   "peerDependencies": {
-    "graphql": "16.7.1"
+    "graphql": "16.8.0"
   }
 }
